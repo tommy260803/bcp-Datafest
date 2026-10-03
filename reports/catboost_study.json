@@ -1,0 +1,17 @@
+{
+  "best_value": 0.2583494662183398,
+  "best_params": {
+    "feature_set": "original",
+    "iterations": 600,
+    "depth": 3,
+    "learning_rate": 0.04133944642428183,
+    "l2_leaf_reg": 31.62562678271973,
+    "random_strength": 2.3283669032459575,
+    "bagging_temperature": 1.2546406282501201
+  },
+  "trials": 8,
+  "complete_trials": 8,
+  "failed_trials": [],
+  "iterations_policy": "fixed iterations per trial; no early stopping",
+  "budget": 8
+}

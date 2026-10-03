@@ -1,0 +1,15 @@
+.venv/
+.tools/
+.python/
+.uv-cache/
+__pycache__/
+.pytest_cache/
+.pytest-tmp/
+.pytest-tmp-*/
+*.egg-info/
+data/*.csv
+artifacts/
+outputs/*.csv
+*.sqlite3
+.env
+*.log

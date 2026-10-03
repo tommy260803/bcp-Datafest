@@ -1,0 +1,208 @@
+{
+  "passed": true,
+  "train_shape": [
+    110100,
+    25
+  ],
+  "test_shape": [
+    9900,
+    24
+  ],
+  "train_customers": 24628,
+  "positive_rows": 16567,
+  "positive_rate": 0.15047229791099,
+  "missing_values": 0,
+  "duplicate_keys": 0,
+  "post_conversion_rows": 0,
+  "multiple_positive_customers": 0,
+  "test_no_history": 1839,
+  "test_no_history_fraction": 0.18575757575757576,
+  "monthly": [
+    {
+      "month": 202601,
+      "rows": 10400,
+      "positives": 1521,
+      "positive_rate": 0.14625,
+      "no_history": 10400,
+      "no_history_fraction": 1.0
+    },
+    {
+      "month": 202602,
+      "rows": 9800,
+      "positives": 1543,
+      "positive_rate": 0.15744897959183674,
+      "no_history": 921,
+      "no_history_fraction": 0.0939795918367347
+    },
+    {
+      "month": 202603,
+      "rows": 10300,
+      "positives": 1527,
+      "positive_rate": 0.14825242718446602,
+      "no_history": 2043,
+      "no_history_fraction": 0.1983495145631068
+    },
+    {
+      "month": 202604,
+      "rows": 9600,
+      "positives": 1473,
+      "positive_rate": 0.1534375,
+      "no_history": 827,
+      "no_history_fraction": 0.08614583333333334
+    },
+    {
+      "month": 202605,
+      "rows": 10100,
+      "positives": 1584,
+      "positive_rate": 0.15683168316831683,
+      "no_history": 1973,
+      "no_history_fraction": 0.19534653465346535
+    },
+    {
+      "month": 202606,
+      "rows": 10350,
+      "positives": 1600,
+      "positive_rate": 0.15458937198067632,
+      "no_history": 1834,
+      "no_history_fraction": 0.17719806763285023
+    },
+    {
+      "month": 202607,
+      "rows": 9700,
+      "positives": 1410,
+      "positive_rate": 0.14536082474226805,
+      "no_history": 950,
+      "no_history_fraction": 0.0979381443298969
+    },
+    {
+      "month": 202608,
+      "rows": 10050,
+      "positives": 1449,
+      "positive_rate": 0.14417910447761195,
+      "no_history": 1760,
+      "no_history_fraction": 0.17512437810945275
+    },
+    {
+      "month": 202609,
+      "rows": 9900,
+      "positives": 1393,
+      "positive_rate": 0.1407070707070707,
+      "no_history": 1299,
+      "no_history_fraction": 0.13121212121212122
+    },
+    {
+      "month": 202610,
+      "rows": 10400,
+      "positives": 1628,
+      "positive_rate": 0.15653846153846154,
+      "no_history": 1893,
+      "no_history_fraction": 0.18201923076923077
+    },
+    {
+      "month": 202611,
+      "rows": 9500,
+      "positives": 1439,
+      "positive_rate": 0.15147368421052632,
+      "no_history": 728,
+      "no_history_fraction": 0.07663157894736843
+    }
+  ],
+  "varying_clients_per_predictor": {
+    "edad": 0,
+    "ingresos": 0,
+    "ratio_deuda_ingresos": 0,
+    "antiguedad_cuenta_meses": 0,
+    "numero_productos": 0,
+    "saldo_promedio": 0,
+    "dias_ultima_transaccion": 0,
+    "antiguedad_direccion_meses": 0,
+    "visitas_web_ultimos_90_dias": 0,
+    "distancia_sucursal_km": 0,
+    "dia_preferido_pago": 0,
+    "dias_ultima_interaccion": 16769,
+    "ocupacion": 0,
+    "region": 0,
+    "canal_adquisicion": 0,
+    "banda_riesgo": 0,
+    "dispositivo_principal": 0,
+    "tiene_tarjeta_credito": 0,
+    "activo_movil": 0,
+    "es_nuevo_cliente": 0,
+    "tiene_prestamo": 0,
+    "tiene_seguro": 0
+  },
+  "hashes": {
+    "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+    "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+    "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+    "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+  },
+  "resources": {
+    "logical_cpus": 20,
+    "physical_cpus": 14,
+    "ram_bytes": 16786370560,
+    "available_ram_bytes": 4634025984,
+    "process_rss_bytes": 142454784
+  },
+  "types_train": {
+    "id_cliente": "int64",
+    "mes": "int64",
+    "edad": "int64",
+    "ingresos": "float64",
+    "ratio_deuda_ingresos": "float64",
+    "antiguedad_cuenta_meses": "int64",
+    "numero_productos": "int64",
+    "saldo_promedio": "float64",
+    "dias_ultima_transaccion": "int64",
+    "ocupacion": "object",
+    "region": "object",
+    "canal_adquisicion": "object",
+    "banda_riesgo": "object",
+    "tiene_tarjeta_credito": "int8",
+    "activo_movil": "int8",
+    "es_nuevo_cliente": "int8",
+    "tiene_prestamo": "int8",
+    "antiguedad_direccion_meses": "int64",
+    "visitas_web_ultimos_90_dias": "int64",
+    "distancia_sucursal_km": "float64",
+    "dispositivo_principal": "object",
+    "dia_preferido_pago": "int64",
+    "tiene_seguro": "int8",
+    "dias_ultima_interaccion": "int64",
+    "objetivo": "int64"
+  },
+  "categories": {
+    "ocupacion": [
+      "clerical",
+      "manager",
+      "manual",
+      "professional",
+      "self_employed"
+    ],
+    "region": [
+      "central",
+      "east",
+      "north",
+      "south",
+      "west"
+    ],
+    "canal_adquisicion": [
+      "branch",
+      "call_center",
+      "mobile",
+      "partner",
+      "web"
+    ],
+    "banda_riesgo": [
+      "high",
+      "low",
+      "medium"
+    ],
+    "dispositivo_principal": [
+      "android",
+      "ios",
+      "otro",
+      "web"
+    ]
+  }
+}

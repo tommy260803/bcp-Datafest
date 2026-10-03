@@ -1,0 +1,224 @@
+{
+  "frozen_at_lima": "2026-10-03T13:31:28.770015-05:00",
+  "components": [
+    {
+      "spec": {
+        "name": "catboost_trial_006",
+        "family": "catboost",
+        "blocks": [],
+        "params": {
+          "iterations": 600,
+          "depth": 3,
+          "learning_rate": 0.04133944642428183,
+          "l2_leaf_reg": 31.62562678271973,
+          "random_strength": 2.3283669032459575,
+          "bootstrap_type": "Bayesian",
+          "bagging_temperature": 1.2546406282501201
+        },
+        "seed": 42
+      },
+      "weight": 0.75
+    },
+    {
+      "spec": {
+        "name": "features_observed_time",
+        "family": "hgb",
+        "blocks": [
+          "observed_time"
+        ],
+        "params": {},
+        "seed": 42
+      },
+      "weight": 0.25
+    }
+  ],
+  "development_months": [
+    202608,
+    202609,
+    202610
+  ],
+  "iterations_policy": "fixed iterations per trial; no early stopping",
+  "mean_gini": 0.2605452442565364,
+  "folds": [
+    {
+      "rows": 10050,
+      "positives": 1449,
+      "gini": 0.26421061508488153,
+      "auc": 0.6321053075424408,
+      "no_history": {
+        "rows": 1760,
+        "positives": 309,
+        "gini": 0.25821495721062804
+      },
+      "history": {
+        "rows": 8290,
+        "positives": 1140,
+        "gini": 0.25961109066372234
+      },
+      "composition_weighted_gini": 0.2644118794702599,
+      "top20_count": 2010,
+      "top20_positives": 501,
+      "top20_recall": 0.34575569358178054,
+      "month": 202608
+    },
+    {
+      "rows": 9900,
+      "positives": 1393,
+      "gini": 0.24906468225862888,
+      "auc": 0.6245323411293144,
+      "no_history": {
+        "rows": 1299,
+        "positives": 218,
+        "gini": 0.2318953738044114
+      },
+      "history": {
+        "rows": 8601,
+        "positives": 1175,
+        "gini": 0.24830228466973425
+      },
+      "composition_weighted_gini": 0.24908493415174293,
+      "top20_count": 1980,
+      "top20_positives": 467,
+      "top20_recall": 0.33524766690595836,
+      "month": 202609
+    },
+    {
+      "rows": 10400,
+      "positives": 1628,
+      "gini": 0.2683604354260989,
+      "auc": 0.6341802177130494,
+      "no_history": {
+        "rows": 1893,
+        "positives": 341,
+        "gini": 0.29400338603863707
+      },
+      "history": {
+        "rows": 8507,
+        "positives": 1287,
+        "gini": 0.2587050991483124
+      },
+      "composition_weighted_gini": 0.2685417060438242,
+      "top20_count": 2080,
+      "top20_positives": 543,
+      "top20_recall": 0.33353808353808356,
+      "month": 202610
+    }
+  ],
+  "selection_metric": "equal_month_mean_gini",
+  "ensemble_accepted": true,
+  "ensemble_vs_best_individual": {
+    "replicates": 500,
+    "unit": "customer (jointly across months)",
+    "mean_delta": 0.002195778038196594,
+    "ci95": [
+      0.00022971202274579694,
+      0.004183681745584231
+    ]
+  },
+  "best_vs_runnerup": {
+    "replicates": 500,
+    "unit": "customer (jointly across months)",
+    "mean_delta": 0.00036754178190351317,
+    "ci95": [
+      -0.001763110332975807,
+      0.0025580284390202567
+    ]
+  },
+  "feature_columns": {
+    "catboost_trial_006": [
+      "edad",
+      "ingresos",
+      "ratio_deuda_ingresos",
+      "antiguedad_cuenta_meses",
+      "numero_productos",
+      "saldo_promedio",
+      "dias_ultima_transaccion",
+      "antiguedad_direccion_meses",
+      "visitas_web_ultimos_90_dias",
+      "distancia_sucursal_km",
+      "dia_preferido_pago",
+      "dias_ultima_interaccion",
+      "ocupacion",
+      "region",
+      "canal_adquisicion",
+      "banda_riesgo",
+      "dispositivo_principal",
+      "tiene_tarjeta_credito",
+      "activo_movil",
+      "es_nuevo_cliente",
+      "tiene_prestamo",
+      "tiene_seguro"
+    ],
+    "features_observed_time": [
+      "edad",
+      "ingresos",
+      "ratio_deuda_ingresos",
+      "antiguedad_cuenta_meses",
+      "numero_productos",
+      "saldo_promedio",
+      "dias_ultima_transaccion",
+      "antiguedad_direccion_meses",
+      "visitas_web_ultimos_90_dias",
+      "distancia_sucursal_km",
+      "dia_preferido_pago",
+      "dias_ultima_interaccion",
+      "ocupacion",
+      "region",
+      "canal_adquisicion",
+      "banda_riesgo",
+      "dispositivo_principal",
+      "tiene_tarjeta_credito",
+      "activo_movil",
+      "es_nuevo_cliente",
+      "tiene_prestamo",
+      "tiene_seguro",
+      "meses_desde_primera_observacion"
+    ]
+  },
+  "test_no_history_fraction": 0.18575757575757576,
+  "provenance": {
+    "timestamp_lima": "2026-10-03T13:31:28.776016-05:00",
+    "code_sha256": "31f69d09707052dc4d5e87fb66ac5f240567f954b1b1995fc36a7bca40aaa7ae",
+    "python": "3.12.15",
+    "versions": {
+      "numpy": "2.5.3",
+      "pandas": "2.3.3",
+      "scikit-learn": "1.7.2",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "optuna": "4.9.0",
+      "joblib": "1.6.0"
+    },
+    "data_hashes": {
+      "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e",
+      "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+      "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+      "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567"
+    },
+    "protocol": {
+      "development_months": [
+        202608,
+        202609,
+        202610
+      ],
+      "final_validation_month": 202611,
+      "test_month": 202612,
+      "seed": 42,
+      "threads": 4,
+      "selection_metric": "equal_month_mean_gini",
+      "tuning_trials_per_family": 8,
+      "iterations_policy": "fixed iterations per trial; no early stopping",
+      "bootstrap_replicates": 500,
+      "ensemble_min_gain": 0.002,
+      "ensemble_acceptance": "mean gain >= 0.002 and paired customer bootstrap 95% lower bound > 0; otherwise retain best individual",
+      "feature_blocks": [
+        "economic",
+        "linkage",
+        "activity",
+        "history",
+        "observed_time"
+      ],
+      "notes": "Initial bounded CPU budget; all families use the same three development months. November is reserved until selection is frozen."
+    }
+  }
+}

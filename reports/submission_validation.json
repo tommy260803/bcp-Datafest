@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "file": "C:\\Users\\Anthony Garcia\\bcp-datafest\\outputs\\submission.csv",
+  "rows": 9900,
+  "columns": [
+    "id_cliente",
+    "prediccion"
+  ],
+  "identifiers_in_test_order": true,
+  "finite_probabilities": true,
+  "min_probability": 0.0309183115514965,
+  "max_probability": 0.399970886929378,
+  "unique_probabilities": 9900,
+  "sha256": "72bb98012af2a91c78569e72ea0ef79adb4e0dbf8dfcc7f865d0f2dad096b4f4"
+}

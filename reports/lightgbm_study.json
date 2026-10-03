@@ -1,0 +1,18 @@
+{
+  "best_value": 0.25756224732651317,
+  "best_params": {
+    "feature_set": "promising",
+    "n_estimators": 200,
+    "num_leaves": 7,
+    "learning_rate": 0.07283241502770862,
+    "min_child_samples": 500,
+    "reg_lambda": 28.453353142972677,
+    "colsample_bytree": 0.7046784398975369,
+    "subsample": 0.9894951851973779
+  },
+  "trials": 8,
+  "complete_trials": 8,
+  "failed_trials": [],
+  "iterations_policy": "fixed iterations per trial; no early stopping",
+  "budget": 8
+}

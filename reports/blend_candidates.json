@@ -1,0 +1,20 @@
+[
+  {
+    "first": "catboost_trial_006",
+    "second": "features_observed_time",
+    "first_weight": 0.25,
+    "mean_gini": 0.2591793759012557
+  },
+  {
+    "first": "catboost_trial_006",
+    "second": "features_observed_time",
+    "first_weight": 0.5,
+    "mean_gini": 0.26049452650684185
+  },
+  {
+    "first": "catboost_trial_006",
+    "second": "features_observed_time",
+    "first_weight": 0.75,
+    "mean_gini": 0.2605452442565364
+  }
+]

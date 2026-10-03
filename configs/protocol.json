@@ -1,0 +1,15 @@
+{
+  "development_months": [202608, 202609, 202610],
+  "final_validation_month": 202611,
+  "test_month": 202612,
+  "seed": 42,
+  "threads": 4,
+  "selection_metric": "equal_month_mean_gini",
+  "tuning_trials_per_family": 8,
+  "iterations_policy": "fixed iterations per trial; no early stopping",
+  "bootstrap_replicates": 500,
+  "ensemble_min_gain": 0.002,
+  "ensemble_acceptance": "mean gain >= 0.002 and paired customer bootstrap 95% lower bound > 0; otherwise retain best individual",
+  "feature_blocks": ["economic", "linkage", "activity", "history", "observed_time"],
+  "notes": "Initial bounded CPU budget; all families use the same three development months. November is reserved until selection is frozen."
+}

@@ -1,0 +1,83 @@
+{
+  "frozen_config_sha256": "8b797fd55428d35bbed4ec05f56030ea5ca3315eb286fe7456c9a411fa59cc62",
+  "frozen_at_lima": "2026-10-03T13:31:28.770015-05:00",
+  "metrics": {
+    "rows": 9500,
+    "positives": 1439,
+    "gini": 0.233079181939587,
+    "auc": 0.6165395909697935,
+    "no_history": {
+      "rows": 728,
+      "positives": 143,
+      "gini": 0.19146494531109903
+    },
+    "history": {
+      "rows": 8772,
+      "positives": 1296,
+      "gini": 0.23310994358903248
+    },
+    "composition_weighted_gini": 0.2319544623873684,
+    "top20_count": 1900,
+    "top20_positives": 428,
+    "top20_recall": 0.2974287699791522
+  },
+  "training_months": [
+    202601,
+    202602,
+    202603,
+    202604,
+    202605,
+    202606,
+    202607,
+    202608,
+    202609,
+    202610
+  ],
+  "evaluation_month": 202611,
+  "provenance": {
+    "timestamp_lima": "2026-10-03T13:32:05.927595-05:00",
+    "code_sha256": "31f69d09707052dc4d5e87fb66ac5f240567f954b1b1995fc36a7bca40aaa7ae",
+    "python": "3.12.15",
+    "versions": {
+      "numpy": "2.5.3",
+      "pandas": "2.3.3",
+      "scikit-learn": "1.7.2",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "optuna": "4.9.0",
+      "joblib": "1.6.0"
+    },
+    "data_hashes": {
+      "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e",
+      "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+      "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+      "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567"
+    },
+    "protocol": {
+      "development_months": [
+        202608,
+        202609,
+        202610
+      ],
+      "final_validation_month": 202611,
+      "test_month": 202612,
+      "seed": 42,
+      "threads": 4,
+      "selection_metric": "equal_month_mean_gini",
+      "tuning_trials_per_family": 8,
+      "iterations_policy": "fixed iterations per trial; no early stopping",
+      "bootstrap_replicates": 500,
+      "ensemble_min_gain": 0.002,
+      "ensemble_acceptance": "mean gain >= 0.002 and paired customer bootstrap 95% lower bound > 0; otherwise retain best individual",
+      "feature_blocks": [
+        "economic",
+        "linkage",
+        "activity",
+        "history",
+        "observed_time"
+      ],
+      "notes": "Initial bounded CPU budget; all families use the same three development months. November is reserved until selection is frozen."
+    }
+  },
+  "development_mean_gini": 0.2605452442565364
+}
