@@ -1,5 +1,23 @@
 # BCP DataFest
 
+## Rama experimental boost
+
+La referencia congelada es el **Candidato A**. Los experimentos de **Candidato B**
+usan `configs/boost/`, `artifacts/boost/` y `reports/boost/`, con identidad portable
+de configuración/código y caché compatible. Instrucciones multiplataforma,
+resultados y criterios de decisión: [BOOST.md](BOOST.md).
+
+```text
+uv sync --locked
+uv run python -m bcp_datafest boost-audit
+uv run python -m bcp_datafest boost-experiment --competitive
+uv run python -m bcp_datafest boost-diagnose
+```
+
+Decisión de la primera ronda: conservar A. La combinación temporal exploratoria
+mejora 0.000694 en desarrollo, por debajo del mínimo 0.002; no se evaluó B en
+noviembre. Los comandos históricos documentados abajo corresponden al flujo A.
+
 Proceso cliente-mes para primera conversión, con validación temporal y Gini = 2 × AUC − 1. Los predictores actuales se suponen disponibles en el instante de predicción de la competencia; el instante exacto y el evento comercial no están documentados.
 
 Python 3.12 de 64 bits. Instalar uv y ejecutar `uv sync --locked`. En esta máquina se usa uv local: `.\.tools\bin\uv.exe`; Python local: `.python/cpython-3.12.15-windows-x86_64-none/python.exe`.

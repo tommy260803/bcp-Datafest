@@ -29,20 +29,29 @@ def mean_gini(df, p, weights=None):
     return float(np.mean(vals))
 
 
-def paired_bootstrap(df, p, reference, replicates=500):
+def paired_bootstrap(df, p, reference, replicates=500, seed=42):
     """Resample customers jointly across months, retain identical paired rows."""
-    rng = np.random.default_rng(42)
+    if replicates < 1 or df.empty:
+        raise ValueError("Bootstrap needs observations and at least one replicate")
+    p, reference = np.asarray(p), np.asarray(reference)
+    observed, baseline = mean_gini(df, p), mean_gini(df, reference)
+    if observed is None or baseline is None:
+        raise ValueError("Bootstrap requires both classes in each month")
+    rng = np.random.default_rng(seed)
     codes, customers = pd.factorize(df.id_cliente, sort=True)
     n = len(customers)
     differences = []
     for _ in range(replicates):
         multiplicities = np.bincount(rng.integers(0, n, size=n), minlength=n)
         weights = multiplicities[codes]
-        # Each bootstrap sample has both classes for these data; use weights
-        # so repeat observations remain in the same resampled customer cluster.
-        differences.append(mean_gini(df, p, weights) - mean_gini(df, reference, weights))
+        score, ref_score = mean_gini(df, p, weights), mean_gini(df, reference, weights)
+        if score is not None and ref_score is not None:
+            differences.append(score - ref_score)
+    if not differences:
+        raise ValueError("No valid bootstrap replicates")
     return {"replicates": replicates, "unit": "customer (jointly across months)",
-            "mean_delta": mean_gini(df, p)-mean_gini(df, reference),
+             "valid_replicates": len(differences), "invalid_replicates": replicates - len(differences),
+             "mean_delta": observed-baseline,
             "ci95": [float(v) for v in np.quantile(differences, [.025, .975])]}
 
 
@@ -55,7 +64,7 @@ def select(data_dir):
     for family in ["catboost", "lightgbm"]:
         study = read_json(ROOT / f"reports/{family}_study.json")
         assert study["complete_trials"] >= protocol["tuning_trials_per_family"], "Tuning budget incomplete"
-    results, df = leaderboard()
+    results, df = leaderboard(data_dir)
     by_name = {r["spec"]["name"]: r for r in results}
     winner = df.iloc[0]["name"]
     base = read_predictions(winner)

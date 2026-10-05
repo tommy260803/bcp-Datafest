@@ -6,14 +6,24 @@ from .io import ROOT
 
 def main():
     parser = argparse.ArgumentParser(description="DataFest BCP: validación temporal y CSV verificable")
-    parser.add_argument("command", choices=["audit", "baseline", "experiment", "tune", "blend", "evaluate-final", "fit-final", "predict", "validate-submission"])
+    parser.add_argument("command", choices=["audit", "baseline", "experiment", "tune", "blend", "evaluate-final", "fit-final", "predict", "validate-submission", "boost-audit", "boost-experiment", "boost-diagnose"])
     parser.add_argument("--data-dir", type=Path, default=ROOT / "data")
     parser.add_argument("--model", choices=["catboost", "lightgbm"])
     parser.add_argument("--trials", type=int)
+    parser.add_argument("--competitive", action="store_true", help="Run the bounded Candidate B competitive comparison")
     parser.add_argument("--output", type=Path, default=ROOT / "outputs/submission.csv")
     parser.add_argument("--file", type=Path, default=ROOT / "outputs/submission.csv")
     args = parser.parse_args()
-    if args.command == "audit":
+    if args.command == "boost-audit":
+        from .variability import audit_variability
+        audit_variability(args.data_dir)
+    elif args.command == "boost-experiment":
+        from .boost import experiment
+        experiment(args.data_dir, competitive=args.competitive)
+    elif args.command == "boost-diagnose":
+        from .diagnostics import diagnose
+        diagnose(args.data_dir)
+    elif args.command == "audit":
         from .data import audit
         audit(args.data_dir)
     elif args.command in ["baseline", "experiment"]:

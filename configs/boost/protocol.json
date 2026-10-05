@@ -1,0 +1,21 @@
+{
+  "development_months": [202608, 202609, 202610],
+  "final_validation_month": 202611,
+  "test_month": 202612,
+  "seed": 42,
+  "threads": 4,
+  "selection_metric": "equal_month_mean_gini",
+  "iterations_policy": "fixed parameters and iterations; no early stopping",
+  "bootstrap_replicates": 500,
+  "ensemble_min_gain": 0.002,
+  "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+  "feature_blocks": ["temporal_structure", "temporal_lags", "temporal_v2"],
+  "dynamic_predictors": ["dias_ultima_interaccion"],
+  "history_window_months": 3,
+  "initial_hgb_variants": ["original", "observed_time", "temporal_structure", "temporal_lags", "temporal_v2"],
+  "competitive_min_mean_gain": 0.0005,
+  "competitive_min_improved_months": 2,
+  "competitive_max_month_loss": 0.002,
+  "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+  "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget."
+}

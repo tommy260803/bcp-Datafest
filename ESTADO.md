@@ -1,5 +1,50 @@
 # Estado del proyecto
 
+## Rama boost — 4 de octubre de 2026
+
+- Rama comprobada: `boost`; la modificación preexistente de `.gitignore` se conservó.
+- Configuraciones y reportes históricos de A protegidos y sin modificaciones.
+  Los artefactos nuevos usan exclusivamente `artifacts/boost/` y `reports/boost/`.
+- Identidad experimental v2: hashes JSON lógicos y código normalizado CRLF/LF,
+  protocolo completo, cuatro CSV, spec, meses y versiones. Reutilización exige
+  además integridad del CSV de predicciones. El leaderboard excluye versiones
+  incompatibles explícitamente y conserva un registro; ejecuciones anteriores
+  no se mezclan con las actuales.
+- `uv run python -m bcp_datafest boost-audit`: enero–octubre, 100.600 filas y
+  23.900 clientes; solo cambia `dias_ultima_interaccion`. 78,44% de clientes con
+  historial muestran variación y 59,51% de transiciones cambian. No se crean
+  rezagos redundantes de saldo, ingresos o productos estáticos.
+- Implementados `temporal_structure`, `temporal_lags` y `temporal_v2`, con
+  ventanas calendario `[t-3,t)`, NaN para antecedentes ausentes y orden restaurado.
+- `uv run python -m pytest -q -p no:cacheprovider --basetemp /tmp/opencode/pytest-boost`:
+  **19 pruebas aprobadas**. Para Windows/Linux se documenta el basetemp relativo
+  `.pytest-tmp-boost` en BOOST.md.
+- `uv run python -m bcp_datafest boost-experiment --competitive`: A reproducido
+  Gini 0.260545, diferencia máxima de probabilidades ~1e-15. HGB lags 0.257339;
+  HGB v2 0.256387; CatBoost lags 0.255367. CatBoost temporal empeora los tres meses,
+  por lo que no se abrió LightGBM ni tuning adicional.
+- Una única sustitución del HGB de A por HGB lags, manteniendo pesos 75/25, obtuvo
+  0.261239, ganancia 0.000694. No cumple el mínimo 0.002 de aceptación. No se abrió
+  búsqueda de pesos; no se congeló ni evaluó B en noviembre.
+- Una ejecución competitiva alcanzó el timeout de terminal de 300 segundos tras
+  guardar los entrenamientos; al reanudar reutilizó resultados compatibles. Las
+  ejecuciones finales completas se realizaron con timeout 600 segundos. Cambios
+  posteriores de código/protocolo recalcularon correctamente los experimentos;
+  sus versiones antiguas se conservan y quedan fuera del leaderboard vigente.
+- `uv run python -m bcp_datafest boost-diagnose`: solo predicciones históricas de
+  A; IC95% exploratorio noviembre menos media desarrollo [-0.06248, 0.00715]. La
+  composición por historial no explica por sí sola el descenso; no se atribuye
+  una causa única ni se ajusta B sobre noviembre.
+- **Decisión: mantener Candidato A.** Reportes en `reports/boost/`; explicación y
+  reproducción en `BOOST.md`. Próxima ronda solo con una hipótesis nueva y
+  presupuesto acotado en agosto–octubre.
+- Verificación de cierre: ocho cachés reales reutilizados con entrenamiento
+  bloqueado, fingerprints idénticos y referencia A íntegra. `git diff --check`
+  sin errores; sin diferencias en configuración final/protocolo/predicciones
+  históricas de A. Los cambios quedan en el working tree de boost.
+
+## Registro histórico del Candidato A
+
 Fecha de inicio: 3 de octubre de 2026, America/Lima.
 
 ## Fase 0 en curso

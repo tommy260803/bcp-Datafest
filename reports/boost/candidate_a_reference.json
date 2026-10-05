@@ -1,0 +1,47 @@
+{
+  "schema": "candidate-reference-v2",
+  "candidate": "A",
+  "config_logical_sha256": "0d646cdea75dec5a702848ebc3eff4f23ceb5f013ff3087155e51c82c9096008",
+  "protected_file_hashes": {
+    "configs/final.json": "0d646cdea75dec5a702848ebc3eff4f23ceb5f013ff3087155e51c82c9096008",
+    "configs/protocol.json": "fe396536e3f945f4b36239575096cffc310bfadded9d030e7ec70904a254b459",
+    "reports/final_validation.json": "93cfff940fe67ccbdbdb1db82475429313a6e6d4082e01d1a269ca0cd7f45459",
+    "reports/selected_development_predictions.csv": "d39ed07e53ee1ea2f76138fadfde957be0c310183a2822de3683fd544e536409",
+    "reports/november_predictions.csv": "f0b37beaddb7b441592ab8329462e768b7c711b77d48bab847cd16a3760e3dbe"
+  },
+  "protected_hash_schema": "canonical-json-or-normalized-text-v1",
+  "development_mean_gini": 0.2605452442565364,
+  "components": [
+    {
+      "spec": {
+        "name": "catboost_trial_006",
+        "family": "catboost",
+        "blocks": [],
+        "params": {
+          "iterations": 600,
+          "depth": 3,
+          "learning_rate": 0.04133944642428183,
+          "l2_leaf_reg": 31.62562678271973,
+          "random_strength": 2.3283669032459575,
+          "bootstrap_type": "Bayesian",
+          "bagging_temperature": 1.2546406282501201
+        },
+        "seed": 42
+      },
+      "weight": 0.75
+    },
+    {
+      "spec": {
+        "name": "features_observed_time",
+        "family": "hgb",
+        "blocks": [
+          "observed_time"
+        ],
+        "params": {},
+        "seed": 42
+      },
+      "weight": 0.25
+    }
+  ],
+  "november_was_already_observed": true
+}

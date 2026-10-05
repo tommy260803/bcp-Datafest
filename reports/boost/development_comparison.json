@@ -1,0 +1,353 @@
+{
+  "timestamp_lima": "2026-10-04T19:36:57.325948-05:00",
+  "context": {
+    "schema": "experiment-v2",
+    "code_hash_schema": "normalized-source-v1",
+    "code_sha256": "c3b823a3ddde401343c1ee06cf1ca49878ac6f8f4599f510b14c969abd467e52",
+    "protocol_sha256": "1e3e8a51371bfd5d07b0f100ba7502d3a7e0167c8c5a6777464d377d85e0182e",
+    "protocol": {
+      "development_months": [
+        202608,
+        202609,
+        202610
+      ],
+      "final_validation_month": 202611,
+      "test_month": 202612,
+      "seed": 42,
+      "threads": 4,
+      "selection_metric": "equal_month_mean_gini",
+      "iterations_policy": "fixed parameters and iterations; no early stopping",
+      "bootstrap_replicates": 500,
+      "ensemble_min_gain": 0.002,
+      "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+      "feature_blocks": [
+        "temporal_structure",
+        "temporal_lags",
+        "temporal_v2"
+      ],
+      "dynamic_predictors": [
+        "dias_ultima_interaccion"
+      ],
+      "history_window_months": 3,
+      "initial_hgb_variants": [
+        "original",
+        "observed_time",
+        "temporal_structure",
+        "temporal_lags",
+        "temporal_v2"
+      ],
+      "competitive_min_mean_gain": 0.0005,
+      "competitive_min_improved_months": 2,
+      "competitive_max_month_loss": 0.002,
+      "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+      "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget."
+    },
+    "data_hashes": {
+      "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+      "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+      "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+      "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+    },
+    "python": "3.12",
+    "versions": {
+      "numpy": "2.5.3",
+      "pandas": "2.3.3",
+      "scikit-learn": "1.7.2",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "optuna": "4.9.0",
+      "joblib": "1.6.0",
+      "threadpoolctl": "3.7.0"
+    }
+  },
+  "competitive_executed": true,
+  "hgb_gate_passed": false,
+  "best_hgb_block": "temporal_structure",
+  "competitive_block": "temporal_lags",
+  "a_reproduction": {
+    "mean_gini": 0.2605452442565364,
+    "worst_gini": 0.24906468225862888,
+    "folds": [
+      {
+        "rows": 10050,
+        "positives": 1449,
+        "gini": 0.26421061508488153,
+        "auc": 0.6321053075424408,
+        "no_history": {
+          "rows": 1760,
+          "positives": 309,
+          "gini": 0.25821495721062804
+        },
+        "history": {
+          "rows": 8290,
+          "positives": 1140,
+          "gini": 0.25961109066372234
+        },
+        "composition_weighted_gini": 0.2644118794702599,
+        "top20_count": 2010,
+        "top20_positives": 501,
+        "top20_recall": 0.34575569358178054,
+        "month": 202608
+      },
+      {
+        "rows": 9900,
+        "positives": 1393,
+        "gini": 0.24906468225862888,
+        "auc": 0.6245323411293144,
+        "no_history": {
+          "rows": 1299,
+          "positives": 218,
+          "gini": 0.2318953738044114
+        },
+        "history": {
+          "rows": 8601,
+          "positives": 1175,
+          "gini": 0.24830228466973425
+        },
+        "composition_weighted_gini": 0.24908493415174293,
+        "top20_count": 1980,
+        "top20_positives": 467,
+        "top20_recall": 0.33524766690595836,
+        "month": 202609
+      },
+      {
+        "rows": 10400,
+        "positives": 1628,
+        "gini": 0.2683604354260989,
+        "auc": 0.6341802177130494,
+        "no_history": {
+          "rows": 1893,
+          "positives": 341,
+          "gini": 0.29400338603863707
+        },
+        "history": {
+          "rows": 8507,
+          "positives": 1287,
+          "gini": 0.2587050991483124
+        },
+        "composition_weighted_gini": 0.2685417060438242,
+        "top20_count": 2080,
+        "top20_positives": 543,
+        "top20_recall": 0.33353808353808356,
+        "month": 202610
+      }
+    ]
+  },
+  "a_historical_mean_gini": 0.2605452442565364,
+  "a_reproduction_max_probability_difference": 9.992007221626409e-16,
+  "best_temporal_run": {
+    "name": "b_hgb_temporal_structure",
+    "family": "hgb",
+    "blocks": [
+      "temporal_structure"
+    ],
+    "params": {},
+    "seed": 42
+  },
+  "b_development": {
+    "mean_gini": 0.2577164897289453,
+    "worst_gini": 0.2458247508850233,
+    "folds": [
+      {
+        "rows": 10050,
+        "positives": 1449,
+        "gini": 0.25800593427714635,
+        "auc": 0.6290029671385732,
+        "no_history": {
+          "rows": 1760,
+          "positives": 309,
+          "gini": 0.24132224400536173
+        },
+        "history": {
+          "rows": 8290,
+          "positives": 1140,
+          "gini": 0.2569709238130291
+        },
+        "composition_weighted_gini": 0.2580082509117041,
+        "top20_count": 2010,
+        "top20_positives": 491,
+        "top20_recall": 0.3388543823326432,
+        "month": 202608
+      },
+      {
+        "rows": 9900,
+        "positives": 1393,
+        "gini": 0.2458247508850233,
+        "auc": 0.6229123754425117,
+        "no_history": {
+          "rows": 1299,
+          "positives": 218,
+          "gini": 0.24468509450135367
+        },
+        "history": {
+          "rows": 8601,
+          "positives": 1175,
+          "gini": 0.24357249686266202
+        },
+        "composition_weighted_gini": 0.24654581330841618,
+        "top20_count": 1980,
+        "top20_positives": 459,
+        "top20_recall": 0.3295046661880833,
+        "month": 202609
+      },
+      {
+        "rows": 10400,
+        "positives": 1628,
+        "gini": 0.26931878402466625,
+        "auc": 0.6346593920123331,
+        "no_history": {
+          "rows": 1893,
+          "positives": 341,
+          "gini": 0.3008170329836444
+        },
+        "history": {
+          "rows": 8507,
+          "positives": 1287,
+          "gini": 0.2576902629534208
+        },
+        "composition_weighted_gini": 0.2695376830225076,
+        "top20_count": 2080,
+        "top20_positives": 544,
+        "top20_recall": 0.33415233415233414,
+        "month": 202610
+      }
+    ]
+  },
+  "b_vs_a_bootstrap": {
+    "replicates": 500,
+    "unit": "customer (jointly across months)",
+    "valid_replicates": 500,
+    "invalid_replicates": 0,
+    "mean_delta": -0.0028287545275911263,
+    "ci95": [
+      -0.009889241638790824,
+      0.0041996966282515594
+    ]
+  },
+  "blends": [
+    {
+      "strategy": "fixed A weights; replace HGB with best dynamic HGB",
+      "metrics": {
+        "mean_gini": 0.2612390395955622,
+        "worst_gini": 0.25092709006754377,
+        "folds": [
+          {
+            "rows": 10050,
+            "positives": 1449,
+            "gini": 0.26327615780308333,
+            "auc": 0.6316380789015417,
+            "no_history": {
+              "rows": 1760,
+              "positives": 309,
+              "gini": 0.25898219953207113
+            },
+            "history": {
+              "rows": 8290,
+              "positives": 1140,
+              "gini": 0.25824512329775495
+            },
+            "composition_weighted_gini": 0.26350264915492416,
+            "top20_count": 2010,
+            "top20_positives": 499,
+            "top20_recall": 0.3443754313319531,
+            "month": 202608
+          },
+          {
+            "rows": 9900,
+            "positives": 1393,
+            "gini": 0.25092709006754377,
+            "auc": 0.6254635450337719,
+            "no_history": {
+              "rows": 1299,
+              "positives": 218,
+              "gini": 0.2340001188162506
+            },
+            "history": {
+              "rows": 8601,
+              "positives": 1175,
+              "gini": 0.25023660399630954
+            },
+            "composition_weighted_gini": 0.25092706599450265,
+            "top20_count": 1980,
+            "top20_positives": 465,
+            "top20_recall": 0.3338119167264896,
+            "month": 202609
+          },
+          {
+            "rows": 10400,
+            "positives": 1628,
+            "gini": 0.2695138709160596,
+            "auc": 0.6347569354580298,
+            "no_history": {
+              "rows": 1893,
+              "positives": 341,
+              "gini": 0.2943094899779304
+            },
+            "history": {
+              "rows": 8507,
+              "positives": 1287,
+              "gini": 0.2600399907879132
+            },
+            "composition_weighted_gini": 0.26969138804739257,
+            "top20_count": 2080,
+            "top20_positives": 542,
+            "top20_recall": 0.33292383292383293,
+            "month": 202610
+          }
+        ]
+      },
+      "components": [
+        {
+          "spec": {
+            "name": "catboost_trial_006",
+            "family": "catboost",
+            "blocks": [],
+            "params": {
+              "iterations": 600,
+              "depth": 3,
+              "learning_rate": 0.04133944642428183,
+              "l2_leaf_reg": 31.62562678271973,
+              "random_strength": 2.3283669032459575,
+              "bootstrap_type": "Bayesian",
+              "bagging_temperature": 1.2546406282501201
+            },
+            "seed": 42
+          },
+          "weight": 0.75
+        },
+        {
+          "spec": {
+            "name": "b_hgb_temporal_lags",
+            "family": "hgb",
+            "blocks": [
+              "temporal_lags"
+            ],
+            "params": {},
+            "seed": 42
+          },
+          "weight": 0.25
+        }
+      ],
+      "gain_vs_best_individual": 0.0006937953390258045,
+      "paired_vs_best_individual": null,
+      "accepted": false
+    }
+  ],
+  "components": [
+    {
+      "spec": {
+        "name": "b_hgb_temporal_structure",
+        "family": "hgb",
+        "blocks": [
+          "temporal_structure"
+        ],
+        "params": {},
+        "seed": 42
+      },
+      "weight": 1.0
+    }
+  ],
+  "promote_b": false,
+  "november_evaluated_for_b": false,
+  "decision": "retain A; no November evaluation for B"
+}

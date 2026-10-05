@@ -1,0 +1,87 @@
+{
+  "context": {
+    "schema": "experiment-v2",
+    "code_hash_schema": "normalized-source-v1",
+    "code_sha256": "c3b823a3ddde401343c1ee06cf1ca49878ac6f8f4599f510b14c969abd467e52",
+    "protocol_sha256": "1e3e8a51371bfd5d07b0f100ba7502d3a7e0167c8c5a6777464d377d85e0182e",
+    "protocol": {
+      "development_months": [
+        202608,
+        202609,
+        202610
+      ],
+      "final_validation_month": 202611,
+      "test_month": 202612,
+      "seed": 42,
+      "threads": 4,
+      "selection_metric": "equal_month_mean_gini",
+      "iterations_policy": "fixed parameters and iterations; no early stopping",
+      "bootstrap_replicates": 500,
+      "ensemble_min_gain": 0.002,
+      "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+      "feature_blocks": [
+        "temporal_structure",
+        "temporal_lags",
+        "temporal_v2"
+      ],
+      "dynamic_predictors": [
+        "dias_ultima_interaccion"
+      ],
+      "history_window_months": 3,
+      "initial_hgb_variants": [
+        "original",
+        "observed_time",
+        "temporal_structure",
+        "temporal_lags",
+        "temporal_v2"
+      ],
+      "competitive_min_mean_gain": 0.0005,
+      "competitive_min_improved_months": 2,
+      "competitive_max_month_loss": 0.002,
+      "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+      "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget."
+    },
+    "data_hashes": {
+      "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+      "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+      "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+      "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+    },
+    "python": "3.12",
+    "versions": {
+      "numpy": "2.5.3",
+      "pandas": "2.3.3",
+      "scikit-learn": "1.7.2",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "optuna": "4.9.0",
+      "joblib": "1.6.0",
+      "threadpoolctl": "3.7.0"
+    }
+  },
+  "excluded": [
+    "artifacts/boost/runs/b_hgb_original/4acb530cde07a21218bd674c74393bf4224e2445b9d28b4657a0d15bcaeb6ebf/result.json",
+    "artifacts/boost/runs/b_hgb_original/97b4cdba8c6839fa0936e6e1b3791b22de85036063850c8060267b32867d8bd2/result.json",
+    "artifacts/boost/runs/b_hgb_original/96f8bccc9ee58ae3d3cb290da94d0b8be18d73614dca38048a68aef1e87fbf21/result.json",
+    "artifacts/boost/runs/b_hgb_observed_time/72ab3511daae0fb6844a739808286623989ccb2e438e535b1bc52ccf2c598ce5/result.json",
+    "artifacts/boost/runs/b_hgb_observed_time/20008003a2ac7571cf02e2ab48fe7c0670241d86f7ce795e8e333fb36e563db2/result.json",
+    "artifacts/boost/runs/b_hgb_observed_time/1467fff89e29c25935ce326dbb64edf5455fd797e5cc0802b2a9ffb361a9614d/result.json",
+    "artifacts/boost/runs/b_hgb_temporal_structure/449c1298b529eb863035206691bd62250b52b3be9aed30100a688b75ddf7865f/result.json",
+    "artifacts/boost/runs/b_hgb_temporal_structure/80a841f0d3c1141a75b4f9bcfe7240e3c72815bc1a1e36484de2a17d42cba00c/result.json",
+    "artifacts/boost/runs/b_hgb_temporal_structure/09426196848af004675dbc83b66e121a1c1e517b69cc038b67eaa0f276cedb19/result.json",
+    "artifacts/boost/runs/b_hgb_temporal_lags/47b6b94f2ab13be5a9ae95ce9f6ea36b0925ea51b3b9298bdf0b70d678c6eafa/result.json",
+    "artifacts/boost/runs/b_hgb_temporal_lags/aeab11565ae48a074b43ef4906053735b13579b876fb8d39d25ab6d43b34cf37/result.json",
+    "artifacts/boost/runs/b_hgb_temporal_lags/1344feebac53308a6c4e20a581032ca5c7f85c85363237ddce46e2f660ccb8e0/result.json",
+    "artifacts/boost/runs/b_hgb_temporal_v2/28daee868311ddb838f179616c8f09b56a43dd67c31fc2d1a20ee26a171c1512/result.json",
+    "artifacts/boost/runs/b_hgb_temporal_v2/982e28bb4ee0ec926e594a971a7c7d916a0a248105ac2d2ad7c58c47eb805401/result.json",
+    "artifacts/boost/runs/b_hgb_temporal_v2/83fe21d288481b84fa950310c494a7784095a6cf4a6d07a2bb026852b2f19f96/result.json",
+    "artifacts/boost/runs/a_reproduced_catboost_trial_006/42ccfdfe2c59bbebc11752ce5cb64ef9fde18fd1b124a5201d58d4a0c4ba8094/result.json",
+    "artifacts/boost/runs/a_reproduced_catboost_trial_006/9082cc67cfa030fc92016a7782cb94ad209a251680f4ff8d9edabe60eb8bb71e/result.json",
+    "artifacts/boost/runs/a_reproduced_catboost_trial_006/61e747f1a978c43a82bbc2246e16da7f0ceaaf694ace43f7e7d466a0c04b5ecd/result.json",
+    "artifacts/boost/runs/a_reproduced_features_observed_time/19a7ec3c6855fb12a2dd2da1054331c293e5c08c50035e9327feaa7bc629dbce/result.json",
+    "artifacts/boost/runs/a_reproduced_features_observed_time/7653b0d59edb3211b9a94844b7ad2b97d6916ae1d25de3a0cd802185399a66bf/result.json",
+    "artifacts/boost/runs/a_reproduced_features_observed_time/7e6ff7e0989f29b37e535cf9471fdebb58b0b1b9f6a997c7728f2badfa6b6f91/result.json",
+    "artifacts/boost/runs/b_catboost_temporal_lags/b50b528dfb1c1de5150c7e24bf6a126c5407ddcf975675fb3b07883872bedd97/result.json",
+    "artifacts/boost/runs/b_catboost_temporal_lags/33b1c75fb0b39fccfb3dc9dd59e333a38c7249bc04f0758258cd6ad635fd6321/result.json"
+  ]
+}

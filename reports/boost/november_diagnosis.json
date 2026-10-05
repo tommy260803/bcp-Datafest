@@ -1,0 +1,1921 @@
+{
+  "context": {
+    "schema": "experiment-v2",
+    "code_hash_schema": "normalized-source-v1",
+    "code_sha256": "c3b823a3ddde401343c1ee06cf1ca49878ac6f8f4599f510b14c969abd467e52",
+    "protocol_sha256": "1e3e8a51371bfd5d07b0f100ba7502d3a7e0167c8c5a6777464d377d85e0182e",
+    "protocol": {
+      "development_months": [
+        202608,
+        202609,
+        202610
+      ],
+      "final_validation_month": 202611,
+      "test_month": 202612,
+      "seed": 42,
+      "threads": 4,
+      "selection_metric": "equal_month_mean_gini",
+      "iterations_policy": "fixed parameters and iterations; no early stopping",
+      "bootstrap_replicates": 500,
+      "ensemble_min_gain": 0.002,
+      "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+      "feature_blocks": [
+        "temporal_structure",
+        "temporal_lags",
+        "temporal_v2"
+      ],
+      "dynamic_predictors": [
+        "dias_ultima_interaccion"
+      ],
+      "history_window_months": 3,
+      "initial_hgb_variants": [
+        "original",
+        "observed_time",
+        "temporal_structure",
+        "temporal_lags",
+        "temporal_v2"
+      ],
+      "competitive_min_mean_gain": 0.0005,
+      "competitive_min_improved_months": 2,
+      "competitive_max_month_loss": 0.002,
+      "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+      "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget."
+    },
+    "data_hashes": {
+      "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+      "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+      "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+      "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+    },
+    "python": "3.12",
+    "versions": {
+      "numpy": "2.5.3",
+      "pandas": "2.3.3",
+      "scikit-learn": "1.7.2",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "optuna": "4.9.0",
+      "joblib": "1.6.0",
+      "threadpoolctl": "3.7.0"
+    }
+  },
+  "candidate": "A",
+  "source": "saved predictions only",
+  "monthly": [
+    {
+      "month": 202608,
+      "rows": 10050,
+      "no_history_fraction": 0.17512437810945275,
+      "positive_rate": 0.14417910447761195,
+      "gini": 0.26421061508488153,
+      "gini_history": 0.25961109066372234,
+      "gini_no_history": 0.25821495721062804,
+      "score_quantiles": {
+        "0": 0.0353241675638893,
+        "0.1": 0.06211095281109753,
+        "0.5": 0.13761204239584302,
+        "0.9": 0.21802503793673342,
+        "1": 0.408186408845215
+      }
+    },
+    {
+      "month": 202609,
+      "rows": 9900,
+      "no_history_fraction": 0.13121212121212122,
+      "positive_rate": 0.1407070707070707,
+      "gini": 0.24906468225862888,
+      "gini_history": 0.24830228466973425,
+      "gini_no_history": 0.2318953738044114,
+      "score_quantiles": {
+        "0": 0.03497907213464,
+        "0.1": 0.062087825591269234,
+        "0.5": 0.13651376713289398,
+        "0.9": 0.2129949416603643,
+        "1": 0.411779092834806
+      }
+    },
+    {
+      "month": 202610,
+      "rows": 10400,
+      "no_history_fraction": 0.18201923076923077,
+      "positive_rate": 0.15653846153846154,
+      "gini": 0.2683604354260989,
+      "gini_history": 0.2587050991483124,
+      "gini_no_history": 0.29400338603863707,
+      "score_quantiles": {
+        "0": 0.0360051514236621,
+        "0.1": 0.0644128153150342,
+        "0.5": 0.13706802952042052,
+        "0.9": 0.21701748310157035,
+        "1": 0.40825012996774
+      }
+    },
+    {
+      "month": 202611,
+      "rows": 9500,
+      "no_history_fraction": 0.07663157894736843,
+      "positive_rate": 0.15147368421052632,
+      "gini": 0.233079181939587,
+      "gini_history": 0.23310994358903248,
+      "gini_no_history": 0.19146494531109903,
+      "score_quantiles": {
+        "0": 0.0302112776257362,
+        "0.1": 0.06337480535238592,
+        "0.5": 0.137339958812868,
+        "0.9": 0.2113768535990306,
+        "1": 0.420933505012404
+      }
+    },
+    {
+      "month": 202612,
+      "rows": 9900,
+      "no_history_fraction": 0.18575757575757576,
+      "positive_rate": null,
+      "gini": null
+    }
+  ],
+  "segments": [
+    {
+      "month": 202608,
+      "variable": "banda_riesgo",
+      "value": "high",
+      "rows": 2261,
+      "positives": 169,
+      "positive_rate": 0.07474568774878372,
+      "mean_score": 0.0843000323091996,
+      "sufficient_classes": true,
+      "gini": 0.29786620204328695
+    },
+    {
+      "month": 202608,
+      "variable": "banda_riesgo",
+      "value": "low",
+      "rows": 4523,
+      "positives": 811,
+      "positive_rate": 0.17930577050630112,
+      "mean_score": 0.1772422759893489,
+      "sufficient_classes": true,
+      "gini": 0.235623325821676
+    },
+    {
+      "month": 202608,
+      "variable": "banda_riesgo",
+      "value": "medium",
+      "rows": 3266,
+      "positives": 469,
+      "positive_rate": 0.1436007348438457,
+      "mean_score": 0.13665689693778807,
+      "sufficient_classes": true,
+      "gini": 0.08870530640123864
+    },
+    {
+      "month": 202608,
+      "variable": "canal_adquisicion",
+      "value": "branch",
+      "rows": 1552,
+      "positives": 185,
+      "positive_rate": 0.11920103092783506,
+      "mean_score": 0.13869896837028517,
+      "sufficient_classes": true,
+      "gini": 0.22732359279542913
+    },
+    {
+      "month": 202608,
+      "variable": "canal_adquisicion",
+      "value": "call_center",
+      "rows": 1455,
+      "positives": 235,
+      "positive_rate": 0.16151202749140894,
+      "mean_score": 0.1426938715809752,
+      "sufficient_classes": true,
+      "gini": 0.3547889780258111
+    },
+    {
+      "month": 202608,
+      "variable": "canal_adquisicion",
+      "value": "mobile",
+      "rows": 2717,
+      "positives": 416,
+      "positive_rate": 0.15311004784688995,
+      "mean_score": 0.14481799794651612,
+      "sufficient_classes": true,
+      "gini": 0.26262619931133613
+    },
+    {
+      "month": 202608,
+      "variable": "canal_adquisicion",
+      "value": "partner",
+      "rows": 1013,
+      "positives": 139,
+      "positive_rate": 0.1372161895360316,
+      "mean_score": 0.13970194639814495,
+      "sufficient_classes": true,
+      "gini": 0.31547668044054467
+    },
+    {
+      "month": 202608,
+      "variable": "canal_adquisicion",
+      "value": "web",
+      "rows": 3313,
+      "positives": 474,
+      "positive_rate": 0.14307274373679443,
+      "mean_score": 0.1451016174363823,
+      "sufficient_classes": true,
+      "gini": 0.21659882022997934
+    },
+    {
+      "month": 202608,
+      "variable": "region",
+      "value": "central",
+      "rows": 1501,
+      "positives": 201,
+      "positive_rate": 0.13391072618254496,
+      "mean_score": 0.14225667526740862,
+      "sufficient_classes": true,
+      "gini": 0.23726750861079227
+    },
+    {
+      "month": 202608,
+      "variable": "region",
+      "value": "east",
+      "rows": 1780,
+      "positives": 288,
+      "positive_rate": 0.16179775280898875,
+      "mean_score": 0.14324368293548054,
+      "sufficient_classes": true,
+      "gini": 0.32805518319928506
+    },
+    {
+      "month": 202608,
+      "variable": "region",
+      "value": "north",
+      "rows": 2164,
+      "positives": 300,
+      "positive_rate": 0.13863216266173753,
+      "mean_score": 0.1410450047224077,
+      "sufficient_classes": true,
+      "gini": 0.25442060085836915
+    },
+    {
+      "month": 202608,
+      "variable": "region",
+      "value": "south",
+      "rows": 2032,
+      "positives": 289,
+      "positive_rate": 0.1422244094488189,
+      "mean_score": 0.1444391760695082,
+      "sufficient_classes": true,
+      "gini": 0.23784510260518088
+    },
+    {
+      "month": 202608,
+      "variable": "region",
+      "value": "west",
+      "rows": 2573,
+      "positives": 371,
+      "positive_rate": 0.14418966187329965,
+      "mean_score": 0.14433260456885913,
+      "sufficient_classes": true,
+      "gini": 0.2585030516242277
+    },
+    {
+      "month": 202609,
+      "variable": "banda_riesgo",
+      "value": "high",
+      "rows": 2323,
+      "positives": 206,
+      "positive_rate": 0.08867843306069738,
+      "mean_score": 0.08268968588155522,
+      "sufficient_classes": true,
+      "gini": 0.3227731127121636
+    },
+    {
+      "month": 202609,
+      "variable": "banda_riesgo",
+      "value": "low",
+      "rows": 4376,
+      "positives": 772,
+      "positive_rate": 0.17641681901279707,
+      "mean_score": 0.17612266492571055,
+      "sufficient_classes": true,
+      "gini": 0.23268044142087385
+    },
+    {
+      "month": 202609,
+      "variable": "banda_riesgo",
+      "value": "medium",
+      "rows": 3201,
+      "positives": 415,
+      "positive_rate": 0.1296469853170884,
+      "mean_score": 0.13649834812587666,
+      "sufficient_classes": true,
+      "gini": 0.09236717148565554
+    },
+    {
+      "month": 202609,
+      "variable": "canal_adquisicion",
+      "value": "branch",
+      "rows": 1541,
+      "positives": 198,
+      "positive_rate": 0.12848799480856588,
+      "mean_score": 0.13678699732282237,
+      "sufficient_classes": true,
+      "gini": 0.23168392788645953
+    },
+    {
+      "month": 202609,
+      "variable": "canal_adquisicion",
+      "value": "call_center",
+      "rows": 1392,
+      "positives": 197,
+      "positive_rate": 0.14152298850574713,
+      "mean_score": 0.14031140251749577,
+      "sufficient_classes": true,
+      "gini": 0.2774716989146826
+    },
+    {
+      "month": 202609,
+      "variable": "canal_adquisicion",
+      "value": "mobile",
+      "rows": 2646,
+      "positives": 370,
+      "positive_rate": 0.1398337112622827,
+      "mean_score": 0.14142763386914323,
+      "sufficient_classes": true,
+      "gini": 0.22843775233933417
+    },
+    {
+      "month": 202609,
+      "variable": "canal_adquisicion",
+      "value": "partner",
+      "rows": 1022,
+      "positives": 137,
+      "positive_rate": 0.13405088062622308,
+      "mean_score": 0.14038206531907066,
+      "sufficient_classes": true,
+      "gini": 0.23012082972493708
+    },
+    {
+      "month": 202609,
+      "variable": "canal_adquisicion",
+      "value": "web",
+      "rows": 3299,
+      "positives": 491,
+      "positive_rate": 0.1488329796908154,
+      "mean_score": 0.14426853871355763,
+      "sufficient_classes": true,
+      "gini": 0.26507041272825393
+    },
+    {
+      "month": 202609,
+      "variable": "region",
+      "value": "central",
+      "rows": 1503,
+      "positives": 217,
+      "positive_rate": 0.14437791084497673,
+      "mean_score": 0.14074471819071843,
+      "sufficient_classes": true,
+      "gini": 0.304405472618988
+    },
+    {
+      "month": 202609,
+      "variable": "region",
+      "value": "east",
+      "rows": 1721,
+      "positives": 267,
+      "positive_rate": 0.15514235909355026,
+      "mean_score": 0.14080292378065648,
+      "sufficient_classes": true,
+      "gini": 0.2312669685589026
+    },
+    {
+      "month": 202609,
+      "variable": "region",
+      "value": "north",
+      "rows": 2131,
+      "positives": 276,
+      "positive_rate": 0.1295166588456124,
+      "mean_score": 0.13922500037469754,
+      "sufficient_classes": true,
+      "gini": 0.20130083206375238
+    },
+    {
+      "month": 202609,
+      "variable": "region",
+      "value": "south",
+      "rows": 2018,
+      "positives": 280,
+      "positive_rate": 0.13875123885034688,
+      "mean_score": 0.1429645764090145,
+      "sufficient_classes": true,
+      "gini": 0.20924708203189213
+    },
+    {
+      "month": 202609,
+      "variable": "region",
+      "value": "west",
+      "rows": 2527,
+      "positives": 353,
+      "positive_rate": 0.13969133359715077,
+      "mean_score": 0.14273051053013924,
+      "sufficient_classes": true,
+      "gini": 0.2988212482832133
+    },
+    {
+      "month": 202610,
+      "variable": "banda_riesgo",
+      "value": "high",
+      "rows": 2438,
+      "positives": 222,
+      "positive_rate": 0.09105824446267433,
+      "mean_score": 0.08450870808838422,
+      "sufficient_classes": true,
+      "gini": 0.28004358148762476
+    },
+    {
+      "month": 202610,
+      "variable": "banda_riesgo",
+      "value": "low",
+      "rows": 4621,
+      "positives": 891,
+      "positive_rate": 0.19281540792036356,
+      "mean_score": 0.17684659337710187,
+      "sufficient_classes": true,
+      "gini": 0.2760786296085671
+    },
+    {
+      "month": 202610,
+      "variable": "banda_riesgo",
+      "value": "medium",
+      "rows": 3341,
+      "positives": 515,
+      "positive_rate": 0.15414546542951213,
+      "mean_score": 0.1365302615114485,
+      "sufficient_classes": true,
+      "gini": 0.08804925140340392
+    },
+    {
+      "month": 202610,
+      "variable": "canal_adquisicion",
+      "value": "branch",
+      "rows": 1623,
+      "positives": 249,
+      "positive_rate": 0.1534195933456562,
+      "mean_score": 0.13755251928832848,
+      "sufficient_classes": true,
+      "gini": 0.3301532184049152
+    },
+    {
+      "month": 202610,
+      "variable": "canal_adquisicion",
+      "value": "call_center",
+      "rows": 1471,
+      "positives": 240,
+      "positive_rate": 0.16315431679129844,
+      "mean_score": 0.13997356397464739,
+      "sufficient_classes": true,
+      "gini": 0.23499864608719223
+    },
+    {
+      "month": 202610,
+      "variable": "canal_adquisicion",
+      "value": "mobile",
+      "rows": 2792,
+      "positives": 443,
+      "positive_rate": 0.1586676217765043,
+      "mean_score": 0.1428571465943066,
+      "sufficient_classes": true,
+      "gini": 0.23460826229306542
+    },
+    {
+      "month": 202610,
+      "variable": "canal_adquisicion",
+      "value": "partner",
+      "rows": 1062,
+      "positives": 147,
+      "positive_rate": 0.1384180790960452,
+      "mean_score": 0.1399323638138011,
+      "sufficient_classes": true,
+      "gini": 0.24037024645923943
+    },
+    {
+      "month": 202610,
+      "variable": "canal_adquisicion",
+      "value": "web",
+      "rows": 3452,
+      "positives": 549,
+      "positive_rate": 0.15903823870220163,
+      "mean_score": 0.14564709355492284,
+      "sufficient_classes": true,
+      "gini": 0.2879346596417123
+    },
+    {
+      "month": 202610,
+      "variable": "region",
+      "value": "central",
+      "rows": 1590,
+      "positives": 223,
+      "positive_rate": 0.14025157232704402,
+      "mean_score": 0.14190269159293417,
+      "sufficient_classes": true,
+      "gini": 0.29580994682473793
+    },
+    {
+      "month": 202610,
+      "variable": "region",
+      "value": "east",
+      "rows": 1802,
+      "positives": 292,
+      "positive_rate": 0.16204217536071033,
+      "mean_score": 0.14128653654317477,
+      "sufficient_classes": true,
+      "gini": 0.28863739453869175
+    },
+    {
+      "month": 202610,
+      "variable": "region",
+      "value": "north",
+      "rows": 2281,
+      "positives": 371,
+      "positive_rate": 0.16264796142042964,
+      "mean_score": 0.14196901749212926,
+      "sufficient_classes": true,
+      "gini": 0.29738502137988476
+    },
+    {
+      "month": 202610,
+      "variable": "region",
+      "value": "south",
+      "rows": 2105,
+      "positives": 328,
+      "positive_rate": 0.15581947743467933,
+      "mean_score": 0.14382464391747285,
+      "sufficient_classes": true,
+      "gini": 0.19942833221241618
+    },
+    {
+      "month": 202610,
+      "variable": "region",
+      "value": "west",
+      "rows": 2622,
+      "positives": 414,
+      "positive_rate": 0.15789473684210525,
+      "mean_score": 0.14209844362907112,
+      "sufficient_classes": true,
+      "gini": 0.27196010992088504
+    },
+    {
+      "month": 202611,
+      "variable": "banda_riesgo",
+      "value": "high",
+      "rows": 2341,
+      "positives": 211,
+      "positive_rate": 0.09013242204186245,
+      "mean_score": 0.08360516107791723,
+      "sufficient_classes": true,
+      "gini": 0.31715283803929406
+    },
+    {
+      "month": 202611,
+      "variable": "banda_riesgo",
+      "value": "low",
+      "rows": 4106,
+      "positives": 742,
+      "positive_rate": 0.18071115440818314,
+      "mean_score": 0.17478681481026304,
+      "sufficient_classes": true,
+      "gini": 0.20886042479271572
+    },
+    {
+      "month": 202611,
+      "variable": "banda_riesgo",
+      "value": "medium",
+      "rows": 3053,
+      "positives": 486,
+      "positive_rate": 0.1591876842450049,
+      "mean_score": 0.13776405980576137,
+      "sufficient_classes": true,
+      "gini": 0.07267294130472068
+    },
+    {
+      "month": 202611,
+      "variable": "canal_adquisicion",
+      "value": "branch",
+      "rows": 1463,
+      "positives": 187,
+      "positive_rate": 0.12781954887218044,
+      "mean_score": 0.1341850920574209,
+      "sufficient_classes": true,
+      "gini": 0.3221380316161804
+    },
+    {
+      "month": 202611,
+      "variable": "canal_adquisicion",
+      "value": "call_center",
+      "rows": 1347,
+      "positives": 224,
+      "positive_rate": 0.16629547141796586,
+      "mean_score": 0.13890165515679592,
+      "sufficient_classes": true,
+      "gini": 0.18609273629309264
+    },
+    {
+      "month": 202611,
+      "variable": "canal_adquisicion",
+      "value": "mobile",
+      "rows": 2539,
+      "positives": 388,
+      "positive_rate": 0.15281606931862937,
+      "mean_score": 0.14221983354405837,
+      "sufficient_classes": true,
+      "gini": 0.208061941940215
+    },
+    {
+      "month": 202611,
+      "variable": "canal_adquisicion",
+      "value": "partner",
+      "rows": 992,
+      "positives": 159,
+      "positive_rate": 0.16028225806451613,
+      "mean_score": 0.13851584499688416,
+      "sufficient_classes": true,
+      "gini": 0.21150346931225306
+    },
+    {
+      "month": 202611,
+      "variable": "canal_adquisicion",
+      "value": "web",
+      "rows": 3159,
+      "positives": 481,
+      "positive_rate": 0.1522633744855967,
+      "mean_score": 0.14310567378912611,
+      "sufficient_classes": true,
+      "gini": 0.24166109005541414
+    },
+    {
+      "month": 202611,
+      "variable": "region",
+      "value": "central",
+      "rows": 1476,
+      "positives": 205,
+      "positive_rate": 0.1388888888888889,
+      "mean_score": 0.14008563372267138,
+      "sufficient_classes": true,
+      "gini": 0.21327934601139886
+    },
+    {
+      "month": 202611,
+      "variable": "region",
+      "value": "east",
+      "rows": 1646,
+      "positives": 261,
+      "positive_rate": 0.15856622114216282,
+      "mean_score": 0.1392587914617714,
+      "sufficient_classes": true,
+      "gini": 0.2883411483187408
+    },
+    {
+      "month": 202611,
+      "variable": "region",
+      "value": "north",
+      "rows": 2065,
+      "positives": 332,
+      "positive_rate": 0.16077481840193705,
+      "mean_score": 0.13984237837331873,
+      "sufficient_classes": true,
+      "gini": 0.22504327755337572
+    },
+    {
+      "month": 202611,
+      "variable": "region",
+      "value": "south",
+      "rows": 1915,
+      "positives": 308,
+      "positive_rate": 0.1608355091383812,
+      "mean_score": 0.1420509916706586,
+      "sufficient_classes": true,
+      "gini": 0.22120754168047263
+    },
+    {
+      "month": 202611,
+      "variable": "region",
+      "value": "west",
+      "rows": 2398,
+      "positives": 333,
+      "positive_rate": 0.13886572143452877,
+      "mean_score": 0.14061696904519622,
+      "sufficient_classes": true,
+      "gini": 0.22538519148688652
+    }
+  ],
+  "numeric": [
+    {
+      "month": 202608,
+      "predictor": "edad",
+      "mean": 46.254228855721394,
+      "std": 14.339366065953316,
+      "p10": 27.0,
+      "median": 46.0,
+      "p90": 66.0
+    },
+    {
+      "month": 202608,
+      "predictor": "ingresos",
+      "mean": 65197.787012082,
+      "std": 21729.437835096593,
+      "p10": 36312.49331599007,
+      "median": 64924.71211245676,
+      "p90": 93309.31434400417
+    },
+    {
+      "month": 202608,
+      "predictor": "ratio_deuda_ingresos",
+      "mean": 0.33154994193667703,
+      "std": 0.16847334979685902,
+      "p10": 0.12526521463190715,
+      "median": 0.312323947367971,
+      "p90": 0.56214003654468
+    },
+    {
+      "month": 202608,
+      "predictor": "antiguedad_cuenta_meses",
+      "mean": 89.1142288557214,
+      "std": 51.41301320372692,
+      "p10": 18.0,
+      "median": 89.0,
+      "p90": 161.0
+    },
+    {
+      "month": 202608,
+      "predictor": "numero_productos",
+      "mean": 1.8918407960199004,
+      "std": 1.0599236987238716,
+      "p10": 1.0,
+      "median": 2.0,
+      "p90": 3.0
+    },
+    {
+      "month": 202608,
+      "predictor": "saldo_promedio",
+      "mean": 26249.989244971104,
+      "std": 16040.176998175966,
+      "p10": 3837.2789401079635,
+      "median": 25597.89218917981,
+      "p90": 47824.881392298805
+    },
+    {
+      "month": 202608,
+      "predictor": "dias_ultima_transaccion",
+      "mean": 192.30557213930348,
+      "std": 104.78968345110545,
+      "p10": 42.0,
+      "median": 199.0,
+      "p90": 331.0
+    },
+    {
+      "month": 202608,
+      "predictor": "antiguedad_direccion_meses",
+      "mean": 119.96437810945274,
+      "std": 69.12201994944196,
+      "p10": 24.0,
+      "median": 120.0,
+      "p90": 216.0
+    },
+    {
+      "month": 202608,
+      "predictor": "visitas_web_ultimos_90_dias",
+      "mean": 8.00587064676617,
+      "std": 2.80231792148784,
+      "p10": 4.900000000000091,
+      "median": 8.0,
+      "p90": 12.0
+    },
+    {
+      "month": 202608,
+      "predictor": "distancia_sucursal_km",
+      "mean": 10.113627788593691,
+      "std": 9.1820921582016,
+      "p10": 2.6674538661627683,
+      "median": 7.480802631246879,
+      "p90": 20.1629385300451
+    },
+    {
+      "month": 202608,
+      "predictor": "dia_preferido_pago",
+      "mean": 14.545174129353233,
+      "std": 8.068432995360642,
+      "p10": 3.0,
+      "median": 15.0,
+      "p90": 26.0
+    },
+    {
+      "month": 202608,
+      "predictor": "dias_ultima_interaccion",
+      "mean": 192.8444776119403,
+      "std": 104.62841096177868,
+      "p10": 42.90000000000009,
+      "median": 200.0,
+      "p90": 331.10000000000036
+    },
+    {
+      "month": 202609,
+      "predictor": "edad",
+      "mean": 46.27383838383838,
+      "std": 14.345767774850737,
+      "p10": 27.0,
+      "median": 46.0,
+      "p90": 66.0
+    },
+    {
+      "month": 202609,
+      "predictor": "ingresos",
+      "mean": 65222.65212641657,
+      "std": 21678.791295660936,
+      "p10": 36457.29545103439,
+      "median": 64865.763932801405,
+      "p90": 93212.24353691279
+    },
+    {
+      "month": 202609,
+      "predictor": "ratio_deuda_ingresos",
+      "mean": 0.3314172661142562,
+      "std": 0.1676316475307716,
+      "p10": 0.1257880432809767,
+      "median": 0.31271571530820197,
+      "p90": 0.5615232626350525
+    },
+    {
+      "month": 202609,
+      "predictor": "antiguedad_cuenta_meses",
+      "mean": 88.68121212121213,
+      "std": 51.540111170290054,
+      "p10": 18.0,
+      "median": 88.0,
+      "p90": 161.0
+    },
+    {
+      "month": 202609,
+      "predictor": "numero_productos",
+      "mean": 1.8863636363636365,
+      "std": 1.0533385410779974,
+      "p10": 1.0,
+      "median": 2.0,
+      "p90": 3.0
+    },
+    {
+      "month": 202609,
+      "predictor": "saldo_promedio",
+      "mean": 26164.784023210166,
+      "std": 15982.129181344259,
+      "p10": 3828.3065737220254,
+      "median": 25415.701368200003,
+      "p90": 47470.19422575755
+    },
+    {
+      "month": 202609,
+      "predictor": "dias_ultima_transaccion",
+      "mean": 193.4328282828283,
+      "std": 104.58248005250945,
+      "p10": 44.0,
+      "median": 200.0,
+      "p90": 332.0
+    },
+    {
+      "month": 202609,
+      "predictor": "antiguedad_direccion_meses",
+      "mean": 120.65040404040404,
+      "std": 68.92760223430865,
+      "p10": 25.0,
+      "median": 121.0,
+      "p90": 216.0
+    },
+    {
+      "month": 202609,
+      "predictor": "visitas_web_ultimos_90_dias",
+      "mean": 8.004242424242424,
+      "std": 2.7912129923207276,
+      "p10": 5.0,
+      "median": 8.0,
+      "p90": 12.0
+    },
+    {
+      "month": 202609,
+      "predictor": "distancia_sucursal_km",
+      "mean": 10.09845285924954,
+      "std": 9.118177157308192,
+      "p10": 2.6868872490162454,
+      "median": 7.5103463656379885,
+      "p90": 20.14191485030305
+    },
+    {
+      "month": 202609,
+      "predictor": "dia_preferido_pago",
+      "mean": 14.511717171717171,
+      "std": 8.087282977301655,
+      "p10": 3.0,
+      "median": 14.0,
+      "p90": 26.0
+    },
+    {
+      "month": 202609,
+      "predictor": "dias_ultima_interaccion",
+      "mean": 194.08848484848485,
+      "std": 104.62184825920593,
+      "p10": 45.0,
+      "median": 201.0,
+      "p90": 333.0
+    },
+    {
+      "month": 202610,
+      "predictor": "edad",
+      "mean": 46.33567307692308,
+      "std": 14.418574627431198,
+      "p10": 27.0,
+      "median": 46.0,
+      "p90": 66.10000000000036
+    },
+    {
+      "month": 202610,
+      "predictor": "ingresos",
+      "mean": 65186.44686793631,
+      "std": 21637.232572716068,
+      "p10": 36748.675642382805,
+      "median": 64929.37651849551,
+      "p90": 92988.78525919946
+    },
+    {
+      "month": 202610,
+      "predictor": "ratio_deuda_ingresos",
+      "mean": 0.33077982201204714,
+      "std": 0.16734630103969977,
+      "p10": 0.12603659329246344,
+      "median": 0.31249955541843305,
+      "p90": 0.5613815866199393
+    },
+    {
+      "month": 202610,
+      "predictor": "antiguedad_cuenta_meses",
+      "mean": 88.21682692307692,
+      "std": 51.41839492998145,
+      "p10": 18.0,
+      "median": 87.0,
+      "p90": 160.0
+    },
+    {
+      "month": 202610,
+      "predictor": "numero_productos",
+      "mean": 1.8872115384615384,
+      "std": 1.0568374465649428,
+      "p10": 1.0,
+      "median": 2.0,
+      "p90": 3.0
+    },
+    {
+      "month": 202610,
+      "predictor": "saldo_promedio",
+      "mean": 26083.109751283813,
+      "std": 15865.659818886219,
+      "p10": 4064.5575031059757,
+      "median": 25410.427266794642,
+      "p90": 47093.86469054812
+    },
+    {
+      "month": 202610,
+      "predictor": "dias_ultima_transaccion",
+      "mean": 192.8391346153846,
+      "std": 104.58937694713813,
+      "p10": 43.0,
+      "median": 199.0,
+      "p90": 332.0
+    },
+    {
+      "month": 202610,
+      "predictor": "antiguedad_direccion_meses",
+      "mean": 120.35028846153845,
+      "std": 68.83168902122222,
+      "p10": 25.0,
+      "median": 121.0,
+      "p90": 216.0
+    },
+    {
+      "month": 202610,
+      "predictor": "visitas_web_ultimos_90_dias",
+      "mean": 8.02548076923077,
+      "std": 2.79876484915212,
+      "p10": 5.0,
+      "median": 8.0,
+      "p90": 12.0
+    },
+    {
+      "month": 202610,
+      "predictor": "distancia_sucursal_km",
+      "mean": 10.1516898504371,
+      "std": 9.217343774763803,
+      "p10": 2.697064675827321,
+      "median": 7.508030689717609,
+      "p90": 20.3960184978079
+    },
+    {
+      "month": 202610,
+      "predictor": "dia_preferido_pago",
+      "mean": 14.554326923076923,
+      "std": 8.0723678039681,
+      "p10": 3.0,
+      "median": 15.0,
+      "p90": 26.0
+    },
+    {
+      "month": 202610,
+      "predictor": "dias_ultima_interaccion",
+      "mean": 193.67634615384614,
+      "std": 104.76855583372871,
+      "p10": 43.0,
+      "median": 201.0,
+      "p90": 332.0
+    },
+    {
+      "month": 202611,
+      "predictor": "edad",
+      "mean": 46.409789473684214,
+      "std": 14.406954643398862,
+      "p10": 27.0,
+      "median": 46.0,
+      "p90": 67.0
+    },
+    {
+      "month": 202611,
+      "predictor": "ingresos",
+      "mean": 65045.06881748666,
+      "std": 21500.291795641355,
+      "p10": 36703.909682778954,
+      "median": 64885.748787740056,
+      "p90": 92834.83970140171
+    },
+    {
+      "month": 202611,
+      "predictor": "ratio_deuda_ingresos",
+      "mean": 0.3310408002451259,
+      "std": 0.16765164061816365,
+      "p10": 0.12586600374078027,
+      "median": 0.31246215698977586,
+      "p90": 0.56514881968251
+    },
+    {
+      "month": 202611,
+      "predictor": "antiguedad_cuenta_meses",
+      "mean": 88.3741052631579,
+      "std": 51.15828851955878,
+      "p10": 19.0,
+      "median": 88.0,
+      "p90": 160.0
+    },
+    {
+      "month": 202611,
+      "predictor": "numero_productos",
+      "mean": 1.8606315789473684,
+      "std": 1.043807087629475,
+      "p10": 1.0,
+      "median": 2.0,
+      "p90": 3.0
+    },
+    {
+      "month": 202611,
+      "predictor": "saldo_promedio",
+      "mean": 26087.454214008827,
+      "std": 15881.387372772793,
+      "p10": 3914.894782800772,
+      "median": 25474.710659912053,
+      "p90": 47202.55149111931
+    },
+    {
+      "month": 202611,
+      "predictor": "dias_ultima_transaccion",
+      "mean": 194.1822105263158,
+      "std": 104.35438478730632,
+      "p10": 43.0,
+      "median": 201.0,
+      "p90": 332.0
+    },
+    {
+      "month": 202611,
+      "predictor": "antiguedad_direccion_meses",
+      "mean": 120.18073684210526,
+      "std": 68.62457593178449,
+      "p10": 24.0,
+      "median": 120.0,
+      "p90": 215.0
+    },
+    {
+      "month": 202611,
+      "predictor": "visitas_web_ultimos_90_dias",
+      "mean": 8.015263157894736,
+      "std": 2.797303433639828,
+      "p10": 5.0,
+      "median": 8.0,
+      "p90": 12.0
+    },
+    {
+      "month": 202611,
+      "predictor": "distancia_sucursal_km",
+      "mean": 10.218557049771618,
+      "std": 9.328123197636048,
+      "p10": 2.710092500138151,
+      "median": 7.505511946599649,
+      "p90": 20.64097114226524
+    },
+    {
+      "month": 202611,
+      "predictor": "dia_preferido_pago",
+      "mean": 14.573473684210526,
+      "std": 8.053208380146813,
+      "p10": 3.0,
+      "median": 15.0,
+      "p90": 26.0
+    },
+    {
+      "month": 202611,
+      "predictor": "dias_ultima_interaccion",
+      "mean": 194.36484210526316,
+      "std": 104.11848519644528,
+      "p10": 44.0,
+      "median": 201.0,
+      "p90": 332.0
+    },
+    {
+      "month": 202612,
+      "predictor": "edad",
+      "mean": 46.404141414141414,
+      "std": 14.417168094057526,
+      "p10": 27.0,
+      "median": 46.0,
+      "p90": 67.0
+    },
+    {
+      "month": 202612,
+      "predictor": "ingresos",
+      "mean": 65341.78720699846,
+      "std": 21667.436171027635,
+      "p10": 36876.40195732828,
+      "median": 65194.44817682867,
+      "p90": 93375.90237776023
+    },
+    {
+      "month": 202612,
+      "predictor": "ratio_deuda_ingresos",
+      "mean": 0.3324383209272668,
+      "std": 0.16766124817572828,
+      "p10": 0.1272598000650616,
+      "median": 0.31444566391858675,
+      "p90": 0.5653881352233571
+    },
+    {
+      "month": 202612,
+      "predictor": "antiguedad_cuenta_meses",
+      "mean": 89.01676767676767,
+      "std": 51.189733824584266,
+      "p10": 19.0,
+      "median": 89.0,
+      "p90": 160.0
+    },
+    {
+      "month": 202612,
+      "predictor": "numero_productos",
+      "mean": 1.8716161616161615,
+      "std": 1.0513545609887387,
+      "p10": 1.0,
+      "median": 2.0,
+      "p90": 3.0
+    },
+    {
+      "month": 202612,
+      "predictor": "saldo_promedio",
+      "mean": 26279.170299826445,
+      "std": 15875.96363450479,
+      "p10": 4248.566560498241,
+      "median": 25706.944294712066,
+      "p90": 47535.082579830894
+    },
+    {
+      "month": 202612,
+      "predictor": "dias_ultima_transaccion",
+      "mean": 194.30727272727273,
+      "std": 104.38467583502434,
+      "p10": 45.0,
+      "median": 201.0,
+      "p90": 333.0
+    },
+    {
+      "month": 202612,
+      "predictor": "antiguedad_direccion_meses",
+      "mean": 120.30666666666667,
+      "std": 68.81623944678415,
+      "p10": 24.0,
+      "median": 121.0,
+      "p90": 215.0
+    },
+    {
+      "month": 202612,
+      "predictor": "visitas_web_ultimos_90_dias",
+      "mean": 8.00929292929293,
+      "std": 2.7974189150305735,
+      "p10": 5.0,
+      "median": 8.0,
+      "p90": 12.0
+    },
+    {
+      "month": 202612,
+      "predictor": "distancia_sucursal_km",
+      "mean": 10.161339722534017,
+      "std": 9.167739896638933,
+      "p10": 2.6909750736049545,
+      "median": 7.522815979446678,
+      "p90": 20.592760841939096
+    },
+    {
+      "month": 202612,
+      "predictor": "dia_preferido_pago",
+      "mean": 14.581818181818182,
+      "std": 8.065175008093476,
+      "p10": 3.0,
+      "median": 15.0,
+      "p90": 26.0
+    },
+    {
+      "month": 202612,
+      "predictor": "dias_ultima_interaccion",
+      "mean": 194.30727272727273,
+      "std": 104.38467583502434,
+      "p10": 45.0,
+      "median": 201.0,
+      "p90": 333.0
+    }
+  ],
+  "categorical": [
+    {
+      "month": 202608,
+      "predictor": "ocupacion",
+      "value": "clerical",
+      "fraction": 0.3008955223880597
+    },
+    {
+      "month": 202608,
+      "predictor": "ocupacion",
+      "value": "manual",
+      "fraction": 0.2790049751243781
+    },
+    {
+      "month": 202608,
+      "predictor": "ocupacion",
+      "value": "professional",
+      "fraction": 0.2247761194029851
+    },
+    {
+      "month": 202608,
+      "predictor": "ocupacion",
+      "value": "manager",
+      "fraction": 0.10706467661691542
+    },
+    {
+      "month": 202608,
+      "predictor": "ocupacion",
+      "value": "self_employed",
+      "fraction": 0.0882587064676617
+    },
+    {
+      "month": 202608,
+      "predictor": "region",
+      "value": "west",
+      "fraction": 0.25601990049751244
+    },
+    {
+      "month": 202608,
+      "predictor": "region",
+      "value": "north",
+      "fraction": 0.2153233830845771
+    },
+    {
+      "month": 202608,
+      "predictor": "region",
+      "value": "south",
+      "fraction": 0.20218905472636817
+    },
+    {
+      "month": 202608,
+      "predictor": "region",
+      "value": "east",
+      "fraction": 0.1771144278606965
+    },
+    {
+      "month": 202608,
+      "predictor": "region",
+      "value": "central",
+      "fraction": 0.14935323383084578
+    },
+    {
+      "month": 202608,
+      "predictor": "canal_adquisicion",
+      "value": "web",
+      "fraction": 0.32965174129353236
+    },
+    {
+      "month": 202608,
+      "predictor": "canal_adquisicion",
+      "value": "mobile",
+      "fraction": 0.27034825870646767
+    },
+    {
+      "month": 202608,
+      "predictor": "canal_adquisicion",
+      "value": "branch",
+      "fraction": 0.1544278606965174
+    },
+    {
+      "month": 202608,
+      "predictor": "canal_adquisicion",
+      "value": "call_center",
+      "fraction": 0.14477611940298507
+    },
+    {
+      "month": 202608,
+      "predictor": "canal_adquisicion",
+      "value": "partner",
+      "fraction": 0.10079601990049751
+    },
+    {
+      "month": 202608,
+      "predictor": "banda_riesgo",
+      "value": "low",
+      "fraction": 0.4500497512437811
+    },
+    {
+      "month": 202608,
+      "predictor": "banda_riesgo",
+      "value": "medium",
+      "fraction": 0.32497512437810944
+    },
+    {
+      "month": 202608,
+      "predictor": "banda_riesgo",
+      "value": "high",
+      "fraction": 0.22497512437810946
+    },
+    {
+      "month": 202608,
+      "predictor": "dispositivo_principal",
+      "value": "android",
+      "fraction": 0.4217910447761194
+    },
+    {
+      "month": 202608,
+      "predictor": "dispositivo_principal",
+      "value": "ios",
+      "fraction": 0.3155223880597015
+    },
+    {
+      "month": 202608,
+      "predictor": "dispositivo_principal",
+      "value": "web",
+      "fraction": 0.20218905472636817
+    },
+    {
+      "month": 202608,
+      "predictor": "dispositivo_principal",
+      "value": "otro",
+      "fraction": 0.060497512437810944
+    },
+    {
+      "month": 202609,
+      "predictor": "ocupacion",
+      "value": "clerical",
+      "fraction": 0.29797979797979796
+    },
+    {
+      "month": 202609,
+      "predictor": "ocupacion",
+      "value": "manual",
+      "fraction": 0.2792929292929293
+    },
+    {
+      "month": 202609,
+      "predictor": "ocupacion",
+      "value": "professional",
+      "fraction": 0.22434343434343434
+    },
+    {
+      "month": 202609,
+      "predictor": "ocupacion",
+      "value": "manager",
+      "fraction": 0.10848484848484849
+    },
+    {
+      "month": 202609,
+      "predictor": "ocupacion",
+      "value": "self_employed",
+      "fraction": 0.0898989898989899
+    },
+    {
+      "month": 202609,
+      "predictor": "region",
+      "value": "west",
+      "fraction": 0.25525252525252523
+    },
+    {
+      "month": 202609,
+      "predictor": "region",
+      "value": "north",
+      "fraction": 0.21525252525252525
+    },
+    {
+      "month": 202609,
+      "predictor": "region",
+      "value": "south",
+      "fraction": 0.20383838383838385
+    },
+    {
+      "month": 202609,
+      "predictor": "region",
+      "value": "east",
+      "fraction": 0.17383838383838385
+    },
+    {
+      "month": 202609,
+      "predictor": "region",
+      "value": "central",
+      "fraction": 0.15181818181818182
+    },
+    {
+      "month": 202609,
+      "predictor": "canal_adquisicion",
+      "value": "web",
+      "fraction": 0.3332323232323232
+    },
+    {
+      "month": 202609,
+      "predictor": "canal_adquisicion",
+      "value": "mobile",
+      "fraction": 0.2672727272727273
+    },
+    {
+      "month": 202609,
+      "predictor": "canal_adquisicion",
+      "value": "branch",
+      "fraction": 0.15565656565656566
+    },
+    {
+      "month": 202609,
+      "predictor": "canal_adquisicion",
+      "value": "call_center",
+      "fraction": 0.1406060606060606
+    },
+    {
+      "month": 202609,
+      "predictor": "canal_adquisicion",
+      "value": "partner",
+      "fraction": 0.10323232323232323
+    },
+    {
+      "month": 202609,
+      "predictor": "banda_riesgo",
+      "value": "low",
+      "fraction": 0.44202020202020204
+    },
+    {
+      "month": 202609,
+      "predictor": "banda_riesgo",
+      "value": "medium",
+      "fraction": 0.3233333333333333
+    },
+    {
+      "month": 202609,
+      "predictor": "banda_riesgo",
+      "value": "high",
+      "fraction": 0.23464646464646466
+    },
+    {
+      "month": 202609,
+      "predictor": "dispositivo_principal",
+      "value": "android",
+      "fraction": 0.4174747474747475
+    },
+    {
+      "month": 202609,
+      "predictor": "dispositivo_principal",
+      "value": "ios",
+      "fraction": 0.31575757575757574
+    },
+    {
+      "month": 202609,
+      "predictor": "dispositivo_principal",
+      "value": "web",
+      "fraction": 0.20515151515151514
+    },
+    {
+      "month": 202609,
+      "predictor": "dispositivo_principal",
+      "value": "otro",
+      "fraction": 0.06161616161616162
+    },
+    {
+      "month": 202610,
+      "predictor": "ocupacion",
+      "value": "clerical",
+      "fraction": 0.30038461538461536
+    },
+    {
+      "month": 202610,
+      "predictor": "ocupacion",
+      "value": "manual",
+      "fraction": 0.28086538461538463
+    },
+    {
+      "month": 202610,
+      "predictor": "ocupacion",
+      "value": "professional",
+      "fraction": 0.22673076923076924
+    },
+    {
+      "month": 202610,
+      "predictor": "ocupacion",
+      "value": "manager",
+      "fraction": 0.10451923076923077
+    },
+    {
+      "month": 202610,
+      "predictor": "ocupacion",
+      "value": "self_employed",
+      "fraction": 0.0875
+    },
+    {
+      "month": 202610,
+      "predictor": "region",
+      "value": "west",
+      "fraction": 0.25211538461538463
+    },
+    {
+      "month": 202610,
+      "predictor": "region",
+      "value": "north",
+      "fraction": 0.21932692307692309
+    },
+    {
+      "month": 202610,
+      "predictor": "region",
+      "value": "south",
+      "fraction": 0.20240384615384616
+    },
+    {
+      "month": 202610,
+      "predictor": "region",
+      "value": "east",
+      "fraction": 0.17326923076923076
+    },
+    {
+      "month": 202610,
+      "predictor": "region",
+      "value": "central",
+      "fraction": 0.1528846153846154
+    },
+    {
+      "month": 202610,
+      "predictor": "canal_adquisicion",
+      "value": "web",
+      "fraction": 0.33192307692307693
+    },
+    {
+      "month": 202610,
+      "predictor": "canal_adquisicion",
+      "value": "mobile",
+      "fraction": 0.2684615384615385
+    },
+    {
+      "month": 202610,
+      "predictor": "canal_adquisicion",
+      "value": "branch",
+      "fraction": 0.15605769230769231
+    },
+    {
+      "month": 202610,
+      "predictor": "canal_adquisicion",
+      "value": "call_center",
+      "fraction": 0.1414423076923077
+    },
+    {
+      "month": 202610,
+      "predictor": "canal_adquisicion",
+      "value": "partner",
+      "fraction": 0.10211538461538462
+    },
+    {
+      "month": 202610,
+      "predictor": "banda_riesgo",
+      "value": "low",
+      "fraction": 0.44432692307692306
+    },
+    {
+      "month": 202610,
+      "predictor": "banda_riesgo",
+      "value": "medium",
+      "fraction": 0.32125
+    },
+    {
+      "month": 202610,
+      "predictor": "banda_riesgo",
+      "value": "high",
+      "fraction": 0.23442307692307693
+    },
+    {
+      "month": 202610,
+      "predictor": "dispositivo_principal",
+      "value": "android",
+      "fraction": 0.4201923076923077
+    },
+    {
+      "month": 202610,
+      "predictor": "dispositivo_principal",
+      "value": "ios",
+      "fraction": 0.31288461538461537
+    },
+    {
+      "month": 202610,
+      "predictor": "dispositivo_principal",
+      "value": "web",
+      "fraction": 0.20432692307692307
+    },
+    {
+      "month": 202610,
+      "predictor": "dispositivo_principal",
+      "value": "otro",
+      "fraction": 0.06259615384615384
+    },
+    {
+      "month": 202611,
+      "predictor": "ocupacion",
+      "value": "clerical",
+      "fraction": 0.29894736842105263
+    },
+    {
+      "month": 202611,
+      "predictor": "ocupacion",
+      "value": "manual",
+      "fraction": 0.2825263157894737
+    },
+    {
+      "month": 202611,
+      "predictor": "ocupacion",
+      "value": "professional",
+      "fraction": 0.22578947368421054
+    },
+    {
+      "month": 202611,
+      "predictor": "ocupacion",
+      "value": "manager",
+      "fraction": 0.1036842105263158
+    },
+    {
+      "month": 202611,
+      "predictor": "ocupacion",
+      "value": "self_employed",
+      "fraction": 0.08905263157894737
+    },
+    {
+      "month": 202611,
+      "predictor": "region",
+      "value": "west",
+      "fraction": 0.25242105263157893
+    },
+    {
+      "month": 202611,
+      "predictor": "region",
+      "value": "north",
+      "fraction": 0.21736842105263157
+    },
+    {
+      "month": 202611,
+      "predictor": "region",
+      "value": "south",
+      "fraction": 0.20157894736842105
+    },
+    {
+      "month": 202611,
+      "predictor": "region",
+      "value": "east",
+      "fraction": 0.17326315789473684
+    },
+    {
+      "month": 202611,
+      "predictor": "region",
+      "value": "central",
+      "fraction": 0.15536842105263157
+    },
+    {
+      "month": 202611,
+      "predictor": "canal_adquisicion",
+      "value": "web",
+      "fraction": 0.33252631578947367
+    },
+    {
+      "month": 202611,
+      "predictor": "canal_adquisicion",
+      "value": "mobile",
+      "fraction": 0.26726315789473687
+    },
+    {
+      "month": 202611,
+      "predictor": "canal_adquisicion",
+      "value": "branch",
+      "fraction": 0.154
+    },
+    {
+      "month": 202611,
+      "predictor": "canal_adquisicion",
+      "value": "call_center",
+      "fraction": 0.14178947368421052
+    },
+    {
+      "month": 202611,
+      "predictor": "canal_adquisicion",
+      "value": "partner",
+      "fraction": 0.10442105263157894
+    },
+    {
+      "month": 202611,
+      "predictor": "banda_riesgo",
+      "value": "low",
+      "fraction": 0.4322105263157895
+    },
+    {
+      "month": 202611,
+      "predictor": "banda_riesgo",
+      "value": "medium",
+      "fraction": 0.3213684210526316
+    },
+    {
+      "month": 202611,
+      "predictor": "banda_riesgo",
+      "value": "high",
+      "fraction": 0.24642105263157896
+    },
+    {
+      "month": 202611,
+      "predictor": "dispositivo_principal",
+      "value": "android",
+      "fraction": 0.4191578947368421
+    },
+    {
+      "month": 202611,
+      "predictor": "dispositivo_principal",
+      "value": "ios",
+      "fraction": 0.312
+    },
+    {
+      "month": 202611,
+      "predictor": "dispositivo_principal",
+      "value": "web",
+      "fraction": 0.2063157894736842
+    },
+    {
+      "month": 202611,
+      "predictor": "dispositivo_principal",
+      "value": "otro",
+      "fraction": 0.06252631578947368
+    },
+    {
+      "month": 202612,
+      "predictor": "ocupacion",
+      "value": "clerical",
+      "fraction": 0.3012121212121212
+    },
+    {
+      "month": 202612,
+      "predictor": "ocupacion",
+      "value": "manual",
+      "fraction": 0.2787878787878788
+    },
+    {
+      "month": 202612,
+      "predictor": "ocupacion",
+      "value": "professional",
+      "fraction": 0.22595959595959597
+    },
+    {
+      "month": 202612,
+      "predictor": "ocupacion",
+      "value": "manager",
+      "fraction": 0.10515151515151515
+    },
+    {
+      "month": 202612,
+      "predictor": "ocupacion",
+      "value": "self_employed",
+      "fraction": 0.08888888888888889
+    },
+    {
+      "month": 202612,
+      "predictor": "region",
+      "value": "west",
+      "fraction": 0.2549494949494949
+    },
+    {
+      "month": 202612,
+      "predictor": "region",
+      "value": "north",
+      "fraction": 0.2175757575757576
+    },
+    {
+      "month": 202612,
+      "predictor": "region",
+      "value": "south",
+      "fraction": 0.1985858585858586
+    },
+    {
+      "month": 202612,
+      "predictor": "region",
+      "value": "east",
+      "fraction": 0.17323232323232324
+    },
+    {
+      "month": 202612,
+      "predictor": "region",
+      "value": "central",
+      "fraction": 0.15565656565656566
+    },
+    {
+      "month": 202612,
+      "predictor": "canal_adquisicion",
+      "value": "web",
+      "fraction": 0.33474747474747474
+    },
+    {
+      "month": 202612,
+      "predictor": "canal_adquisicion",
+      "value": "mobile",
+      "fraction": 0.2673737373737374
+    },
+    {
+      "month": 202612,
+      "predictor": "canal_adquisicion",
+      "value": "branch",
+      "fraction": 0.15494949494949495
+    },
+    {
+      "month": 202612,
+      "predictor": "canal_adquisicion",
+      "value": "call_center",
+      "fraction": 0.1407070707070707
+    },
+    {
+      "month": 202612,
+      "predictor": "canal_adquisicion",
+      "value": "partner",
+      "fraction": 0.10222222222222223
+    },
+    {
+      "month": 202612,
+      "predictor": "banda_riesgo",
+      "value": "low",
+      "fraction": 0.43454545454545457
+    },
+    {
+      "month": 202612,
+      "predictor": "banda_riesgo",
+      "value": "medium",
+      "fraction": 0.317979797979798
+    },
+    {
+      "month": 202612,
+      "predictor": "banda_riesgo",
+      "value": "high",
+      "fraction": 0.2474747474747475
+    },
+    {
+      "month": 202612,
+      "predictor": "dispositivo_principal",
+      "value": "android",
+      "fraction": 0.4194949494949495
+    },
+    {
+      "month": 202612,
+      "predictor": "dispositivo_principal",
+      "value": "ios",
+      "fraction": 0.3097979797979798
+    },
+    {
+      "month": 202612,
+      "predictor": "dispositivo_principal",
+      "value": "web",
+      "fraction": 0.20696969696969697
+    },
+    {
+      "month": 202612,
+      "predictor": "dispositivo_principal",
+      "value": "otro",
+      "fraction": 0.06373737373737373
+    }
+  ],
+  "november_minus_development_ci95": [
+    -0.06248087603088249,
+    0.007150032648140232
+  ],
+  "valid_replicates": 500,
+  "interpretation": "Descriptive; not causal, not corrected for prior model selection. No B model is evaluated."
+}

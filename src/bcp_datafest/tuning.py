@@ -78,6 +78,6 @@ def tune(data_dir, family, trials=None):
                "trials": len(study.trials), "complete_trials": sum(t.state == optuna.trial.TrialState.COMPLETE for t in study.trials),
                "failed_trials": [{"number": t.number, "state": t.state.name} for t in study.trials if t.state != optuna.trial.TrialState.COMPLETE],
                "iterations_policy": protocol["iterations_policy"], "budget": n})
-    leaderboard()
+    leaderboard(data_dir)
     status(f"Fase 4: `{family}` terminó {len(study.trials)} ensayos Optuna; mejor media Gini {study.best_value:.6f}. "
            f"Estudio SQLite y predicciones conservados, reports/{family}_trials.csv y {family}_study.json. Noviembre sin evaluar.")

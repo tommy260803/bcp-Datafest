@@ -4,8 +4,9 @@ import numpy as np
 import pandas as pd
 
 from .data import PREDICTORS
+from .temporal import TEMPORAL_BLOCKS, temporal_features
 
-BLOCKS = ["economic", "linkage", "activity", "history", "observed_time"]
+BLOCKS = ["economic", "linkage", "activity", "history", "observed_time", *TEMPORAL_BLOCKS]
 
 
 def history(df):
@@ -36,6 +37,9 @@ def make_features(df, blocks=()):
     unknown = set(blocks) - set(BLOCKS)
     if unknown:
         raise ValueError(f"Unknown blocks: {unknown}")
+    temporal = set(blocks) & set(TEMPORAL_BLOCKS)
+    if len(temporal) > 1 or (temporal and set(blocks) & {"history", "observed_time"}):
+        raise ValueError("Temporal blocks are alternative representations; do not duplicate history columns")
     x = df[PREDICTORS].copy()
     if "economic" in blocks:
         monthly_income = df.ingresos / 12
@@ -56,5 +60,6 @@ def make_features(df, blocks=()):
             x = pd.concat([x, h.drop(columns="meses_desde_primera_observacion")], axis=1)
         if "observed_time" in blocks:
             x["meses_desde_primera_observacion"] = h.meses_desde_primera_observacion
+    if temporal:
+        x = pd.concat([x, temporal_features(df, next(iter(temporal)))], axis=1)
     return x
-

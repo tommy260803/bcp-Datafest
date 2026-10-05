@@ -1,0 +1,2129 @@
+[
+  {
+    "spec": {
+      "name": "b_hgb_original",
+      "family": "hgb",
+      "blocks": [],
+      "params": {},
+      "seed": 42
+    },
+    "months": [
+      202608,
+      202609,
+      202610
+    ],
+    "folds": [
+      {
+        "rows": 10050,
+        "positives": 1449,
+        "gini": 0.25973603627870334,
+        "auc": 0.6298680181393517,
+        "no_history": {
+          "rows": 1760,
+          "positives": 309,
+          "gini": 0.24358382456915106
+        },
+        "history": {
+          "rows": 8290,
+          "positives": 1140,
+          "gini": 0.25731542142068453
+        },
+        "composition_weighted_gini": 0.25980553471769974,
+        "top20_count": 2010,
+        "top20_positives": 484,
+        "top20_recall": 0.33402346445824704,
+        "month": 202608,
+        "train_rows": 70250,
+        "seconds": 1.7263749100002315
+      },
+      {
+        "rows": 9900,
+        "positives": 1393,
+        "gini": 0.24584652257576667,
+        "auc": 0.6229232612878833,
+        "no_history": {
+          "rows": 1299,
+          "positives": 218,
+          "gini": 0.2565412589430447
+        },
+        "history": {
+          "rows": 8601,
+          "positives": 1175,
+          "gini": 0.2386380228180458
+        },
+        "composition_weighted_gini": 0.2483456079152242,
+        "top20_count": 1980,
+        "top20_positives": 458,
+        "top20_recall": 0.3287867910983489,
+        "month": 202609,
+        "train_rows": 80300,
+        "seconds": 1.8031403869990754
+      },
+      {
+        "rows": 10400,
+        "positives": 1628,
+        "gini": 0.2648025154865101,
+        "auc": 0.6324012577432551,
+        "no_history": {
+          "rows": 1893,
+          "positives": 341,
+          "gini": 0.3033338875956102
+        },
+        "history": {
+          "rows": 8507,
+          "positives": 1287,
+          "gini": 0.25364469325688144
+        },
+        "composition_weighted_gini": 0.2650204388662283,
+        "top20_count": 2080,
+        "top20_positives": 559,
+        "top20_recall": 0.34336609336609336,
+        "month": 202610,
+        "train_rows": 90200,
+        "seconds": 1.9990171760000521
+      }
+    ],
+    "mean_gini": 0.25679502478032673,
+    "worst_gini": 0.24584652257576667,
+    "seconds": 5.961089118000018,
+    "provenance": {
+      "schema": "experiment-v2",
+      "code_hash_schema": "normalized-source-v1",
+      "code_sha256": "c3b823a3ddde401343c1ee06cf1ca49878ac6f8f4599f510b14c969abd467e52",
+      "protocol_sha256": "1e3e8a51371bfd5d07b0f100ba7502d3a7e0167c8c5a6777464d377d85e0182e",
+      "protocol": {
+        "development_months": [
+          202608,
+          202609,
+          202610
+        ],
+        "final_validation_month": 202611,
+        "test_month": 202612,
+        "seed": 42,
+        "threads": 4,
+        "selection_metric": "equal_month_mean_gini",
+        "iterations_policy": "fixed parameters and iterations; no early stopping",
+        "bootstrap_replicates": 500,
+        "ensemble_min_gain": 0.002,
+        "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+        "feature_blocks": [
+          "temporal_structure",
+          "temporal_lags",
+          "temporal_v2"
+        ],
+        "dynamic_predictors": [
+          "dias_ultima_interaccion"
+        ],
+        "history_window_months": 3,
+        "initial_hgb_variants": [
+          "original",
+          "observed_time",
+          "temporal_structure",
+          "temporal_lags",
+          "temporal_v2"
+        ],
+        "competitive_min_mean_gain": 0.0005,
+        "competitive_min_improved_months": 2,
+        "competitive_max_month_loss": 0.002,
+        "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+        "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget."
+      },
+      "data_hashes": {
+        "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+        "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+        "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+        "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+      },
+      "python": "3.12",
+      "versions": {
+        "numpy": "2.5.3",
+        "pandas": "2.3.3",
+        "scikit-learn": "1.7.2",
+        "catboost": "1.2.10",
+        "lightgbm": "4.7.0",
+        "optuna": "4.9.0",
+        "joblib": "1.6.0",
+        "threadpoolctl": "3.7.0"
+      }
+    },
+    "feature_columns": [
+      "edad",
+      "ingresos",
+      "ratio_deuda_ingresos",
+      "antiguedad_cuenta_meses",
+      "numero_productos",
+      "saldo_promedio",
+      "dias_ultima_transaccion",
+      "antiguedad_direccion_meses",
+      "visitas_web_ultimos_90_dias",
+      "distancia_sucursal_km",
+      "dia_preferido_pago",
+      "dias_ultima_interaccion",
+      "ocupacion",
+      "region",
+      "canal_adquisicion",
+      "banda_riesgo",
+      "dispositivo_principal",
+      "tiene_tarjeta_credito",
+      "activo_movil",
+      "es_nuevo_cliente",
+      "tiene_prestamo",
+      "tiene_seguro"
+    ],
+    "identity": {
+      "spec": {
+        "name": "b_hgb_original",
+        "family": "hgb",
+        "blocks": [],
+        "params": {},
+        "seed": 42
+      },
+      "months": [
+        202608,
+        202609,
+        202610
+      ],
+      "context": {
+        "schema": "experiment-v2",
+        "code_hash_schema": "normalized-source-v1",
+        "code_sha256": "c3b823a3ddde401343c1ee06cf1ca49878ac6f8f4599f510b14c969abd467e52",
+        "protocol_sha256": "1e3e8a51371bfd5d07b0f100ba7502d3a7e0167c8c5a6777464d377d85e0182e",
+        "protocol": {
+          "development_months": [
+            202608,
+            202609,
+            202610
+          ],
+          "final_validation_month": 202611,
+          "test_month": 202612,
+          "seed": 42,
+          "threads": 4,
+          "selection_metric": "equal_month_mean_gini",
+          "iterations_policy": "fixed parameters and iterations; no early stopping",
+          "bootstrap_replicates": 500,
+          "ensemble_min_gain": 0.002,
+          "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+          "feature_blocks": [
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "dynamic_predictors": [
+            "dias_ultima_interaccion"
+          ],
+          "history_window_months": 3,
+          "initial_hgb_variants": [
+            "original",
+            "observed_time",
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "competitive_min_mean_gain": 0.0005,
+          "competitive_min_improved_months": 2,
+          "competitive_max_month_loss": 0.002,
+          "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+          "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget."
+        },
+        "data_hashes": {
+          "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+          "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+          "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+          "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+        },
+        "python": "3.12",
+        "versions": {
+          "numpy": "2.5.3",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2",
+          "catboost": "1.2.10",
+          "lightgbm": "4.7.0",
+          "optuna": "4.9.0",
+          "joblib": "1.6.0",
+          "threadpoolctl": "3.7.0"
+        }
+      }
+    },
+    "fingerprint": "0149d09425d04da824af670dceebb59c8bf4738b34e08fc9065e5cbd6385e3b1",
+    "runtime": {
+      "timestamp_lima": "2026-10-04T19:31:28.005878-05:00",
+      "python": "3.12.3",
+      "platform": "Linux-7.2.8-2-cachyos-x86_64-with-glibc2.44"
+    },
+    "prediction_path": "artifacts/boost/runs/b_hgb_original/0149d09425d04da824af670dceebb59c8bf4738b34e08fc9065e5cbd6385e3b1/validation.csv",
+    "predictions_sha256": "6c6bb6c0c750043b127d6b153cd754953006a9b60cee8aa5ec58c52d6d480ebc"
+  },
+  {
+    "spec": {
+      "name": "b_hgb_observed_time",
+      "family": "hgb",
+      "blocks": [
+        "observed_time"
+      ],
+      "params": {},
+      "seed": 42
+    },
+    "months": [
+      202608,
+      202609,
+      202610
+    ],
+    "folds": [
+      {
+        "rows": 10050,
+        "positives": 1449,
+        "gini": 0.25800593427714635,
+        "auc": 0.6290029671385732,
+        "no_history": {
+          "rows": 1760,
+          "positives": 309,
+          "gini": 0.24132224400536173
+        },
+        "history": {
+          "rows": 8290,
+          "positives": 1140,
+          "gini": 0.2569709238130291
+        },
+        "composition_weighted_gini": 0.2580082509117041,
+        "top20_count": 2010,
+        "top20_positives": 491,
+        "top20_recall": 0.3388543823326432,
+        "month": 202608,
+        "train_rows": 70250,
+        "seconds": 1.5481924390005588
+      },
+      {
+        "rows": 9900,
+        "positives": 1393,
+        "gini": 0.2458247508850233,
+        "auc": 0.6229123754425117,
+        "no_history": {
+          "rows": 1299,
+          "positives": 218,
+          "gini": 0.24468509450135367
+        },
+        "history": {
+          "rows": 8601,
+          "positives": 1175,
+          "gini": 0.24357249686266202
+        },
+        "composition_weighted_gini": 0.24654581330841618,
+        "top20_count": 1980,
+        "top20_positives": 459,
+        "top20_recall": 0.3295046661880833,
+        "month": 202609,
+        "train_rows": 80300,
+        "seconds": 1.8774107189983624
+      },
+      {
+        "rows": 10400,
+        "positives": 1628,
+        "gini": 0.26931878402466625,
+        "auc": 0.6346593920123331,
+        "no_history": {
+          "rows": 1893,
+          "positives": 341,
+          "gini": 0.3008170329836444
+        },
+        "history": {
+          "rows": 8507,
+          "positives": 1287,
+          "gini": 0.2576902629534208
+        },
+        "composition_weighted_gini": 0.2695376830225076,
+        "top20_count": 2080,
+        "top20_positives": 544,
+        "top20_recall": 0.33415233415233414,
+        "month": 202610,
+        "train_rows": 90200,
+        "seconds": 1.858587696999166
+      }
+    ],
+    "mean_gini": 0.2577164897289453,
+    "worst_gini": 0.2458247508850233,
+    "seconds": 44.021129853001185,
+    "provenance": {
+      "schema": "experiment-v2",
+      "code_hash_schema": "normalized-source-v1",
+      "code_sha256": "c3b823a3ddde401343c1ee06cf1ca49878ac6f8f4599f510b14c969abd467e52",
+      "protocol_sha256": "1e3e8a51371bfd5d07b0f100ba7502d3a7e0167c8c5a6777464d377d85e0182e",
+      "protocol": {
+        "development_months": [
+          202608,
+          202609,
+          202610
+        ],
+        "final_validation_month": 202611,
+        "test_month": 202612,
+        "seed": 42,
+        "threads": 4,
+        "selection_metric": "equal_month_mean_gini",
+        "iterations_policy": "fixed parameters and iterations; no early stopping",
+        "bootstrap_replicates": 500,
+        "ensemble_min_gain": 0.002,
+        "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+        "feature_blocks": [
+          "temporal_structure",
+          "temporal_lags",
+          "temporal_v2"
+        ],
+        "dynamic_predictors": [
+          "dias_ultima_interaccion"
+        ],
+        "history_window_months": 3,
+        "initial_hgb_variants": [
+          "original",
+          "observed_time",
+          "temporal_structure",
+          "temporal_lags",
+          "temporal_v2"
+        ],
+        "competitive_min_mean_gain": 0.0005,
+        "competitive_min_improved_months": 2,
+        "competitive_max_month_loss": 0.002,
+        "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+        "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget."
+      },
+      "data_hashes": {
+        "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+        "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+        "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+        "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+      },
+      "python": "3.12",
+      "versions": {
+        "numpy": "2.5.3",
+        "pandas": "2.3.3",
+        "scikit-learn": "1.7.2",
+        "catboost": "1.2.10",
+        "lightgbm": "4.7.0",
+        "optuna": "4.9.0",
+        "joblib": "1.6.0",
+        "threadpoolctl": "3.7.0"
+      }
+    },
+    "feature_columns": [
+      "edad",
+      "ingresos",
+      "ratio_deuda_ingresos",
+      "antiguedad_cuenta_meses",
+      "numero_productos",
+      "saldo_promedio",
+      "dias_ultima_transaccion",
+      "antiguedad_direccion_meses",
+      "visitas_web_ultimos_90_dias",
+      "distancia_sucursal_km",
+      "dia_preferido_pago",
+      "dias_ultima_interaccion",
+      "ocupacion",
+      "region",
+      "canal_adquisicion",
+      "banda_riesgo",
+      "dispositivo_principal",
+      "tiene_tarjeta_credito",
+      "activo_movil",
+      "es_nuevo_cliente",
+      "tiene_prestamo",
+      "tiene_seguro",
+      "meses_desde_primera_observacion"
+    ],
+    "identity": {
+      "spec": {
+        "name": "b_hgb_observed_time",
+        "family": "hgb",
+        "blocks": [
+          "observed_time"
+        ],
+        "params": {},
+        "seed": 42
+      },
+      "months": [
+        202608,
+        202609,
+        202610
+      ],
+      "context": {
+        "schema": "experiment-v2",
+        "code_hash_schema": "normalized-source-v1",
+        "code_sha256": "c3b823a3ddde401343c1ee06cf1ca49878ac6f8f4599f510b14c969abd467e52",
+        "protocol_sha256": "1e3e8a51371bfd5d07b0f100ba7502d3a7e0167c8c5a6777464d377d85e0182e",
+        "protocol": {
+          "development_months": [
+            202608,
+            202609,
+            202610
+          ],
+          "final_validation_month": 202611,
+          "test_month": 202612,
+          "seed": 42,
+          "threads": 4,
+          "selection_metric": "equal_month_mean_gini",
+          "iterations_policy": "fixed parameters and iterations; no early stopping",
+          "bootstrap_replicates": 500,
+          "ensemble_min_gain": 0.002,
+          "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+          "feature_blocks": [
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "dynamic_predictors": [
+            "dias_ultima_interaccion"
+          ],
+          "history_window_months": 3,
+          "initial_hgb_variants": [
+            "original",
+            "observed_time",
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "competitive_min_mean_gain": 0.0005,
+          "competitive_min_improved_months": 2,
+          "competitive_max_month_loss": 0.002,
+          "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+          "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget."
+        },
+        "data_hashes": {
+          "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+          "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+          "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+          "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+        },
+        "python": "3.12",
+        "versions": {
+          "numpy": "2.5.3",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2",
+          "catboost": "1.2.10",
+          "lightgbm": "4.7.0",
+          "optuna": "4.9.0",
+          "joblib": "1.6.0",
+          "threadpoolctl": "3.7.0"
+        }
+      }
+    },
+    "fingerprint": "efde98e1692a6b0a1c5ef7a90d022c30180361b5517b6383af5f3f281ae2172e",
+    "runtime": {
+      "timestamp_lima": "2026-10-04T19:32:12.978418-05:00",
+      "python": "3.12.3",
+      "platform": "Linux-7.2.8-2-cachyos-x86_64-with-glibc2.44"
+    },
+    "prediction_path": "artifacts/boost/runs/b_hgb_observed_time/efde98e1692a6b0a1c5ef7a90d022c30180361b5517b6383af5f3f281ae2172e/validation.csv",
+    "predictions_sha256": "e8c4272c3ab2180851e32d7811060b0e35edf9f1565e2314dc331cdec9921f60"
+  },
+  {
+    "spec": {
+      "name": "b_hgb_temporal_structure",
+      "family": "hgb",
+      "blocks": [
+        "temporal_structure"
+      ],
+      "params": {},
+      "seed": 42
+    },
+    "months": [
+      202608,
+      202609,
+      202610
+    ],
+    "folds": [
+      {
+        "rows": 10050,
+        "positives": 1449,
+        "gini": 0.25800593427714635,
+        "auc": 0.6290029671385732,
+        "no_history": {
+          "rows": 1760,
+          "positives": 309,
+          "gini": 0.24132224400536173
+        },
+        "history": {
+          "rows": 8290,
+          "positives": 1140,
+          "gini": 0.2569709238130291
+        },
+        "composition_weighted_gini": 0.2580082509117041,
+        "top20_count": 2010,
+        "top20_positives": 491,
+        "top20_recall": 0.3388543823326432,
+        "month": 202608,
+        "train_rows": 70250,
+        "seconds": 1.7266505400002643
+      },
+      {
+        "rows": 9900,
+        "positives": 1393,
+        "gini": 0.2458247508850233,
+        "auc": 0.6229123754425117,
+        "no_history": {
+          "rows": 1299,
+          "positives": 218,
+          "gini": 0.24468509450135367
+        },
+        "history": {
+          "rows": 8601,
+          "positives": 1175,
+          "gini": 0.24357249686266202
+        },
+        "composition_weighted_gini": 0.24654581330841618,
+        "top20_count": 1980,
+        "top20_positives": 459,
+        "top20_recall": 0.3295046661880833,
+        "month": 202609,
+        "train_rows": 80300,
+        "seconds": 1.9213678399992205
+      },
+      {
+        "rows": 10400,
+        "positives": 1628,
+        "gini": 0.26931878402466625,
+        "auc": 0.6346593920123331,
+        "no_history": {
+          "rows": 1893,
+          "positives": 341,
+          "gini": 0.3008170329836444
+        },
+        "history": {
+          "rows": 8507,
+          "positives": 1287,
+          "gini": 0.2576902629534208
+        },
+        "composition_weighted_gini": 0.2695376830225076,
+        "top20_count": 2080,
+        "top20_positives": 544,
+        "top20_recall": 0.33415233415233414,
+        "month": 202610,
+        "train_rows": 90200,
+        "seconds": 2.13836980799897
+      }
+    ],
+    "mean_gini": 0.2577164897289453,
+    "worst_gini": 0.2458247508850233,
+    "seconds": 6.571536551000463,
+    "provenance": {
+      "schema": "experiment-v2",
+      "code_hash_schema": "normalized-source-v1",
+      "code_sha256": "c3b823a3ddde401343c1ee06cf1ca49878ac6f8f4599f510b14c969abd467e52",
+      "protocol_sha256": "1e3e8a51371bfd5d07b0f100ba7502d3a7e0167c8c5a6777464d377d85e0182e",
+      "protocol": {
+        "development_months": [
+          202608,
+          202609,
+          202610
+        ],
+        "final_validation_month": 202611,
+        "test_month": 202612,
+        "seed": 42,
+        "threads": 4,
+        "selection_metric": "equal_month_mean_gini",
+        "iterations_policy": "fixed parameters and iterations; no early stopping",
+        "bootstrap_replicates": 500,
+        "ensemble_min_gain": 0.002,
+        "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+        "feature_blocks": [
+          "temporal_structure",
+          "temporal_lags",
+          "temporal_v2"
+        ],
+        "dynamic_predictors": [
+          "dias_ultima_interaccion"
+        ],
+        "history_window_months": 3,
+        "initial_hgb_variants": [
+          "original",
+          "observed_time",
+          "temporal_structure",
+          "temporal_lags",
+          "temporal_v2"
+        ],
+        "competitive_min_mean_gain": 0.0005,
+        "competitive_min_improved_months": 2,
+        "competitive_max_month_loss": 0.002,
+        "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+        "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget."
+      },
+      "data_hashes": {
+        "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+        "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+        "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+        "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+      },
+      "python": "3.12",
+      "versions": {
+        "numpy": "2.5.3",
+        "pandas": "2.3.3",
+        "scikit-learn": "1.7.2",
+        "catboost": "1.2.10",
+        "lightgbm": "4.7.0",
+        "optuna": "4.9.0",
+        "joblib": "1.6.0",
+        "threadpoolctl": "3.7.0"
+      }
+    },
+    "feature_columns": [
+      "edad",
+      "ingresos",
+      "ratio_deuda_ingresos",
+      "antiguedad_cuenta_meses",
+      "numero_productos",
+      "saldo_promedio",
+      "dias_ultima_transaccion",
+      "antiguedad_direccion_meses",
+      "visitas_web_ultimos_90_dias",
+      "distancia_sucursal_km",
+      "dia_preferido_pago",
+      "dias_ultima_interaccion",
+      "ocupacion",
+      "region",
+      "canal_adquisicion",
+      "banda_riesgo",
+      "dispositivo_principal",
+      "tiene_tarjeta_credito",
+      "activo_movil",
+      "es_nuevo_cliente",
+      "tiene_prestamo",
+      "tiene_seguro",
+      "observaciones_previas",
+      "sin_historial",
+      "meses_desde_primera_observacion",
+      "meses_desde_observacion_previa",
+      "observaciones_previas_3m"
+    ],
+    "identity": {
+      "spec": {
+        "name": "b_hgb_temporal_structure",
+        "family": "hgb",
+        "blocks": [
+          "temporal_structure"
+        ],
+        "params": {},
+        "seed": 42
+      },
+      "months": [
+        202608,
+        202609,
+        202610
+      ],
+      "context": {
+        "schema": "experiment-v2",
+        "code_hash_schema": "normalized-source-v1",
+        "code_sha256": "c3b823a3ddde401343c1ee06cf1ca49878ac6f8f4599f510b14c969abd467e52",
+        "protocol_sha256": "1e3e8a51371bfd5d07b0f100ba7502d3a7e0167c8c5a6777464d377d85e0182e",
+        "protocol": {
+          "development_months": [
+            202608,
+            202609,
+            202610
+          ],
+          "final_validation_month": 202611,
+          "test_month": 202612,
+          "seed": 42,
+          "threads": 4,
+          "selection_metric": "equal_month_mean_gini",
+          "iterations_policy": "fixed parameters and iterations; no early stopping",
+          "bootstrap_replicates": 500,
+          "ensemble_min_gain": 0.002,
+          "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+          "feature_blocks": [
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "dynamic_predictors": [
+            "dias_ultima_interaccion"
+          ],
+          "history_window_months": 3,
+          "initial_hgb_variants": [
+            "original",
+            "observed_time",
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "competitive_min_mean_gain": 0.0005,
+          "competitive_min_improved_months": 2,
+          "competitive_max_month_loss": 0.002,
+          "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+          "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget."
+        },
+        "data_hashes": {
+          "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+          "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+          "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+          "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+        },
+        "python": "3.12",
+        "versions": {
+          "numpy": "2.5.3",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2",
+          "catboost": "1.2.10",
+          "lightgbm": "4.7.0",
+          "optuna": "4.9.0",
+          "joblib": "1.6.0",
+          "threadpoolctl": "3.7.0"
+        }
+      }
+    },
+    "fingerprint": "1e5dd6ec28262b43e1bc068cfd0af48532e2303fa3b595dc2b31aada6d047080",
+    "runtime": {
+      "timestamp_lima": "2026-10-04T19:32:20.463086-05:00",
+      "python": "3.12.3",
+      "platform": "Linux-7.2.8-2-cachyos-x86_64-with-glibc2.44"
+    },
+    "prediction_path": "artifacts/boost/runs/b_hgb_temporal_structure/1e5dd6ec28262b43e1bc068cfd0af48532e2303fa3b595dc2b31aada6d047080/validation.csv",
+    "predictions_sha256": "4ec615072dccbfd56f91e69a86727798bd662f69b4a4fb70b7b9253d4f7fe780"
+  },
+  {
+    "spec": {
+      "name": "b_hgb_temporal_lags",
+      "family": "hgb",
+      "blocks": [
+        "temporal_lags"
+      ],
+      "params": {},
+      "seed": 42
+    },
+    "months": [
+      202608,
+      202609,
+      202610
+    ],
+    "folds": [
+      {
+        "rows": 10050,
+        "positives": 1449,
+        "gini": 0.25196213161212166,
+        "auc": 0.6259810658060608,
+        "no_history": {
+          "rows": 1760,
+          "positives": 309,
+          "gini": 0.2439072261290618
+        },
+        "history": {
+          "rows": 8290,
+          "positives": 1140,
+          "gini": 0.24980910317752425
+        },
+        "composition_weighted_gini": 0.25204163525827106,
+        "top20_count": 2010,
+        "top20_positives": 495,
+        "top20_recall": 0.3416149068322981,
+        "month": 202608,
+        "train_rows": 70250,
+        "seconds": 1.922417571000551
+      },
+      {
+        "rows": 9900,
+        "positives": 1393,
+        "gini": 0.2519373640271416,
+        "auc": 0.6259686820135708,
+        "no_history": {
+          "rows": 1299,
+          "positives": 218,
+          "gini": 0.2590703477072709
+        },
+        "history": {
+          "rows": 8601,
+          "positives": 1175,
+          "gini": 0.24935734710132884
+        },
+        "composition_weighted_gini": 0.2528758987760189,
+        "top20_count": 1980,
+        "top20_positives": 463,
+        "top20_recall": 0.33237616654702085,
+        "month": 202609,
+        "train_rows": 80300,
+        "seconds": 2.2542470169992157
+      },
+      {
+        "rows": 10400,
+        "positives": 1628,
+        "gini": 0.268117172015941,
+        "auc": 0.6340585860079705,
+        "no_history": {
+          "rows": 1893,
+          "positives": 341,
+          "gini": 0.3003144178734469
+        },
+        "history": {
+          "rows": 8507,
+          "positives": 1287,
+          "gini": 0.25657534217091005
+        },
+        "composition_weighted_gini": 0.2683353253680636,
+        "top20_count": 2080,
+        "top20_positives": 555,
+        "top20_recall": 0.3409090909090909,
+        "month": 202610,
+        "train_rows": 90200,
+        "seconds": 2.5091622389991244
+      }
+    ],
+    "mean_gini": 0.2573388892184014,
+    "worst_gini": 0.2519373640271416,
+    "seconds": 7.586172040000747,
+    "provenance": {
+      "schema": "experiment-v2",
+      "code_hash_schema": "normalized-source-v1",
+      "code_sha256": "c3b823a3ddde401343c1ee06cf1ca49878ac6f8f4599f510b14c969abd467e52",
+      "protocol_sha256": "1e3e8a51371bfd5d07b0f100ba7502d3a7e0167c8c5a6777464d377d85e0182e",
+      "protocol": {
+        "development_months": [
+          202608,
+          202609,
+          202610
+        ],
+        "final_validation_month": 202611,
+        "test_month": 202612,
+        "seed": 42,
+        "threads": 4,
+        "selection_metric": "equal_month_mean_gini",
+        "iterations_policy": "fixed parameters and iterations; no early stopping",
+        "bootstrap_replicates": 500,
+        "ensemble_min_gain": 0.002,
+        "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+        "feature_blocks": [
+          "temporal_structure",
+          "temporal_lags",
+          "temporal_v2"
+        ],
+        "dynamic_predictors": [
+          "dias_ultima_interaccion"
+        ],
+        "history_window_months": 3,
+        "initial_hgb_variants": [
+          "original",
+          "observed_time",
+          "temporal_structure",
+          "temporal_lags",
+          "temporal_v2"
+        ],
+        "competitive_min_mean_gain": 0.0005,
+        "competitive_min_improved_months": 2,
+        "competitive_max_month_loss": 0.002,
+        "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+        "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget."
+      },
+      "data_hashes": {
+        "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+        "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+        "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+        "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+      },
+      "python": "3.12",
+      "versions": {
+        "numpy": "2.5.3",
+        "pandas": "2.3.3",
+        "scikit-learn": "1.7.2",
+        "catboost": "1.2.10",
+        "lightgbm": "4.7.0",
+        "optuna": "4.9.0",
+        "joblib": "1.6.0",
+        "threadpoolctl": "3.7.0"
+      }
+    },
+    "feature_columns": [
+      "edad",
+      "ingresos",
+      "ratio_deuda_ingresos",
+      "antiguedad_cuenta_meses",
+      "numero_productos",
+      "saldo_promedio",
+      "dias_ultima_transaccion",
+      "antiguedad_direccion_meses",
+      "visitas_web_ultimos_90_dias",
+      "distancia_sucursal_km",
+      "dia_preferido_pago",
+      "dias_ultima_interaccion",
+      "ocupacion",
+      "region",
+      "canal_adquisicion",
+      "banda_riesgo",
+      "dispositivo_principal",
+      "tiene_tarjeta_credito",
+      "activo_movil",
+      "es_nuevo_cliente",
+      "tiene_prestamo",
+      "tiene_seguro",
+      "observaciones_previas",
+      "sin_historial",
+      "meses_desde_primera_observacion",
+      "meses_desde_observacion_previa",
+      "observaciones_previas_3m",
+      "interaccion_lag1",
+      "interaccion_lag2",
+      "interaccion_delta1",
+      "interaccion_delta_previa"
+    ],
+    "identity": {
+      "spec": {
+        "name": "b_hgb_temporal_lags",
+        "family": "hgb",
+        "blocks": [
+          "temporal_lags"
+        ],
+        "params": {},
+        "seed": 42
+      },
+      "months": [
+        202608,
+        202609,
+        202610
+      ],
+      "context": {
+        "schema": "experiment-v2",
+        "code_hash_schema": "normalized-source-v1",
+        "code_sha256": "c3b823a3ddde401343c1ee06cf1ca49878ac6f8f4599f510b14c969abd467e52",
+        "protocol_sha256": "1e3e8a51371bfd5d07b0f100ba7502d3a7e0167c8c5a6777464d377d85e0182e",
+        "protocol": {
+          "development_months": [
+            202608,
+            202609,
+            202610
+          ],
+          "final_validation_month": 202611,
+          "test_month": 202612,
+          "seed": 42,
+          "threads": 4,
+          "selection_metric": "equal_month_mean_gini",
+          "iterations_policy": "fixed parameters and iterations; no early stopping",
+          "bootstrap_replicates": 500,
+          "ensemble_min_gain": 0.002,
+          "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+          "feature_blocks": [
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "dynamic_predictors": [
+            "dias_ultima_interaccion"
+          ],
+          "history_window_months": 3,
+          "initial_hgb_variants": [
+            "original",
+            "observed_time",
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "competitive_min_mean_gain": 0.0005,
+          "competitive_min_improved_months": 2,
+          "competitive_max_month_loss": 0.002,
+          "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+          "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget."
+        },
+        "data_hashes": {
+          "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+          "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+          "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+          "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+        },
+        "python": "3.12",
+        "versions": {
+          "numpy": "2.5.3",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2",
+          "catboost": "1.2.10",
+          "lightgbm": "4.7.0",
+          "optuna": "4.9.0",
+          "joblib": "1.6.0",
+          "threadpoolctl": "3.7.0"
+        }
+      }
+    },
+    "fingerprint": "8b7330cf5d59decff92f8a3ef8927dd236fbd5dd78596f437550b9c2f2d4c1e6",
+    "runtime": {
+      "timestamp_lima": "2026-10-04T19:32:28.989158-05:00",
+      "python": "3.12.3",
+      "platform": "Linux-7.2.8-2-cachyos-x86_64-with-glibc2.44"
+    },
+    "prediction_path": "artifacts/boost/runs/b_hgb_temporal_lags/8b7330cf5d59decff92f8a3ef8927dd236fbd5dd78596f437550b9c2f2d4c1e6/validation.csv",
+    "predictions_sha256": "65d735e2e40abfe540a8310658196fa622675517e9a9829efafbc7420b302997"
+  },
+  {
+    "spec": {
+      "name": "b_hgb_temporal_v2",
+      "family": "hgb",
+      "blocks": [
+        "temporal_v2"
+      ],
+      "params": {},
+      "seed": 42
+    },
+    "months": [
+      202608,
+      202609,
+      202610
+    ],
+    "folds": [
+      {
+        "rows": 10050,
+        "positives": 1449,
+        "gini": 0.2570568735928678,
+        "auc": 0.6285284367964339,
+        "no_history": {
+          "rows": 1760,
+          "positives": 309,
+          "gini": 0.2453190412147408
+        },
+        "history": {
+          "rows": 8290,
+          "positives": 1140,
+          "gini": 0.2558829591461169
+        },
+        "composition_weighted_gini": 0.2570796358824974,
+        "top20_count": 2010,
+        "top20_positives": 480,
+        "top20_recall": 0.33126293995859213,
+        "month": 202608,
+        "train_rows": 70250,
+        "seconds": 2.2494291469993186
+      },
+      {
+        "rows": 9900,
+        "positives": 1393,
+        "gini": 0.24669021778526035,
+        "auc": 0.6233451088926302,
+        "no_history": {
+          "rows": 1299,
+          "positives": 218,
+          "gini": 0.24613635013451707
+        },
+        "history": {
+          "rows": 8601,
+          "positives": 1175,
+          "gini": 0.24683234867716086
+        },
+        "composition_weighted_gini": 0.2466363686673172,
+        "top20_count": 1980,
+        "top20_positives": 463,
+        "top20_recall": 0.33237616654702085,
+        "month": 202609,
+        "train_rows": 80300,
+        "seconds": 2.5069742490013596
+      },
+      {
+        "rows": 10400,
+        "positives": 1628,
+        "gini": 0.265414525332446,
+        "auc": 0.632707262666223,
+        "no_history": {
+          "rows": 1893,
+          "positives": 341,
+          "gini": 0.31243386643286875
+        },
+        "history": {
+          "rows": 8507,
+          "positives": 1287,
+          "gini": 0.24961827953517712
+        },
+        "composition_weighted_gini": 0.26571589532476736,
+        "top20_count": 2080,
+        "top20_positives": 556,
+        "top20_recall": 0.3415233415233415,
+        "month": 202610,
+        "train_rows": 90200,
+        "seconds": 2.6498015679990203
+      }
+    ],
+    "mean_gini": 0.2563872055701914,
+    "worst_gini": 0.24669021778526035,
+    "seconds": 8.632392616998914,
+    "provenance": {
+      "schema": "experiment-v2",
+      "code_hash_schema": "normalized-source-v1",
+      "code_sha256": "c3b823a3ddde401343c1ee06cf1ca49878ac6f8f4599f510b14c969abd467e52",
+      "protocol_sha256": "1e3e8a51371bfd5d07b0f100ba7502d3a7e0167c8c5a6777464d377d85e0182e",
+      "protocol": {
+        "development_months": [
+          202608,
+          202609,
+          202610
+        ],
+        "final_validation_month": 202611,
+        "test_month": 202612,
+        "seed": 42,
+        "threads": 4,
+        "selection_metric": "equal_month_mean_gini",
+        "iterations_policy": "fixed parameters and iterations; no early stopping",
+        "bootstrap_replicates": 500,
+        "ensemble_min_gain": 0.002,
+        "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+        "feature_blocks": [
+          "temporal_structure",
+          "temporal_lags",
+          "temporal_v2"
+        ],
+        "dynamic_predictors": [
+          "dias_ultima_interaccion"
+        ],
+        "history_window_months": 3,
+        "initial_hgb_variants": [
+          "original",
+          "observed_time",
+          "temporal_structure",
+          "temporal_lags",
+          "temporal_v2"
+        ],
+        "competitive_min_mean_gain": 0.0005,
+        "competitive_min_improved_months": 2,
+        "competitive_max_month_loss": 0.002,
+        "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+        "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget."
+      },
+      "data_hashes": {
+        "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+        "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+        "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+        "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+      },
+      "python": "3.12",
+      "versions": {
+        "numpy": "2.5.3",
+        "pandas": "2.3.3",
+        "scikit-learn": "1.7.2",
+        "catboost": "1.2.10",
+        "lightgbm": "4.7.0",
+        "optuna": "4.9.0",
+        "joblib": "1.6.0",
+        "threadpoolctl": "3.7.0"
+      }
+    },
+    "feature_columns": [
+      "edad",
+      "ingresos",
+      "ratio_deuda_ingresos",
+      "antiguedad_cuenta_meses",
+      "numero_productos",
+      "saldo_promedio",
+      "dias_ultima_transaccion",
+      "antiguedad_direccion_meses",
+      "visitas_web_ultimos_90_dias",
+      "distancia_sucursal_km",
+      "dia_preferido_pago",
+      "dias_ultima_interaccion",
+      "ocupacion",
+      "region",
+      "canal_adquisicion",
+      "banda_riesgo",
+      "dispositivo_principal",
+      "tiene_tarjeta_credito",
+      "activo_movil",
+      "es_nuevo_cliente",
+      "tiene_prestamo",
+      "tiene_seguro",
+      "observaciones_previas",
+      "sin_historial",
+      "meses_desde_primera_observacion",
+      "meses_desde_observacion_previa",
+      "observaciones_previas_3m",
+      "interaccion_lag1",
+      "interaccion_lag2",
+      "interaccion_delta1",
+      "interaccion_delta_previa",
+      "interaccion_mean_3m",
+      "interaccion_std_3m",
+      "interaccion_min_3m",
+      "interaccion_max_3m",
+      "interaccion_vs_mean_3m"
+    ],
+    "identity": {
+      "spec": {
+        "name": "b_hgb_temporal_v2",
+        "family": "hgb",
+        "blocks": [
+          "temporal_v2"
+        ],
+        "params": {},
+        "seed": 42
+      },
+      "months": [
+        202608,
+        202609,
+        202610
+      ],
+      "context": {
+        "schema": "experiment-v2",
+        "code_hash_schema": "normalized-source-v1",
+        "code_sha256": "c3b823a3ddde401343c1ee06cf1ca49878ac6f8f4599f510b14c969abd467e52",
+        "protocol_sha256": "1e3e8a51371bfd5d07b0f100ba7502d3a7e0167c8c5a6777464d377d85e0182e",
+        "protocol": {
+          "development_months": [
+            202608,
+            202609,
+            202610
+          ],
+          "final_validation_month": 202611,
+          "test_month": 202612,
+          "seed": 42,
+          "threads": 4,
+          "selection_metric": "equal_month_mean_gini",
+          "iterations_policy": "fixed parameters and iterations; no early stopping",
+          "bootstrap_replicates": 500,
+          "ensemble_min_gain": 0.002,
+          "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+          "feature_blocks": [
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "dynamic_predictors": [
+            "dias_ultima_interaccion"
+          ],
+          "history_window_months": 3,
+          "initial_hgb_variants": [
+            "original",
+            "observed_time",
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "competitive_min_mean_gain": 0.0005,
+          "competitive_min_improved_months": 2,
+          "competitive_max_month_loss": 0.002,
+          "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+          "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget."
+        },
+        "data_hashes": {
+          "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+          "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+          "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+          "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+        },
+        "python": "3.12",
+        "versions": {
+          "numpy": "2.5.3",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2",
+          "catboost": "1.2.10",
+          "lightgbm": "4.7.0",
+          "optuna": "4.9.0",
+          "joblib": "1.6.0",
+          "threadpoolctl": "3.7.0"
+        }
+      }
+    },
+    "fingerprint": "bd37d1e3a51920cfaafd8e94493efb78f844051bb9c887101871aa62f8a220ac",
+    "runtime": {
+      "timestamp_lima": "2026-10-04T19:32:38.576621-05:00",
+      "python": "3.12.3",
+      "platform": "Linux-7.2.8-2-cachyos-x86_64-with-glibc2.44"
+    },
+    "prediction_path": "artifacts/boost/runs/b_hgb_temporal_v2/bd37d1e3a51920cfaafd8e94493efb78f844051bb9c887101871aa62f8a220ac/validation.csv",
+    "predictions_sha256": "ecec031fe37aca5a24900cc04a9387f02cb44d8f2b6c9c367c42bf8d120eb341"
+  },
+  {
+    "spec": {
+      "name": "a_reproduced_catboost_trial_006",
+      "family": "catboost",
+      "blocks": [],
+      "params": {
+        "iterations": 600,
+        "depth": 3,
+        "learning_rate": 0.04133944642428183,
+        "l2_leaf_reg": 31.62562678271973,
+        "random_strength": 2.3283669032459575,
+        "bootstrap_type": "Bayesian",
+        "bagging_temperature": 1.2546406282501201
+      },
+      "seed": 42
+    },
+    "months": [
+      202608,
+      202609,
+      202610
+    ],
+    "folds": [
+      {
+        "rows": 10050,
+        "positives": 1449,
+        "gini": 0.2619886512305494,
+        "auc": 0.6309943256152747,
+        "no_history": {
+          "rows": 1760,
+          "positives": 309,
+          "gini": 0.2592007743794593
+        },
+        "history": {
+          "rows": 8290,
+          "positives": 1140,
+          "gini": 0.2559896945160103
+        },
+        "composition_weighted_gini": 0.2622652530015408,
+        "top20_count": 2010,
+        "top20_positives": 498,
+        "top20_recall": 0.34368530020703936,
+        "month": 202608,
+        "train_rows": 70250,
+        "seconds": 24.98885939700085
+      },
+      {
+        "rows": 9900,
+        "positives": 1393,
+        "gini": 0.24755349063914345,
+        "auc": 0.6237767453195717,
+        "no_history": {
+          "rows": 1299,
+          "positives": 218,
+          "gini": 0.22623462814756978
+        },
+        "history": {
+          "rows": 8601,
+          "positives": 1175,
+          "gini": 0.24745557586627775
+        },
+        "composition_weighted_gini": 0.24730118341814644,
+        "top20_count": 1980,
+        "top20_positives": 464,
+        "top20_recall": 0.3330940416367552,
+        "month": 202609,
+        "train_rows": 80300,
+        "seconds": 32.365097985999455
+      },
+      {
+        "rows": 10400,
+        "positives": 1628,
+        "gini": 0.2655062567853266,
+        "auc": 0.6327531283926633,
+        "no_history": {
+          "rows": 1893,
+          "positives": 341,
+          "gini": 0.2919664721709949
+        },
+        "history": {
+          "rows": 8507,
+          "positives": 1287,
+          "gini": 0.2556730742326312
+        },
+        "composition_weighted_gini": 0.2656911936806463,
+        "top20_count": 2080,
+        "top20_positives": 537,
+        "top20_recall": 0.3298525798525799,
+        "month": 202610,
+        "train_rows": 90200,
+        "seconds": 31.362287218998972
+      }
+    ],
+    "mean_gini": 0.2583494662183398,
+    "worst_gini": 0.24755349063914345,
+    "seconds": 89.1873189959988,
+    "provenance": {
+      "schema": "experiment-v2",
+      "code_hash_schema": "normalized-source-v1",
+      "code_sha256": "c3b823a3ddde401343c1ee06cf1ca49878ac6f8f4599f510b14c969abd467e52",
+      "protocol_sha256": "1e3e8a51371bfd5d07b0f100ba7502d3a7e0167c8c5a6777464d377d85e0182e",
+      "protocol": {
+        "development_months": [
+          202608,
+          202609,
+          202610
+        ],
+        "final_validation_month": 202611,
+        "test_month": 202612,
+        "seed": 42,
+        "threads": 4,
+        "selection_metric": "equal_month_mean_gini",
+        "iterations_policy": "fixed parameters and iterations; no early stopping",
+        "bootstrap_replicates": 500,
+        "ensemble_min_gain": 0.002,
+        "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+        "feature_blocks": [
+          "temporal_structure",
+          "temporal_lags",
+          "temporal_v2"
+        ],
+        "dynamic_predictors": [
+          "dias_ultima_interaccion"
+        ],
+        "history_window_months": 3,
+        "initial_hgb_variants": [
+          "original",
+          "observed_time",
+          "temporal_structure",
+          "temporal_lags",
+          "temporal_v2"
+        ],
+        "competitive_min_mean_gain": 0.0005,
+        "competitive_min_improved_months": 2,
+        "competitive_max_month_loss": 0.002,
+        "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+        "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget."
+      },
+      "data_hashes": {
+        "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+        "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+        "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+        "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+      },
+      "python": "3.12",
+      "versions": {
+        "numpy": "2.5.3",
+        "pandas": "2.3.3",
+        "scikit-learn": "1.7.2",
+        "catboost": "1.2.10",
+        "lightgbm": "4.7.0",
+        "optuna": "4.9.0",
+        "joblib": "1.6.0",
+        "threadpoolctl": "3.7.0"
+      }
+    },
+    "feature_columns": [
+      "edad",
+      "ingresos",
+      "ratio_deuda_ingresos",
+      "antiguedad_cuenta_meses",
+      "numero_productos",
+      "saldo_promedio",
+      "dias_ultima_transaccion",
+      "antiguedad_direccion_meses",
+      "visitas_web_ultimos_90_dias",
+      "distancia_sucursal_km",
+      "dia_preferido_pago",
+      "dias_ultima_interaccion",
+      "ocupacion",
+      "region",
+      "canal_adquisicion",
+      "banda_riesgo",
+      "dispositivo_principal",
+      "tiene_tarjeta_credito",
+      "activo_movil",
+      "es_nuevo_cliente",
+      "tiene_prestamo",
+      "tiene_seguro"
+    ],
+    "identity": {
+      "spec": {
+        "name": "a_reproduced_catboost_trial_006",
+        "family": "catboost",
+        "blocks": [],
+        "params": {
+          "iterations": 600,
+          "depth": 3,
+          "learning_rate": 0.04133944642428183,
+          "l2_leaf_reg": 31.62562678271973,
+          "random_strength": 2.3283669032459575,
+          "bootstrap_type": "Bayesian",
+          "bagging_temperature": 1.2546406282501201
+        },
+        "seed": 42
+      },
+      "months": [
+        202608,
+        202609,
+        202610
+      ],
+      "context": {
+        "schema": "experiment-v2",
+        "code_hash_schema": "normalized-source-v1",
+        "code_sha256": "c3b823a3ddde401343c1ee06cf1ca49878ac6f8f4599f510b14c969abd467e52",
+        "protocol_sha256": "1e3e8a51371bfd5d07b0f100ba7502d3a7e0167c8c5a6777464d377d85e0182e",
+        "protocol": {
+          "development_months": [
+            202608,
+            202609,
+            202610
+          ],
+          "final_validation_month": 202611,
+          "test_month": 202612,
+          "seed": 42,
+          "threads": 4,
+          "selection_metric": "equal_month_mean_gini",
+          "iterations_policy": "fixed parameters and iterations; no early stopping",
+          "bootstrap_replicates": 500,
+          "ensemble_min_gain": 0.002,
+          "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+          "feature_blocks": [
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "dynamic_predictors": [
+            "dias_ultima_interaccion"
+          ],
+          "history_window_months": 3,
+          "initial_hgb_variants": [
+            "original",
+            "observed_time",
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "competitive_min_mean_gain": 0.0005,
+          "competitive_min_improved_months": 2,
+          "competitive_max_month_loss": 0.002,
+          "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+          "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget."
+        },
+        "data_hashes": {
+          "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+          "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+          "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+          "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+        },
+        "python": "3.12",
+        "versions": {
+          "numpy": "2.5.3",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2",
+          "catboost": "1.2.10",
+          "lightgbm": "4.7.0",
+          "optuna": "4.9.0",
+          "joblib": "1.6.0",
+          "threadpoolctl": "3.7.0"
+        }
+      }
+    },
+    "fingerprint": "fa323385f69b69a50705245ca35d0cfb1b469e1a9c587f836a564b517d7e2fc8",
+    "runtime": {
+      "timestamp_lima": "2026-10-04T19:34:08.658580-05:00",
+      "python": "3.12.3",
+      "platform": "Linux-7.2.8-2-cachyos-x86_64-with-glibc2.44"
+    },
+    "prediction_path": "artifacts/boost/runs/a_reproduced_catboost_trial_006/fa323385f69b69a50705245ca35d0cfb1b469e1a9c587f836a564b517d7e2fc8/validation.csv",
+    "predictions_sha256": "ca593f74b65d76c8f0a4847839fa69137966febe2ee0a41baeadd6b619413c35"
+  },
+  {
+    "spec": {
+      "name": "a_reproduced_features_observed_time",
+      "family": "hgb",
+      "blocks": [
+        "observed_time"
+      ],
+      "params": {},
+      "seed": 42
+    },
+    "months": [
+      202608,
+      202609,
+      202610
+    ],
+    "folds": [
+      {
+        "rows": 10050,
+        "positives": 1449,
+        "gini": 0.25800593427714635,
+        "auc": 0.6290029671385732,
+        "no_history": {
+          "rows": 1760,
+          "positives": 309,
+          "gini": 0.24132224400536173
+        },
+        "history": {
+          "rows": 8290,
+          "positives": 1140,
+          "gini": 0.2569709238130291
+        },
+        "composition_weighted_gini": 0.2580082509117041,
+        "top20_count": 2010,
+        "top20_positives": 491,
+        "top20_recall": 0.3388543823326432,
+        "month": 202608,
+        "train_rows": 70250,
+        "seconds": 1.7446796970016294
+      },
+      {
+        "rows": 9900,
+        "positives": 1393,
+        "gini": 0.2458247508850233,
+        "auc": 0.6229123754425117,
+        "no_history": {
+          "rows": 1299,
+          "positives": 218,
+          "gini": 0.24468509450135367
+        },
+        "history": {
+          "rows": 8601,
+          "positives": 1175,
+          "gini": 0.24357249686266202
+        },
+        "composition_weighted_gini": 0.24654581330841618,
+        "top20_count": 1980,
+        "top20_positives": 459,
+        "top20_recall": 0.3295046661880833,
+        "month": 202609,
+        "train_rows": 80300,
+        "seconds": 1.9091526180000074
+      },
+      {
+        "rows": 10400,
+        "positives": 1628,
+        "gini": 0.26931878402466625,
+        "auc": 0.6346593920123331,
+        "no_history": {
+          "rows": 1893,
+          "positives": 341,
+          "gini": 0.3008170329836444
+        },
+        "history": {
+          "rows": 8507,
+          "positives": 1287,
+          "gini": 0.2576902629534208
+        },
+        "composition_weighted_gini": 0.2695376830225076,
+        "top20_count": 2080,
+        "top20_positives": 544,
+        "top20_recall": 0.33415233415233414,
+        "month": 202610,
+        "train_rows": 90200,
+        "seconds": 1.9708435400007147
+      }
+    ],
+    "mean_gini": 0.2577164897289453,
+    "worst_gini": 0.2458247508850233,
+    "seconds": 48.39229726099984,
+    "provenance": {
+      "schema": "experiment-v2",
+      "code_hash_schema": "normalized-source-v1",
+      "code_sha256": "c3b823a3ddde401343c1ee06cf1ca49878ac6f8f4599f510b14c969abd467e52",
+      "protocol_sha256": "1e3e8a51371bfd5d07b0f100ba7502d3a7e0167c8c5a6777464d377d85e0182e",
+      "protocol": {
+        "development_months": [
+          202608,
+          202609,
+          202610
+        ],
+        "final_validation_month": 202611,
+        "test_month": 202612,
+        "seed": 42,
+        "threads": 4,
+        "selection_metric": "equal_month_mean_gini",
+        "iterations_policy": "fixed parameters and iterations; no early stopping",
+        "bootstrap_replicates": 500,
+        "ensemble_min_gain": 0.002,
+        "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+        "feature_blocks": [
+          "temporal_structure",
+          "temporal_lags",
+          "temporal_v2"
+        ],
+        "dynamic_predictors": [
+          "dias_ultima_interaccion"
+        ],
+        "history_window_months": 3,
+        "initial_hgb_variants": [
+          "original",
+          "observed_time",
+          "temporal_structure",
+          "temporal_lags",
+          "temporal_v2"
+        ],
+        "competitive_min_mean_gain": 0.0005,
+        "competitive_min_improved_months": 2,
+        "competitive_max_month_loss": 0.002,
+        "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+        "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget."
+      },
+      "data_hashes": {
+        "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+        "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+        "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+        "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+      },
+      "python": "3.12",
+      "versions": {
+        "numpy": "2.5.3",
+        "pandas": "2.3.3",
+        "scikit-learn": "1.7.2",
+        "catboost": "1.2.10",
+        "lightgbm": "4.7.0",
+        "optuna": "4.9.0",
+        "joblib": "1.6.0",
+        "threadpoolctl": "3.7.0"
+      }
+    },
+    "feature_columns": [
+      "edad",
+      "ingresos",
+      "ratio_deuda_ingresos",
+      "antiguedad_cuenta_meses",
+      "numero_productos",
+      "saldo_promedio",
+      "dias_ultima_transaccion",
+      "antiguedad_direccion_meses",
+      "visitas_web_ultimos_90_dias",
+      "distancia_sucursal_km",
+      "dia_preferido_pago",
+      "dias_ultima_interaccion",
+      "ocupacion",
+      "region",
+      "canal_adquisicion",
+      "banda_riesgo",
+      "dispositivo_principal",
+      "tiene_tarjeta_credito",
+      "activo_movil",
+      "es_nuevo_cliente",
+      "tiene_prestamo",
+      "tiene_seguro",
+      "meses_desde_primera_observacion"
+    ],
+    "identity": {
+      "spec": {
+        "name": "a_reproduced_features_observed_time",
+        "family": "hgb",
+        "blocks": [
+          "observed_time"
+        ],
+        "params": {},
+        "seed": 42
+      },
+      "months": [
+        202608,
+        202609,
+        202610
+      ],
+      "context": {
+        "schema": "experiment-v2",
+        "code_hash_schema": "normalized-source-v1",
+        "code_sha256": "c3b823a3ddde401343c1ee06cf1ca49878ac6f8f4599f510b14c969abd467e52",
+        "protocol_sha256": "1e3e8a51371bfd5d07b0f100ba7502d3a7e0167c8c5a6777464d377d85e0182e",
+        "protocol": {
+          "development_months": [
+            202608,
+            202609,
+            202610
+          ],
+          "final_validation_month": 202611,
+          "test_month": 202612,
+          "seed": 42,
+          "threads": 4,
+          "selection_metric": "equal_month_mean_gini",
+          "iterations_policy": "fixed parameters and iterations; no early stopping",
+          "bootstrap_replicates": 500,
+          "ensemble_min_gain": 0.002,
+          "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+          "feature_blocks": [
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "dynamic_predictors": [
+            "dias_ultima_interaccion"
+          ],
+          "history_window_months": 3,
+          "initial_hgb_variants": [
+            "original",
+            "observed_time",
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "competitive_min_mean_gain": 0.0005,
+          "competitive_min_improved_months": 2,
+          "competitive_max_month_loss": 0.002,
+          "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+          "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget."
+        },
+        "data_hashes": {
+          "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+          "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+          "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+          "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+        },
+        "python": "3.12",
+        "versions": {
+          "numpy": "2.5.3",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2",
+          "catboost": "1.2.10",
+          "lightgbm": "4.7.0",
+          "optuna": "4.9.0",
+          "joblib": "1.6.0",
+          "threadpoolctl": "3.7.0"
+        }
+      }
+    },
+    "fingerprint": "eef46c8dfa7542b4f9caa7bbc078ab48ff2f21d1d018d23a18c3e4a34033b9af",
+    "runtime": {
+      "timestamp_lima": "2026-10-04T19:34:57.924614-05:00",
+      "python": "3.12.3",
+      "platform": "Linux-7.2.8-2-cachyos-x86_64-with-glibc2.44"
+    },
+    "prediction_path": "artifacts/boost/runs/a_reproduced_features_observed_time/eef46c8dfa7542b4f9caa7bbc078ab48ff2f21d1d018d23a18c3e4a34033b9af/validation.csv",
+    "predictions_sha256": "b4d05e6c039e79c12cfed3441b520a1e27f5e3da151dabbb064ab5f0687cc3fc"
+  },
+  {
+    "spec": {
+      "name": "b_catboost_temporal_lags",
+      "family": "catboost",
+      "blocks": [
+        "temporal_lags"
+      ],
+      "params": {
+        "iterations": 600,
+        "depth": 3,
+        "learning_rate": 0.04133944642428183,
+        "l2_leaf_reg": 31.62562678271973,
+        "random_strength": 2.3283669032459575,
+        "bootstrap_type": "Bayesian",
+        "bagging_temperature": 1.2546406282501201
+      },
+      "seed": 42
+    },
+    "months": [
+      202608,
+      202609,
+      202610
+    ],
+    "folds": [
+      {
+        "rows": 10050,
+        "positives": 1449,
+        "gini": 0.2590206300341118,
+        "auc": 0.6295103150170559,
+        "no_history": {
+          "rows": 1760,
+          "positives": 309,
+          "gini": 0.25970483474180295
+        },
+        "history": {
+          "rows": 8290,
+          "positives": 1140,
+          "gini": 0.2539916574653418
+        },
+        "composition_weighted_gini": 0.2592609742860357,
+        "top20_count": 2010,
+        "top20_positives": 482,
+        "top20_recall": 0.3326432022084196,
+        "month": 202608,
+        "train_rows": 70250,
+        "seconds": 25.951346885998646
+      },
+      {
+        "rows": 9900,
+        "positives": 1393,
+        "gini": 0.24392251269614462,
+        "auc": 0.6219612563480723,
+        "no_history": {
+          "rows": 1299,
+          "positives": 218,
+          "gini": 0.21827393935279105
+        },
+        "history": {
+          "rows": 8601,
+          "positives": 1175,
+          "gini": 0.2459200852668313
+        },
+        "composition_weighted_gini": 0.2429274487142572,
+        "top20_count": 1980,
+        "top20_positives": 465,
+        "top20_recall": 0.3338119167264896,
+        "month": 202609,
+        "train_rows": 80300,
+        "seconds": 30.283356275000187
+      },
+      {
+        "rows": 10400,
+        "positives": 1628,
+        "gini": 0.2631589119277218,
+        "auc": 0.6315794559638609,
+        "no_history": {
+          "rows": 1893,
+          "positives": 341,
+          "gini": 0.2875298545817333
+        },
+        "history": {
+          "rows": 8507,
+          "positives": 1287,
+          "gini": 0.2534669085915624
+        },
+        "composition_weighted_gini": 0.26333957129282526,
+        "top20_count": 2080,
+        "top20_positives": 539,
+        "top20_recall": 0.3310810810810811,
+        "month": 202610,
+        "train_rows": 90200,
+        "seconds": 32.46369434999906
+      }
+    ],
+    "mean_gini": 0.2553673515526594,
+    "worst_gini": 0.24392251269614462,
+    "seconds": 89.5601868040012,
+    "provenance": {
+      "schema": "experiment-v2",
+      "code_hash_schema": "normalized-source-v1",
+      "code_sha256": "c3b823a3ddde401343c1ee06cf1ca49878ac6f8f4599f510b14c969abd467e52",
+      "protocol_sha256": "1e3e8a51371bfd5d07b0f100ba7502d3a7e0167c8c5a6777464d377d85e0182e",
+      "protocol": {
+        "development_months": [
+          202608,
+          202609,
+          202610
+        ],
+        "final_validation_month": 202611,
+        "test_month": 202612,
+        "seed": 42,
+        "threads": 4,
+        "selection_metric": "equal_month_mean_gini",
+        "iterations_policy": "fixed parameters and iterations; no early stopping",
+        "bootstrap_replicates": 500,
+        "ensemble_min_gain": 0.002,
+        "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+        "feature_blocks": [
+          "temporal_structure",
+          "temporal_lags",
+          "temporal_v2"
+        ],
+        "dynamic_predictors": [
+          "dias_ultima_interaccion"
+        ],
+        "history_window_months": 3,
+        "initial_hgb_variants": [
+          "original",
+          "observed_time",
+          "temporal_structure",
+          "temporal_lags",
+          "temporal_v2"
+        ],
+        "competitive_min_mean_gain": 0.0005,
+        "competitive_min_improved_months": 2,
+        "competitive_max_month_loss": 0.002,
+        "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+        "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget."
+      },
+      "data_hashes": {
+        "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+        "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+        "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+        "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+      },
+      "python": "3.12",
+      "versions": {
+        "numpy": "2.5.3",
+        "pandas": "2.3.3",
+        "scikit-learn": "1.7.2",
+        "catboost": "1.2.10",
+        "lightgbm": "4.7.0",
+        "optuna": "4.9.0",
+        "joblib": "1.6.0",
+        "threadpoolctl": "3.7.0"
+      }
+    },
+    "feature_columns": [
+      "edad",
+      "ingresos",
+      "ratio_deuda_ingresos",
+      "antiguedad_cuenta_meses",
+      "numero_productos",
+      "saldo_promedio",
+      "dias_ultima_transaccion",
+      "antiguedad_direccion_meses",
+      "visitas_web_ultimos_90_dias",
+      "distancia_sucursal_km",
+      "dia_preferido_pago",
+      "dias_ultima_interaccion",
+      "ocupacion",
+      "region",
+      "canal_adquisicion",
+      "banda_riesgo",
+      "dispositivo_principal",
+      "tiene_tarjeta_credito",
+      "activo_movil",
+      "es_nuevo_cliente",
+      "tiene_prestamo",
+      "tiene_seguro",
+      "observaciones_previas",
+      "sin_historial",
+      "meses_desde_primera_observacion",
+      "meses_desde_observacion_previa",
+      "observaciones_previas_3m",
+      "interaccion_lag1",
+      "interaccion_lag2",
+      "interaccion_delta1",
+      "interaccion_delta_previa"
+    ],
+    "identity": {
+      "spec": {
+        "name": "b_catboost_temporal_lags",
+        "family": "catboost",
+        "blocks": [
+          "temporal_lags"
+        ],
+        "params": {
+          "iterations": 600,
+          "depth": 3,
+          "learning_rate": 0.04133944642428183,
+          "l2_leaf_reg": 31.62562678271973,
+          "random_strength": 2.3283669032459575,
+          "bootstrap_type": "Bayesian",
+          "bagging_temperature": 1.2546406282501201
+        },
+        "seed": 42
+      },
+      "months": [
+        202608,
+        202609,
+        202610
+      ],
+      "context": {
+        "schema": "experiment-v2",
+        "code_hash_schema": "normalized-source-v1",
+        "code_sha256": "c3b823a3ddde401343c1ee06cf1ca49878ac6f8f4599f510b14c969abd467e52",
+        "protocol_sha256": "1e3e8a51371bfd5d07b0f100ba7502d3a7e0167c8c5a6777464d377d85e0182e",
+        "protocol": {
+          "development_months": [
+            202608,
+            202609,
+            202610
+          ],
+          "final_validation_month": 202611,
+          "test_month": 202612,
+          "seed": 42,
+          "threads": 4,
+          "selection_metric": "equal_month_mean_gini",
+          "iterations_policy": "fixed parameters and iterations; no early stopping",
+          "bootstrap_replicates": 500,
+          "ensemble_min_gain": 0.002,
+          "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+          "feature_blocks": [
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "dynamic_predictors": [
+            "dias_ultima_interaccion"
+          ],
+          "history_window_months": 3,
+          "initial_hgb_variants": [
+            "original",
+            "observed_time",
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "competitive_min_mean_gain": 0.0005,
+          "competitive_min_improved_months": 2,
+          "competitive_max_month_loss": 0.002,
+          "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+          "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget."
+        },
+        "data_hashes": {
+          "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+          "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+          "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+          "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+        },
+        "python": "3.12",
+        "versions": {
+          "numpy": "2.5.3",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2",
+          "catboost": "1.2.10",
+          "lightgbm": "4.7.0",
+          "optuna": "4.9.0",
+          "joblib": "1.6.0",
+          "threadpoolctl": "3.7.0"
+        }
+      }
+    },
+    "fingerprint": "4d9d251c2f82ae007c8a1afcd30696d1f3a1eb7683de889ee421c7a744d998aa",
+    "runtime": {
+      "timestamp_lima": "2026-10-04T19:36:28.342532-05:00",
+      "python": "3.12.3",
+      "platform": "Linux-7.2.8-2-cachyos-x86_64-with-glibc2.44"
+    },
+    "prediction_path": "artifacts/boost/runs/b_catboost_temporal_lags/4d9d251c2f82ae007c8a1afcd30696d1f3a1eb7683de889ee421c7a744d998aa/validation.csv",
+    "predictions_sha256": "4ff12474623e046c655f7a727b50b20072bbde2e41d604827c51100581ce03ec"
+  }
+]
