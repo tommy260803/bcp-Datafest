@@ -1,0 +1,133 @@
+{
+  "context": {
+    "schema": "experiment-v2",
+    "code_hash_schema": "normalized-source-v1",
+    "code_sha256": "03f862e5db07e6ee4c4b807299fc342c25568b160009a3b3be39138e7c5e718e",
+    "protocol_sha256": "838e38df482b4205756824aaaa6a16df17a292e8296e278cef4b686a840a5dc6",
+    "protocol": {
+      "development_months": [
+        202608,
+        202609,
+        202610
+      ],
+      "final_validation_month": 202611,
+      "test_month": 202612,
+      "seed": 42,
+      "threads": 4,
+      "selection_metric": "equal_month_mean_gini",
+      "iterations_policy": "fixed parameters and iterations; no early stopping",
+      "bootstrap_replicates": 500,
+      "ensemble_min_gain": 0.002,
+      "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+      "feature_blocks": [
+        "temporal_structure",
+        "temporal_lags",
+        "temporal_v2"
+      ],
+      "dynamic_predictors": [
+        "dias_ultima_interaccion"
+      ],
+      "history_window_months": 3,
+      "initial_hgb_variants": [
+        "original",
+        "observed_time",
+        "temporal_structure",
+        "temporal_lags",
+        "temporal_v2"
+      ],
+      "competitive_min_mean_gain": 0.0005,
+      "competitive_min_improved_months": 2,
+      "competitive_max_month_loss": 0.002,
+      "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+      "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget.",
+      "round_config": {
+        "name": "catboost_round_3",
+        "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+        "budget": 6,
+        "max_ensembles": 2,
+        "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+        "blocks": [],
+        "variants": [
+          {
+            "name": "depth2",
+            "overrides": {
+              "depth": 2
+            }
+          },
+          {
+            "name": "depth2_l2_60",
+            "overrides": {
+              "depth": 2,
+              "l2_leaf_reg": 60
+            }
+          },
+          {
+            "name": "depth3_l2_60",
+            "overrides": {
+              "l2_leaf_reg": 60
+            }
+          },
+          {
+            "name": "depth3_l2_10",
+            "overrides": {
+              "l2_leaf_reg": 10
+            }
+          },
+          {
+            "name": "depth4_l2_60",
+            "overrides": {
+              "depth": 4,
+              "l2_leaf_reg": 60
+            }
+          },
+          {
+            "name": "depth3_slower",
+            "overrides": {
+              "iterations": 900,
+              "learning_rate": 0.02755963094952122
+            }
+          }
+        ],
+        "hgb_alternative": {
+          "name": "r3_hgb_shallow",
+          "family": "hgb",
+          "blocks": [
+            "observed_time"
+          ],
+          "params": {
+            "max_iter": 150,
+            "learning_rate": 0.06,
+            "early_stopping": false,
+            "max_leaf_nodes": 7,
+            "min_samples_leaf": 200,
+            "l2_regularization": 30
+          },
+          "seed": 42
+        },
+        "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+        "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+        "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+        "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+        "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+      }
+    },
+    "data_hashes": {
+      "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+      "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+      "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+      "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+    },
+    "python": "3.12",
+    "versions": {
+      "numpy": "2.5.3",
+      "pandas": "2.3.3",
+      "scikit-learn": "1.7.2",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "optuna": "4.9.0",
+      "joblib": "1.6.0",
+      "threadpoolctl": "3.7.0"
+    }
+  },
+  "excluded": []
+}

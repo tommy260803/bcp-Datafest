@@ -1,0 +1,3968 @@
+{
+  "timestamp_lima": "2026-10-04T20:57:03.247036-05:00",
+  "context": {
+    "schema": "experiment-v2",
+    "code_hash_schema": "normalized-source-v1",
+    "code_sha256": "03f862e5db07e6ee4c4b807299fc342c25568b160009a3b3be39138e7c5e718e",
+    "protocol_sha256": "838e38df482b4205756824aaaa6a16df17a292e8296e278cef4b686a840a5dc6",
+    "protocol": {
+      "development_months": [
+        202608,
+        202609,
+        202610
+      ],
+      "final_validation_month": 202611,
+      "test_month": 202612,
+      "seed": 42,
+      "threads": 4,
+      "selection_metric": "equal_month_mean_gini",
+      "iterations_policy": "fixed parameters and iterations; no early stopping",
+      "bootstrap_replicates": 500,
+      "ensemble_min_gain": 0.002,
+      "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+      "feature_blocks": [
+        "temporal_structure",
+        "temporal_lags",
+        "temporal_v2"
+      ],
+      "dynamic_predictors": [
+        "dias_ultima_interaccion"
+      ],
+      "history_window_months": 3,
+      "initial_hgb_variants": [
+        "original",
+        "observed_time",
+        "temporal_structure",
+        "temporal_lags",
+        "temporal_v2"
+      ],
+      "competitive_min_mean_gain": 0.0005,
+      "competitive_min_improved_months": 2,
+      "competitive_max_month_loss": 0.002,
+      "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+      "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget.",
+      "round_config": {
+        "name": "catboost_round_3",
+        "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+        "budget": 6,
+        "max_ensembles": 2,
+        "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+        "blocks": [],
+        "variants": [
+          {
+            "name": "depth2",
+            "overrides": {
+              "depth": 2
+            }
+          },
+          {
+            "name": "depth2_l2_60",
+            "overrides": {
+              "depth": 2,
+              "l2_leaf_reg": 60
+            }
+          },
+          {
+            "name": "depth3_l2_60",
+            "overrides": {
+              "l2_leaf_reg": 60
+            }
+          },
+          {
+            "name": "depth3_l2_10",
+            "overrides": {
+              "l2_leaf_reg": 10
+            }
+          },
+          {
+            "name": "depth4_l2_60",
+            "overrides": {
+              "depth": 4,
+              "l2_leaf_reg": 60
+            }
+          },
+          {
+            "name": "depth3_slower",
+            "overrides": {
+              "iterations": 900,
+              "learning_rate": 0.02755963094952122
+            }
+          }
+        ],
+        "hgb_alternative": {
+          "name": "r3_hgb_shallow",
+          "family": "hgb",
+          "blocks": [
+            "observed_time"
+          ],
+          "params": {
+            "max_iter": 150,
+            "learning_rate": 0.06,
+            "early_stopping": false,
+            "max_leaf_nodes": 7,
+            "min_samples_leaf": 200,
+            "l2_regularization": 30
+          },
+          "seed": 42
+        },
+        "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+        "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+        "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+        "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+        "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+      }
+    },
+    "data_hashes": {
+      "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+      "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+      "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+      "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+    },
+    "python": "3.12",
+    "versions": {
+      "numpy": "2.5.3",
+      "pandas": "2.3.3",
+      "scikit-learn": "1.7.2",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "optuna": "4.9.0",
+      "joblib": "1.6.0",
+      "threadpoolctl": "3.7.0"
+    }
+  },
+  "plan": {
+    "name": "catboost_round_3",
+    "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+    "budget": 6,
+    "max_ensembles": 2,
+    "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+    "blocks": [],
+    "variants": [
+      {
+        "name": "depth2",
+        "overrides": {
+          "depth": 2
+        }
+      },
+      {
+        "name": "depth2_l2_60",
+        "overrides": {
+          "depth": 2,
+          "l2_leaf_reg": 60
+        }
+      },
+      {
+        "name": "depth3_l2_60",
+        "overrides": {
+          "l2_leaf_reg": 60
+        }
+      },
+      {
+        "name": "depth3_l2_10",
+        "overrides": {
+          "l2_leaf_reg": 10
+        }
+      },
+      {
+        "name": "depth4_l2_60",
+        "overrides": {
+          "depth": 4,
+          "l2_leaf_reg": 60
+        }
+      },
+      {
+        "name": "depth3_slower",
+        "overrides": {
+          "iterations": 900,
+          "learning_rate": 0.02755963094952122
+        }
+      }
+    ],
+    "hgb_alternative": {
+      "name": "r3_hgb_shallow",
+      "family": "hgb",
+      "blocks": [
+        "observed_time"
+      ],
+      "params": {
+        "max_iter": 150,
+        "learning_rate": 0.06,
+        "early_stopping": false,
+        "max_leaf_nodes": 7,
+        "min_samples_leaf": 200,
+        "l2_regularization": 30
+      },
+      "seed": 42
+    },
+    "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+    "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+    "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+    "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+    "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+  },
+  "plan_sha256": "84b2978acd979042992b5c633bbe698aaf1870c55f18ae664737b0606a45fb64",
+  "budget_consumed": 6,
+  "configurations": [
+    {
+      "spec": {
+        "name": "r3_catboost_depth2",
+        "family": "catboost",
+        "blocks": [],
+        "params": {
+          "iterations": 600,
+          "depth": 2,
+          "learning_rate": 0.04133944642428183,
+          "l2_leaf_reg": 31.62562678271973,
+          "random_strength": 2.3283669032459575,
+          "bootstrap_type": "Bayesian",
+          "bagging_temperature": 1.2546406282501201
+        },
+        "seed": 42
+      },
+      "months": [
+        202608,
+        202609,
+        202610
+      ],
+      "folds": [
+        {
+          "rows": 10050,
+          "positives": 1449,
+          "gini": 0.26086049826969737,
+          "auc": 0.6304302491348487,
+          "no_history": {
+            "rows": 1760,
+            "positives": 309,
+            "gini": 0.2598297346545959
+          },
+          "history": {
+            "rows": 8290,
+            "positives": 1140,
+            "gini": 0.254403631456263
+          },
+          "composition_weighted_gini": 0.26116373393853864,
+          "top20_count": 2010,
+          "top20_positives": 484,
+          "top20_recall": 0.33402346445824704,
+          "month": 202608,
+          "train_rows": 70250,
+          "seconds": 21.889379034997546
+        },
+        {
+          "rows": 9900,
+          "positives": 1393,
+          "gini": 0.24517784475619986,
+          "auc": 0.6225889223780999,
+          "no_history": {
+            "rows": 1299,
+            "positives": 218,
+            "gini": 0.21155233431498188
+          },
+          "history": {
+            "rows": 8601,
+            "positives": 1175,
+            "gini": 0.24727335239612414
+          },
+          "composition_weighted_gini": 0.24404438270358275,
+          "top20_count": 1980,
+          "top20_positives": 460,
+          "top20_recall": 0.33022254127781764,
+          "month": 202609,
+          "train_rows": 80300,
+          "seconds": 23.251037297002767
+        },
+        {
+          "rows": 10400,
+          "positives": 1628,
+          "gini": 0.2616667002781914,
+          "auc": 0.6308333501390957,
+          "no_history": {
+            "rows": 1893,
+            "positives": 341,
+            "gini": 0.2831801553949873
+          },
+          "history": {
+            "rows": 8507,
+            "positives": 1287,
+            "gini": 0.2526929211139737
+          },
+          "composition_weighted_gini": 0.2618329739833527,
+          "top20_count": 2080,
+          "top20_positives": 542,
+          "top20_recall": 0.33292383292383293,
+          "month": 202610,
+          "train_rows": 90200,
+          "seconds": 26.621276036999916
+        }
+      ],
+      "mean_gini": 0.25590168110136285,
+      "worst_gini": 0.24517784475619986,
+      "seconds": 72.25847900200097,
+      "provenance": {
+        "schema": "experiment-v2",
+        "code_hash_schema": "normalized-source-v1",
+        "code_sha256": "03f862e5db07e6ee4c4b807299fc342c25568b160009a3b3be39138e7c5e718e",
+        "protocol_sha256": "838e38df482b4205756824aaaa6a16df17a292e8296e278cef4b686a840a5dc6",
+        "protocol": {
+          "development_months": [
+            202608,
+            202609,
+            202610
+          ],
+          "final_validation_month": 202611,
+          "test_month": 202612,
+          "seed": 42,
+          "threads": 4,
+          "selection_metric": "equal_month_mean_gini",
+          "iterations_policy": "fixed parameters and iterations; no early stopping",
+          "bootstrap_replicates": 500,
+          "ensemble_min_gain": 0.002,
+          "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+          "feature_blocks": [
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "dynamic_predictors": [
+            "dias_ultima_interaccion"
+          ],
+          "history_window_months": 3,
+          "initial_hgb_variants": [
+            "original",
+            "observed_time",
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "competitive_min_mean_gain": 0.0005,
+          "competitive_min_improved_months": 2,
+          "competitive_max_month_loss": 0.002,
+          "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+          "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget.",
+          "round_config": {
+            "name": "catboost_round_3",
+            "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+            "budget": 6,
+            "max_ensembles": 2,
+            "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+            "blocks": [],
+            "variants": [
+              {
+                "name": "depth2",
+                "overrides": {
+                  "depth": 2
+                }
+              },
+              {
+                "name": "depth2_l2_60",
+                "overrides": {
+                  "depth": 2,
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_l2_60",
+                "overrides": {
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_l2_10",
+                "overrides": {
+                  "l2_leaf_reg": 10
+                }
+              },
+              {
+                "name": "depth4_l2_60",
+                "overrides": {
+                  "depth": 4,
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_slower",
+                "overrides": {
+                  "iterations": 900,
+                  "learning_rate": 0.02755963094952122
+                }
+              }
+            ],
+            "hgb_alternative": {
+              "name": "r3_hgb_shallow",
+              "family": "hgb",
+              "blocks": [
+                "observed_time"
+              ],
+              "params": {
+                "max_iter": 150,
+                "learning_rate": 0.06,
+                "early_stopping": false,
+                "max_leaf_nodes": 7,
+                "min_samples_leaf": 200,
+                "l2_regularization": 30
+              },
+              "seed": 42
+            },
+            "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+            "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+            "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+            "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+            "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+          }
+        },
+        "data_hashes": {
+          "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+          "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+          "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+          "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+        },
+        "python": "3.12",
+        "versions": {
+          "numpy": "2.5.3",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2",
+          "catboost": "1.2.10",
+          "lightgbm": "4.7.0",
+          "optuna": "4.9.0",
+          "joblib": "1.6.0",
+          "threadpoolctl": "3.7.0"
+        }
+      },
+      "feature_columns": [
+        "edad",
+        "ingresos",
+        "ratio_deuda_ingresos",
+        "antiguedad_cuenta_meses",
+        "numero_productos",
+        "saldo_promedio",
+        "dias_ultima_transaccion",
+        "antiguedad_direccion_meses",
+        "visitas_web_ultimos_90_dias",
+        "distancia_sucursal_km",
+        "dia_preferido_pago",
+        "dias_ultima_interaccion",
+        "ocupacion",
+        "region",
+        "canal_adquisicion",
+        "banda_riesgo",
+        "dispositivo_principal",
+        "tiene_tarjeta_credito",
+        "activo_movil",
+        "es_nuevo_cliente",
+        "tiene_prestamo",
+        "tiene_seguro"
+      ],
+      "identity": {
+        "spec": {
+          "name": "r3_catboost_depth2",
+          "family": "catboost",
+          "blocks": [],
+          "params": {
+            "iterations": 600,
+            "depth": 2,
+            "learning_rate": 0.04133944642428183,
+            "l2_leaf_reg": 31.62562678271973,
+            "random_strength": 2.3283669032459575,
+            "bootstrap_type": "Bayesian",
+            "bagging_temperature": 1.2546406282501201
+          },
+          "seed": 42
+        },
+        "months": [
+          202608,
+          202609,
+          202610
+        ],
+        "context": {
+          "schema": "experiment-v2",
+          "code_hash_schema": "normalized-source-v1",
+          "code_sha256": "03f862e5db07e6ee4c4b807299fc342c25568b160009a3b3be39138e7c5e718e",
+          "protocol_sha256": "838e38df482b4205756824aaaa6a16df17a292e8296e278cef4b686a840a5dc6",
+          "protocol": {
+            "development_months": [
+              202608,
+              202609,
+              202610
+            ],
+            "final_validation_month": 202611,
+            "test_month": 202612,
+            "seed": 42,
+            "threads": 4,
+            "selection_metric": "equal_month_mean_gini",
+            "iterations_policy": "fixed parameters and iterations; no early stopping",
+            "bootstrap_replicates": 500,
+            "ensemble_min_gain": 0.002,
+            "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+            "feature_blocks": [
+              "temporal_structure",
+              "temporal_lags",
+              "temporal_v2"
+            ],
+            "dynamic_predictors": [
+              "dias_ultima_interaccion"
+            ],
+            "history_window_months": 3,
+            "initial_hgb_variants": [
+              "original",
+              "observed_time",
+              "temporal_structure",
+              "temporal_lags",
+              "temporal_v2"
+            ],
+            "competitive_min_mean_gain": 0.0005,
+            "competitive_min_improved_months": 2,
+            "competitive_max_month_loss": 0.002,
+            "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+            "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget.",
+            "round_config": {
+              "name": "catboost_round_3",
+              "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+              "budget": 6,
+              "max_ensembles": 2,
+              "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+              "blocks": [],
+              "variants": [
+                {
+                  "name": "depth2",
+                  "overrides": {
+                    "depth": 2
+                  }
+                },
+                {
+                  "name": "depth2_l2_60",
+                  "overrides": {
+                    "depth": 2,
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_l2_60",
+                  "overrides": {
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_l2_10",
+                  "overrides": {
+                    "l2_leaf_reg": 10
+                  }
+                },
+                {
+                  "name": "depth4_l2_60",
+                  "overrides": {
+                    "depth": 4,
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_slower",
+                  "overrides": {
+                    "iterations": 900,
+                    "learning_rate": 0.02755963094952122
+                  }
+                }
+              ],
+              "hgb_alternative": {
+                "name": "r3_hgb_shallow",
+                "family": "hgb",
+                "blocks": [
+                  "observed_time"
+                ],
+                "params": {
+                  "max_iter": 150,
+                  "learning_rate": 0.06,
+                  "early_stopping": false,
+                  "max_leaf_nodes": 7,
+                  "min_samples_leaf": 200,
+                  "l2_regularization": 30
+                },
+                "seed": 42
+              },
+              "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+              "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+              "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+              "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+              "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+            }
+          },
+          "data_hashes": {
+            "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+            "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+            "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+            "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+          },
+          "python": "3.12",
+          "versions": {
+            "numpy": "2.5.3",
+            "pandas": "2.3.3",
+            "scikit-learn": "1.7.2",
+            "catboost": "1.2.10",
+            "lightgbm": "4.7.0",
+            "optuna": "4.9.0",
+            "joblib": "1.6.0",
+            "threadpoolctl": "3.7.0"
+          }
+        }
+      },
+      "fingerprint": "df381568121d7c0d8e33b62d582dbb1473e557271773b5fe19b5fbe7a3053128",
+      "runtime": {
+        "timestamp_lima": "2026-10-04T20:48:16.758499-05:00",
+        "python": "3.12.3",
+        "platform": "Linux-7.2.8-2-cachyos-x86_64-with-glibc2.44"
+      },
+      "prediction_path": "artifacts/boost/rounds/catboost_round_3/runs/r3_catboost_depth2/df381568121d7c0d8e33b62d582dbb1473e557271773b5fe19b5fbe7a3053128/validation.csv",
+      "predictions_sha256": "c4140986099769eb92d182510546c9542be002a8280e68a97c7124ca79b2796e"
+    },
+    {
+      "spec": {
+        "name": "r3_catboost_depth2_l2_60",
+        "family": "catboost",
+        "blocks": [],
+        "params": {
+          "iterations": 600,
+          "depth": 2,
+          "learning_rate": 0.04133944642428183,
+          "l2_leaf_reg": 60,
+          "random_strength": 2.3283669032459575,
+          "bootstrap_type": "Bayesian",
+          "bagging_temperature": 1.2546406282501201
+        },
+        "seed": 42
+      },
+      "months": [
+        202608,
+        202609,
+        202610
+      ],
+      "folds": [
+        {
+          "rows": 10050,
+          "positives": 1449,
+          "gini": 0.2606316581385204,
+          "auc": 0.6303158290692602,
+          "no_history": {
+            "rows": 1760,
+            "positives": 309,
+            "gini": 0.2589331317091883
+          },
+          "history": {
+            "rows": 8290,
+            "positives": 1140,
+            "gini": 0.2543447429763219
+          },
+          "composition_weighted_gini": 0.2609249649702483,
+          "top20_count": 2010,
+          "top20_positives": 487,
+          "top20_recall": 0.3360938578329883,
+          "month": 202608,
+          "train_rows": 70250,
+          "seconds": 21.54145511999741
+        },
+        {
+          "rows": 9900,
+          "positives": 1393,
+          "gini": 0.24385399094078264,
+          "auc": 0.6219269954703913,
+          "no_history": {
+            "rows": 1299,
+            "positives": 218,
+            "gini": 0.21027930305782117
+          },
+          "history": {
+            "rows": 8601,
+            "positives": 1175,
+            "gini": 0.2457800367885119
+          },
+          "composition_weighted_gini": 0.24277660369154486,
+          "top20_count": 1980,
+          "top20_positives": 466,
+          "top20_recall": 0.334529791816224,
+          "month": 202609,
+          "train_rows": 80300,
+          "seconds": 22.43099376399914
+        },
+        {
+          "rows": 10400,
+          "positives": 1628,
+          "gini": 0.25858018197279486,
+          "auc": 0.6292900909863974,
+          "no_history": {
+            "rows": 1893,
+            "positives": 341,
+            "gini": 0.27912900202557656
+          },
+          "history": {
+            "rows": 8507,
+            "positives": 1287,
+            "gini": 0.24983394567882122
+          },
+          "composition_weighted_gini": 0.2587418417886762,
+          "top20_count": 2080,
+          "top20_positives": 537,
+          "top20_recall": 0.3298525798525799,
+          "month": 202610,
+          "train_rows": 90200,
+          "seconds": 25.810848270997667
+        }
+      ],
+      "mean_gini": 0.254355277017366,
+      "worst_gini": 0.24385399094078264,
+      "seconds": 70.27001490800103,
+      "provenance": {
+        "schema": "experiment-v2",
+        "code_hash_schema": "normalized-source-v1",
+        "code_sha256": "03f862e5db07e6ee4c4b807299fc342c25568b160009a3b3be39138e7c5e718e",
+        "protocol_sha256": "838e38df482b4205756824aaaa6a16df17a292e8296e278cef4b686a840a5dc6",
+        "protocol": {
+          "development_months": [
+            202608,
+            202609,
+            202610
+          ],
+          "final_validation_month": 202611,
+          "test_month": 202612,
+          "seed": 42,
+          "threads": 4,
+          "selection_metric": "equal_month_mean_gini",
+          "iterations_policy": "fixed parameters and iterations; no early stopping",
+          "bootstrap_replicates": 500,
+          "ensemble_min_gain": 0.002,
+          "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+          "feature_blocks": [
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "dynamic_predictors": [
+            "dias_ultima_interaccion"
+          ],
+          "history_window_months": 3,
+          "initial_hgb_variants": [
+            "original",
+            "observed_time",
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "competitive_min_mean_gain": 0.0005,
+          "competitive_min_improved_months": 2,
+          "competitive_max_month_loss": 0.002,
+          "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+          "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget.",
+          "round_config": {
+            "name": "catboost_round_3",
+            "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+            "budget": 6,
+            "max_ensembles": 2,
+            "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+            "blocks": [],
+            "variants": [
+              {
+                "name": "depth2",
+                "overrides": {
+                  "depth": 2
+                }
+              },
+              {
+                "name": "depth2_l2_60",
+                "overrides": {
+                  "depth": 2,
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_l2_60",
+                "overrides": {
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_l2_10",
+                "overrides": {
+                  "l2_leaf_reg": 10
+                }
+              },
+              {
+                "name": "depth4_l2_60",
+                "overrides": {
+                  "depth": 4,
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_slower",
+                "overrides": {
+                  "iterations": 900,
+                  "learning_rate": 0.02755963094952122
+                }
+              }
+            ],
+            "hgb_alternative": {
+              "name": "r3_hgb_shallow",
+              "family": "hgb",
+              "blocks": [
+                "observed_time"
+              ],
+              "params": {
+                "max_iter": 150,
+                "learning_rate": 0.06,
+                "early_stopping": false,
+                "max_leaf_nodes": 7,
+                "min_samples_leaf": 200,
+                "l2_regularization": 30
+              },
+              "seed": 42
+            },
+            "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+            "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+            "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+            "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+            "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+          }
+        },
+        "data_hashes": {
+          "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+          "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+          "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+          "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+        },
+        "python": "3.12",
+        "versions": {
+          "numpy": "2.5.3",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2",
+          "catboost": "1.2.10",
+          "lightgbm": "4.7.0",
+          "optuna": "4.9.0",
+          "joblib": "1.6.0",
+          "threadpoolctl": "3.7.0"
+        }
+      },
+      "feature_columns": [
+        "edad",
+        "ingresos",
+        "ratio_deuda_ingresos",
+        "antiguedad_cuenta_meses",
+        "numero_productos",
+        "saldo_promedio",
+        "dias_ultima_transaccion",
+        "antiguedad_direccion_meses",
+        "visitas_web_ultimos_90_dias",
+        "distancia_sucursal_km",
+        "dia_preferido_pago",
+        "dias_ultima_interaccion",
+        "ocupacion",
+        "region",
+        "canal_adquisicion",
+        "banda_riesgo",
+        "dispositivo_principal",
+        "tiene_tarjeta_credito",
+        "activo_movil",
+        "es_nuevo_cliente",
+        "tiene_prestamo",
+        "tiene_seguro"
+      ],
+      "identity": {
+        "spec": {
+          "name": "r3_catboost_depth2_l2_60",
+          "family": "catboost",
+          "blocks": [],
+          "params": {
+            "iterations": 600,
+            "depth": 2,
+            "learning_rate": 0.04133944642428183,
+            "l2_leaf_reg": 60,
+            "random_strength": 2.3283669032459575,
+            "bootstrap_type": "Bayesian",
+            "bagging_temperature": 1.2546406282501201
+          },
+          "seed": 42
+        },
+        "months": [
+          202608,
+          202609,
+          202610
+        ],
+        "context": {
+          "schema": "experiment-v2",
+          "code_hash_schema": "normalized-source-v1",
+          "code_sha256": "03f862e5db07e6ee4c4b807299fc342c25568b160009a3b3be39138e7c5e718e",
+          "protocol_sha256": "838e38df482b4205756824aaaa6a16df17a292e8296e278cef4b686a840a5dc6",
+          "protocol": {
+            "development_months": [
+              202608,
+              202609,
+              202610
+            ],
+            "final_validation_month": 202611,
+            "test_month": 202612,
+            "seed": 42,
+            "threads": 4,
+            "selection_metric": "equal_month_mean_gini",
+            "iterations_policy": "fixed parameters and iterations; no early stopping",
+            "bootstrap_replicates": 500,
+            "ensemble_min_gain": 0.002,
+            "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+            "feature_blocks": [
+              "temporal_structure",
+              "temporal_lags",
+              "temporal_v2"
+            ],
+            "dynamic_predictors": [
+              "dias_ultima_interaccion"
+            ],
+            "history_window_months": 3,
+            "initial_hgb_variants": [
+              "original",
+              "observed_time",
+              "temporal_structure",
+              "temporal_lags",
+              "temporal_v2"
+            ],
+            "competitive_min_mean_gain": 0.0005,
+            "competitive_min_improved_months": 2,
+            "competitive_max_month_loss": 0.002,
+            "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+            "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget.",
+            "round_config": {
+              "name": "catboost_round_3",
+              "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+              "budget": 6,
+              "max_ensembles": 2,
+              "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+              "blocks": [],
+              "variants": [
+                {
+                  "name": "depth2",
+                  "overrides": {
+                    "depth": 2
+                  }
+                },
+                {
+                  "name": "depth2_l2_60",
+                  "overrides": {
+                    "depth": 2,
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_l2_60",
+                  "overrides": {
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_l2_10",
+                  "overrides": {
+                    "l2_leaf_reg": 10
+                  }
+                },
+                {
+                  "name": "depth4_l2_60",
+                  "overrides": {
+                    "depth": 4,
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_slower",
+                  "overrides": {
+                    "iterations": 900,
+                    "learning_rate": 0.02755963094952122
+                  }
+                }
+              ],
+              "hgb_alternative": {
+                "name": "r3_hgb_shallow",
+                "family": "hgb",
+                "blocks": [
+                  "observed_time"
+                ],
+                "params": {
+                  "max_iter": 150,
+                  "learning_rate": 0.06,
+                  "early_stopping": false,
+                  "max_leaf_nodes": 7,
+                  "min_samples_leaf": 200,
+                  "l2_regularization": 30
+                },
+                "seed": 42
+              },
+              "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+              "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+              "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+              "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+              "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+            }
+          },
+          "data_hashes": {
+            "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+            "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+            "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+            "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+          },
+          "python": "3.12",
+          "versions": {
+            "numpy": "2.5.3",
+            "pandas": "2.3.3",
+            "scikit-learn": "1.7.2",
+            "catboost": "1.2.10",
+            "lightgbm": "4.7.0",
+            "optuna": "4.9.0",
+            "joblib": "1.6.0",
+            "threadpoolctl": "3.7.0"
+          }
+        }
+      },
+      "fingerprint": "4cc0e4db709b86bcdb10cfb6d502a283329ac32f2c9dc0e0c77ed5eeff5f1fe7",
+      "runtime": {
+        "timestamp_lima": "2026-10-04T20:49:28.250004-05:00",
+        "python": "3.12.3",
+        "platform": "Linux-7.2.8-2-cachyos-x86_64-with-glibc2.44"
+      },
+      "prediction_path": "artifacts/boost/rounds/catboost_round_3/runs/r3_catboost_depth2_l2_60/4cc0e4db709b86bcdb10cfb6d502a283329ac32f2c9dc0e0c77ed5eeff5f1fe7/validation.csv",
+      "predictions_sha256": "f1ced48068c4794f36e20e68f526ecdac49c99e693ed8b9b484f4b8d20b1e254"
+    },
+    {
+      "spec": {
+        "name": "r3_catboost_depth3_l2_60",
+        "family": "catboost",
+        "blocks": [],
+        "params": {
+          "iterations": 600,
+          "depth": 3,
+          "learning_rate": 0.04133944642428183,
+          "l2_leaf_reg": 60,
+          "random_strength": 2.3283669032459575,
+          "bootstrap_type": "Bayesian",
+          "bagging_temperature": 1.2546406282501201
+        },
+        "seed": 42
+      },
+      "months": [
+        202608,
+        202609,
+        202610
+      ],
+      "folds": [
+        {
+          "rows": 10050,
+          "positives": 1449,
+          "gini": 0.2620507558103289,
+          "auc": 0.6310253779051644,
+          "no_history": {
+            "rows": 1760,
+            "positives": 309,
+            "gini": 0.2629343896297387
+          },
+          "history": {
+            "rows": 8290,
+            "positives": 1140,
+            "gini": 0.25507373328425964
+          },
+          "composition_weighted_gini": 0.26238401725062777,
+          "top20_count": 2010,
+          "top20_positives": 489,
+          "top20_recall": 0.33747412008281574,
+          "month": 202608,
+          "train_rows": 70250,
+          "seconds": 27.052703280998685
+        },
+        {
+          "rows": 9900,
+          "positives": 1393,
+          "gini": 0.24575572281127211,
+          "auc": 0.6228778614056361,
+          "no_history": {
+            "rows": 1299,
+            "positives": 218,
+            "gini": 0.21754406809868554
+          },
+          "history": {
+            "rows": 8601,
+            "positives": 1175,
+            "gini": 0.2467647311630783
+          },
+          "composition_weighted_gini": 0.24504963810323366,
+          "top20_count": 1980,
+          "top20_positives": 466,
+          "top20_recall": 0.334529791816224,
+          "month": 202609,
+          "train_rows": 80300,
+          "seconds": 31.5526295210002
+        },
+        {
+          "rows": 10400,
+          "positives": 1628,
+          "gini": 0.2632793532246336,
+          "auc": 0.6316396766123168,
+          "no_history": {
+            "rows": 1893,
+            "positives": 341,
+            "gini": 0.2884632826435287
+          },
+          "history": {
+            "rows": 8507,
+            "positives": 1287,
+            "gini": 0.25359066910313444
+          },
+          "composition_weighted_gini": 0.2634607302211338,
+          "top20_count": 2080,
+          "top20_positives": 540,
+          "top20_recall": 0.3316953316953317,
+          "month": 202610,
+          "train_rows": 90200,
+          "seconds": 35.791873461999785
+        }
+      ],
+      "mean_gini": 0.25702861061541155,
+      "worst_gini": 0.24575572281127211,
+      "seconds": 94.88155822699991,
+      "provenance": {
+        "schema": "experiment-v2",
+        "code_hash_schema": "normalized-source-v1",
+        "code_sha256": "03f862e5db07e6ee4c4b807299fc342c25568b160009a3b3be39138e7c5e718e",
+        "protocol_sha256": "838e38df482b4205756824aaaa6a16df17a292e8296e278cef4b686a840a5dc6",
+        "protocol": {
+          "development_months": [
+            202608,
+            202609,
+            202610
+          ],
+          "final_validation_month": 202611,
+          "test_month": 202612,
+          "seed": 42,
+          "threads": 4,
+          "selection_metric": "equal_month_mean_gini",
+          "iterations_policy": "fixed parameters and iterations; no early stopping",
+          "bootstrap_replicates": 500,
+          "ensemble_min_gain": 0.002,
+          "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+          "feature_blocks": [
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "dynamic_predictors": [
+            "dias_ultima_interaccion"
+          ],
+          "history_window_months": 3,
+          "initial_hgb_variants": [
+            "original",
+            "observed_time",
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "competitive_min_mean_gain": 0.0005,
+          "competitive_min_improved_months": 2,
+          "competitive_max_month_loss": 0.002,
+          "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+          "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget.",
+          "round_config": {
+            "name": "catboost_round_3",
+            "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+            "budget": 6,
+            "max_ensembles": 2,
+            "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+            "blocks": [],
+            "variants": [
+              {
+                "name": "depth2",
+                "overrides": {
+                  "depth": 2
+                }
+              },
+              {
+                "name": "depth2_l2_60",
+                "overrides": {
+                  "depth": 2,
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_l2_60",
+                "overrides": {
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_l2_10",
+                "overrides": {
+                  "l2_leaf_reg": 10
+                }
+              },
+              {
+                "name": "depth4_l2_60",
+                "overrides": {
+                  "depth": 4,
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_slower",
+                "overrides": {
+                  "iterations": 900,
+                  "learning_rate": 0.02755963094952122
+                }
+              }
+            ],
+            "hgb_alternative": {
+              "name": "r3_hgb_shallow",
+              "family": "hgb",
+              "blocks": [
+                "observed_time"
+              ],
+              "params": {
+                "max_iter": 150,
+                "learning_rate": 0.06,
+                "early_stopping": false,
+                "max_leaf_nodes": 7,
+                "min_samples_leaf": 200,
+                "l2_regularization": 30
+              },
+              "seed": 42
+            },
+            "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+            "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+            "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+            "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+            "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+          }
+        },
+        "data_hashes": {
+          "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+          "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+          "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+          "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+        },
+        "python": "3.12",
+        "versions": {
+          "numpy": "2.5.3",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2",
+          "catboost": "1.2.10",
+          "lightgbm": "4.7.0",
+          "optuna": "4.9.0",
+          "joblib": "1.6.0",
+          "threadpoolctl": "3.7.0"
+        }
+      },
+      "feature_columns": [
+        "edad",
+        "ingresos",
+        "ratio_deuda_ingresos",
+        "antiguedad_cuenta_meses",
+        "numero_productos",
+        "saldo_promedio",
+        "dias_ultima_transaccion",
+        "antiguedad_direccion_meses",
+        "visitas_web_ultimos_90_dias",
+        "distancia_sucursal_km",
+        "dia_preferido_pago",
+        "dias_ultima_interaccion",
+        "ocupacion",
+        "region",
+        "canal_adquisicion",
+        "banda_riesgo",
+        "dispositivo_principal",
+        "tiene_tarjeta_credito",
+        "activo_movil",
+        "es_nuevo_cliente",
+        "tiene_prestamo",
+        "tiene_seguro"
+      ],
+      "identity": {
+        "spec": {
+          "name": "r3_catboost_depth3_l2_60",
+          "family": "catboost",
+          "blocks": [],
+          "params": {
+            "iterations": 600,
+            "depth": 3,
+            "learning_rate": 0.04133944642428183,
+            "l2_leaf_reg": 60,
+            "random_strength": 2.3283669032459575,
+            "bootstrap_type": "Bayesian",
+            "bagging_temperature": 1.2546406282501201
+          },
+          "seed": 42
+        },
+        "months": [
+          202608,
+          202609,
+          202610
+        ],
+        "context": {
+          "schema": "experiment-v2",
+          "code_hash_schema": "normalized-source-v1",
+          "code_sha256": "03f862e5db07e6ee4c4b807299fc342c25568b160009a3b3be39138e7c5e718e",
+          "protocol_sha256": "838e38df482b4205756824aaaa6a16df17a292e8296e278cef4b686a840a5dc6",
+          "protocol": {
+            "development_months": [
+              202608,
+              202609,
+              202610
+            ],
+            "final_validation_month": 202611,
+            "test_month": 202612,
+            "seed": 42,
+            "threads": 4,
+            "selection_metric": "equal_month_mean_gini",
+            "iterations_policy": "fixed parameters and iterations; no early stopping",
+            "bootstrap_replicates": 500,
+            "ensemble_min_gain": 0.002,
+            "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+            "feature_blocks": [
+              "temporal_structure",
+              "temporal_lags",
+              "temporal_v2"
+            ],
+            "dynamic_predictors": [
+              "dias_ultima_interaccion"
+            ],
+            "history_window_months": 3,
+            "initial_hgb_variants": [
+              "original",
+              "observed_time",
+              "temporal_structure",
+              "temporal_lags",
+              "temporal_v2"
+            ],
+            "competitive_min_mean_gain": 0.0005,
+            "competitive_min_improved_months": 2,
+            "competitive_max_month_loss": 0.002,
+            "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+            "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget.",
+            "round_config": {
+              "name": "catboost_round_3",
+              "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+              "budget": 6,
+              "max_ensembles": 2,
+              "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+              "blocks": [],
+              "variants": [
+                {
+                  "name": "depth2",
+                  "overrides": {
+                    "depth": 2
+                  }
+                },
+                {
+                  "name": "depth2_l2_60",
+                  "overrides": {
+                    "depth": 2,
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_l2_60",
+                  "overrides": {
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_l2_10",
+                  "overrides": {
+                    "l2_leaf_reg": 10
+                  }
+                },
+                {
+                  "name": "depth4_l2_60",
+                  "overrides": {
+                    "depth": 4,
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_slower",
+                  "overrides": {
+                    "iterations": 900,
+                    "learning_rate": 0.02755963094952122
+                  }
+                }
+              ],
+              "hgb_alternative": {
+                "name": "r3_hgb_shallow",
+                "family": "hgb",
+                "blocks": [
+                  "observed_time"
+                ],
+                "params": {
+                  "max_iter": 150,
+                  "learning_rate": 0.06,
+                  "early_stopping": false,
+                  "max_leaf_nodes": 7,
+                  "min_samples_leaf": 200,
+                  "l2_regularization": 30
+                },
+                "seed": 42
+              },
+              "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+              "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+              "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+              "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+              "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+            }
+          },
+          "data_hashes": {
+            "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+            "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+            "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+            "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+          },
+          "python": "3.12",
+          "versions": {
+            "numpy": "2.5.3",
+            "pandas": "2.3.3",
+            "scikit-learn": "1.7.2",
+            "catboost": "1.2.10",
+            "lightgbm": "4.7.0",
+            "optuna": "4.9.0",
+            "joblib": "1.6.0",
+            "threadpoolctl": "3.7.0"
+          }
+        }
+      },
+      "fingerprint": "a01b2a8e1d74dad0b3a30d77b7cbf98e83e3f632d3f49a07249963e45bd66520",
+      "runtime": {
+        "timestamp_lima": "2026-10-04T20:51:04.109501-05:00",
+        "python": "3.12.3",
+        "platform": "Linux-7.2.8-2-cachyos-x86_64-with-glibc2.44"
+      },
+      "prediction_path": "artifacts/boost/rounds/catboost_round_3/runs/r3_catboost_depth3_l2_60/a01b2a8e1d74dad0b3a30d77b7cbf98e83e3f632d3f49a07249963e45bd66520/validation.csv",
+      "predictions_sha256": "ab707e7b278e28631dda2e982c1b15f83e84a98d6c44c1051b4389fec265be91"
+    },
+    {
+      "spec": {
+        "name": "r3_catboost_depth3_l2_10",
+        "family": "catboost",
+        "blocks": [],
+        "params": {
+          "iterations": 600,
+          "depth": 3,
+          "learning_rate": 0.04133944642428183,
+          "l2_leaf_reg": 10,
+          "random_strength": 2.3283669032459575,
+          "bootstrap_type": "Bayesian",
+          "bagging_temperature": 1.2546406282501201
+        },
+        "seed": 42
+      },
+      "months": [
+        202608,
+        202609,
+        202610
+      ],
+      "folds": [
+        {
+          "rows": 10050,
+          "positives": 1449,
+          "gini": 0.2644522933720854,
+          "auc": 0.6322261466860427,
+          "no_history": {
+            "rows": 1760,
+            "positives": 309,
+            "gini": 0.2631975715888384
+          },
+          "history": {
+            "rows": 8290,
+            "positives": 1140,
+            "gini": 0.25855085265611577
+          },
+          "composition_weighted_gini": 0.26472856831499714,
+          "top20_count": 2010,
+          "top20_positives": 503,
+          "top20_recall": 0.347135955831608,
+          "month": 202608,
+          "train_rows": 70250,
+          "seconds": 27.003353936001076
+        },
+        {
+          "rows": 9900,
+          "positives": 1393,
+          "gini": 0.24553057990079719,
+          "auc": 0.6227652899503986,
+          "no_history": {
+            "rows": 1299,
+            "positives": 218,
+            "gini": 0.21498951870931604
+          },
+          "history": {
+            "rows": 8601,
+            "positives": 1175,
+            "gini": 0.24719266980304977
+          },
+          "composition_weighted_gini": 0.2445799372507378,
+          "top20_count": 1980,
+          "top20_positives": 473,
+          "top20_recall": 0.33955491744436467,
+          "month": 202609,
+          "train_rows": 80300,
+          "seconds": 30.496675260998018
+        },
+        {
+          "rows": 10400,
+          "positives": 1628,
+          "gini": 0.26527573774495794,
+          "auc": 0.632637868872479,
+          "no_history": {
+            "rows": 1893,
+            "positives": 341,
+            "gini": 0.29265804033013887
+          },
+          "history": {
+            "rows": 8507,
+            "positives": 1287,
+            "gini": 0.2551171204910816
+          },
+          "composition_weighted_gini": 0.26546683924048575,
+          "top20_count": 2080,
+          "top20_positives": 538,
+          "top20_recall": 0.33046683046683045,
+          "month": 202610,
+          "train_rows": 90200,
+          "seconds": 33.46363781100081
+        }
+      ],
+      "mean_gini": 0.25841953700594683,
+      "worst_gini": 0.24553057990079719,
+      "seconds": 91.43962222000118,
+      "provenance": {
+        "schema": "experiment-v2",
+        "code_hash_schema": "normalized-source-v1",
+        "code_sha256": "03f862e5db07e6ee4c4b807299fc342c25568b160009a3b3be39138e7c5e718e",
+        "protocol_sha256": "838e38df482b4205756824aaaa6a16df17a292e8296e278cef4b686a840a5dc6",
+        "protocol": {
+          "development_months": [
+            202608,
+            202609,
+            202610
+          ],
+          "final_validation_month": 202611,
+          "test_month": 202612,
+          "seed": 42,
+          "threads": 4,
+          "selection_metric": "equal_month_mean_gini",
+          "iterations_policy": "fixed parameters and iterations; no early stopping",
+          "bootstrap_replicates": 500,
+          "ensemble_min_gain": 0.002,
+          "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+          "feature_blocks": [
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "dynamic_predictors": [
+            "dias_ultima_interaccion"
+          ],
+          "history_window_months": 3,
+          "initial_hgb_variants": [
+            "original",
+            "observed_time",
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "competitive_min_mean_gain": 0.0005,
+          "competitive_min_improved_months": 2,
+          "competitive_max_month_loss": 0.002,
+          "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+          "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget.",
+          "round_config": {
+            "name": "catboost_round_3",
+            "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+            "budget": 6,
+            "max_ensembles": 2,
+            "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+            "blocks": [],
+            "variants": [
+              {
+                "name": "depth2",
+                "overrides": {
+                  "depth": 2
+                }
+              },
+              {
+                "name": "depth2_l2_60",
+                "overrides": {
+                  "depth": 2,
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_l2_60",
+                "overrides": {
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_l2_10",
+                "overrides": {
+                  "l2_leaf_reg": 10
+                }
+              },
+              {
+                "name": "depth4_l2_60",
+                "overrides": {
+                  "depth": 4,
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_slower",
+                "overrides": {
+                  "iterations": 900,
+                  "learning_rate": 0.02755963094952122
+                }
+              }
+            ],
+            "hgb_alternative": {
+              "name": "r3_hgb_shallow",
+              "family": "hgb",
+              "blocks": [
+                "observed_time"
+              ],
+              "params": {
+                "max_iter": 150,
+                "learning_rate": 0.06,
+                "early_stopping": false,
+                "max_leaf_nodes": 7,
+                "min_samples_leaf": 200,
+                "l2_regularization": 30
+              },
+              "seed": 42
+            },
+            "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+            "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+            "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+            "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+            "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+          }
+        },
+        "data_hashes": {
+          "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+          "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+          "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+          "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+        },
+        "python": "3.12",
+        "versions": {
+          "numpy": "2.5.3",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2",
+          "catboost": "1.2.10",
+          "lightgbm": "4.7.0",
+          "optuna": "4.9.0",
+          "joblib": "1.6.0",
+          "threadpoolctl": "3.7.0"
+        }
+      },
+      "feature_columns": [
+        "edad",
+        "ingresos",
+        "ratio_deuda_ingresos",
+        "antiguedad_cuenta_meses",
+        "numero_productos",
+        "saldo_promedio",
+        "dias_ultima_transaccion",
+        "antiguedad_direccion_meses",
+        "visitas_web_ultimos_90_dias",
+        "distancia_sucursal_km",
+        "dia_preferido_pago",
+        "dias_ultima_interaccion",
+        "ocupacion",
+        "region",
+        "canal_adquisicion",
+        "banda_riesgo",
+        "dispositivo_principal",
+        "tiene_tarjeta_credito",
+        "activo_movil",
+        "es_nuevo_cliente",
+        "tiene_prestamo",
+        "tiene_seguro"
+      ],
+      "identity": {
+        "spec": {
+          "name": "r3_catboost_depth3_l2_10",
+          "family": "catboost",
+          "blocks": [],
+          "params": {
+            "iterations": 600,
+            "depth": 3,
+            "learning_rate": 0.04133944642428183,
+            "l2_leaf_reg": 10,
+            "random_strength": 2.3283669032459575,
+            "bootstrap_type": "Bayesian",
+            "bagging_temperature": 1.2546406282501201
+          },
+          "seed": 42
+        },
+        "months": [
+          202608,
+          202609,
+          202610
+        ],
+        "context": {
+          "schema": "experiment-v2",
+          "code_hash_schema": "normalized-source-v1",
+          "code_sha256": "03f862e5db07e6ee4c4b807299fc342c25568b160009a3b3be39138e7c5e718e",
+          "protocol_sha256": "838e38df482b4205756824aaaa6a16df17a292e8296e278cef4b686a840a5dc6",
+          "protocol": {
+            "development_months": [
+              202608,
+              202609,
+              202610
+            ],
+            "final_validation_month": 202611,
+            "test_month": 202612,
+            "seed": 42,
+            "threads": 4,
+            "selection_metric": "equal_month_mean_gini",
+            "iterations_policy": "fixed parameters and iterations; no early stopping",
+            "bootstrap_replicates": 500,
+            "ensemble_min_gain": 0.002,
+            "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+            "feature_blocks": [
+              "temporal_structure",
+              "temporal_lags",
+              "temporal_v2"
+            ],
+            "dynamic_predictors": [
+              "dias_ultima_interaccion"
+            ],
+            "history_window_months": 3,
+            "initial_hgb_variants": [
+              "original",
+              "observed_time",
+              "temporal_structure",
+              "temporal_lags",
+              "temporal_v2"
+            ],
+            "competitive_min_mean_gain": 0.0005,
+            "competitive_min_improved_months": 2,
+            "competitive_max_month_loss": 0.002,
+            "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+            "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget.",
+            "round_config": {
+              "name": "catboost_round_3",
+              "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+              "budget": 6,
+              "max_ensembles": 2,
+              "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+              "blocks": [],
+              "variants": [
+                {
+                  "name": "depth2",
+                  "overrides": {
+                    "depth": 2
+                  }
+                },
+                {
+                  "name": "depth2_l2_60",
+                  "overrides": {
+                    "depth": 2,
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_l2_60",
+                  "overrides": {
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_l2_10",
+                  "overrides": {
+                    "l2_leaf_reg": 10
+                  }
+                },
+                {
+                  "name": "depth4_l2_60",
+                  "overrides": {
+                    "depth": 4,
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_slower",
+                  "overrides": {
+                    "iterations": 900,
+                    "learning_rate": 0.02755963094952122
+                  }
+                }
+              ],
+              "hgb_alternative": {
+                "name": "r3_hgb_shallow",
+                "family": "hgb",
+                "blocks": [
+                  "observed_time"
+                ],
+                "params": {
+                  "max_iter": 150,
+                  "learning_rate": 0.06,
+                  "early_stopping": false,
+                  "max_leaf_nodes": 7,
+                  "min_samples_leaf": 200,
+                  "l2_regularization": 30
+                },
+                "seed": 42
+              },
+              "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+              "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+              "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+              "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+              "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+            }
+          },
+          "data_hashes": {
+            "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+            "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+            "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+            "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+          },
+          "python": "3.12",
+          "versions": {
+            "numpy": "2.5.3",
+            "pandas": "2.3.3",
+            "scikit-learn": "1.7.2",
+            "catboost": "1.2.10",
+            "lightgbm": "4.7.0",
+            "optuna": "4.9.0",
+            "joblib": "1.6.0",
+            "threadpoolctl": "3.7.0"
+          }
+        }
+      },
+      "fingerprint": "0ec204e3f3fc9989acca97a48ce431cd6da853eaf00ea4790f673a4a44349c32",
+      "runtime": {
+        "timestamp_lima": "2026-10-04T20:52:36.468870-05:00",
+        "python": "3.12.3",
+        "platform": "Linux-7.2.8-2-cachyos-x86_64-with-glibc2.44"
+      },
+      "prediction_path": "artifacts/boost/rounds/catboost_round_3/runs/r3_catboost_depth3_l2_10/0ec204e3f3fc9989acca97a48ce431cd6da853eaf00ea4790f673a4a44349c32/validation.csv",
+      "predictions_sha256": "b4a3893d514a1e77a9ff3dc56e82e1915290485e2b24e2ec12d280a90b3b7bd0"
+    },
+    {
+      "spec": {
+        "name": "r3_catboost_depth4_l2_60",
+        "family": "catboost",
+        "blocks": [],
+        "params": {
+          "iterations": 600,
+          "depth": 4,
+          "learning_rate": 0.04133944642428183,
+          "l2_leaf_reg": 60,
+          "random_strength": 2.3283669032459575,
+          "bootstrap_type": "Bayesian",
+          "bagging_temperature": 1.2546406282501201
+        },
+        "seed": 42
+      },
+      "months": [
+        202608,
+        202609,
+        202610
+      ],
+      "folds": [
+        {
+          "rows": 10050,
+          "positives": 1449,
+          "gini": 0.26458163779405486,
+          "auc": 0.6322908188970274,
+          "no_history": {
+            "rows": 1760,
+            "positives": 309,
+            "gini": 0.26395143177676816
+          },
+          "history": {
+            "rows": 8290,
+            "positives": 1140,
+            "gini": 0.25821641516378335
+          },
+          "composition_weighted_gini": 0.2648816510634888,
+          "top20_count": 2010,
+          "top20_positives": 499,
+          "top20_recall": 0.3443754313319531,
+          "month": 202608,
+          "train_rows": 70250,
+          "seconds": 33.897155657999974
+        },
+        {
+          "rows": 9900,
+          "positives": 1393,
+          "gini": 0.24288709158987443,
+          "auc": 0.6214435457949372,
+          "no_history": {
+            "rows": 1299,
+            "positives": 218,
+            "gini": 0.22643831314871554
+          },
+          "history": {
+            "rows": 8601,
+            "positives": 1175,
+            "gini": 0.2415024840840978
+          },
+          "composition_weighted_gini": 0.24312035297709134,
+          "top20_count": 1980,
+          "top20_positives": 469,
+          "top20_recall": 0.33668341708542715,
+          "month": 202609,
+          "train_rows": 80300,
+          "seconds": 37.821599425002205
+        },
+        {
+          "rows": 10400,
+          "positives": 1628,
+          "gini": 0.26496763210169494,
+          "auc": 0.6324838160508475,
+          "no_history": {
+            "rows": 1893,
+            "positives": 341,
+            "gini": 0.2981112253227318
+          },
+          "history": {
+            "rows": 8507,
+            "positives": 1287,
+            "gini": 0.25319269834505276
+          },
+          "composition_weighted_gini": 0.2651904723735865,
+          "top20_count": 2080,
+          "top20_positives": 542,
+          "top20_recall": 0.33292383292383293,
+          "month": 202610,
+          "train_rows": 90200,
+          "seconds": 43.217168996998225
+        }
+      ],
+      "mean_gini": 0.2574787871618747,
+      "worst_gini": 0.24288709158987443,
+      "seconds": 115.46550547299921,
+      "provenance": {
+        "schema": "experiment-v2",
+        "code_hash_schema": "normalized-source-v1",
+        "code_sha256": "03f862e5db07e6ee4c4b807299fc342c25568b160009a3b3be39138e7c5e718e",
+        "protocol_sha256": "838e38df482b4205756824aaaa6a16df17a292e8296e278cef4b686a840a5dc6",
+        "protocol": {
+          "development_months": [
+            202608,
+            202609,
+            202610
+          ],
+          "final_validation_month": 202611,
+          "test_month": 202612,
+          "seed": 42,
+          "threads": 4,
+          "selection_metric": "equal_month_mean_gini",
+          "iterations_policy": "fixed parameters and iterations; no early stopping",
+          "bootstrap_replicates": 500,
+          "ensemble_min_gain": 0.002,
+          "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+          "feature_blocks": [
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "dynamic_predictors": [
+            "dias_ultima_interaccion"
+          ],
+          "history_window_months": 3,
+          "initial_hgb_variants": [
+            "original",
+            "observed_time",
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "competitive_min_mean_gain": 0.0005,
+          "competitive_min_improved_months": 2,
+          "competitive_max_month_loss": 0.002,
+          "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+          "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget.",
+          "round_config": {
+            "name": "catboost_round_3",
+            "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+            "budget": 6,
+            "max_ensembles": 2,
+            "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+            "blocks": [],
+            "variants": [
+              {
+                "name": "depth2",
+                "overrides": {
+                  "depth": 2
+                }
+              },
+              {
+                "name": "depth2_l2_60",
+                "overrides": {
+                  "depth": 2,
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_l2_60",
+                "overrides": {
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_l2_10",
+                "overrides": {
+                  "l2_leaf_reg": 10
+                }
+              },
+              {
+                "name": "depth4_l2_60",
+                "overrides": {
+                  "depth": 4,
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_slower",
+                "overrides": {
+                  "iterations": 900,
+                  "learning_rate": 0.02755963094952122
+                }
+              }
+            ],
+            "hgb_alternative": {
+              "name": "r3_hgb_shallow",
+              "family": "hgb",
+              "blocks": [
+                "observed_time"
+              ],
+              "params": {
+                "max_iter": 150,
+                "learning_rate": 0.06,
+                "early_stopping": false,
+                "max_leaf_nodes": 7,
+                "min_samples_leaf": 200,
+                "l2_regularization": 30
+              },
+              "seed": 42
+            },
+            "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+            "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+            "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+            "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+            "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+          }
+        },
+        "data_hashes": {
+          "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+          "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+          "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+          "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+        },
+        "python": "3.12",
+        "versions": {
+          "numpy": "2.5.3",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2",
+          "catboost": "1.2.10",
+          "lightgbm": "4.7.0",
+          "optuna": "4.9.0",
+          "joblib": "1.6.0",
+          "threadpoolctl": "3.7.0"
+        }
+      },
+      "feature_columns": [
+        "edad",
+        "ingresos",
+        "ratio_deuda_ingresos",
+        "antiguedad_cuenta_meses",
+        "numero_productos",
+        "saldo_promedio",
+        "dias_ultima_transaccion",
+        "antiguedad_direccion_meses",
+        "visitas_web_ultimos_90_dias",
+        "distancia_sucursal_km",
+        "dia_preferido_pago",
+        "dias_ultima_interaccion",
+        "ocupacion",
+        "region",
+        "canal_adquisicion",
+        "banda_riesgo",
+        "dispositivo_principal",
+        "tiene_tarjeta_credito",
+        "activo_movil",
+        "es_nuevo_cliente",
+        "tiene_prestamo",
+        "tiene_seguro"
+      ],
+      "identity": {
+        "spec": {
+          "name": "r3_catboost_depth4_l2_60",
+          "family": "catboost",
+          "blocks": [],
+          "params": {
+            "iterations": 600,
+            "depth": 4,
+            "learning_rate": 0.04133944642428183,
+            "l2_leaf_reg": 60,
+            "random_strength": 2.3283669032459575,
+            "bootstrap_type": "Bayesian",
+            "bagging_temperature": 1.2546406282501201
+          },
+          "seed": 42
+        },
+        "months": [
+          202608,
+          202609,
+          202610
+        ],
+        "context": {
+          "schema": "experiment-v2",
+          "code_hash_schema": "normalized-source-v1",
+          "code_sha256": "03f862e5db07e6ee4c4b807299fc342c25568b160009a3b3be39138e7c5e718e",
+          "protocol_sha256": "838e38df482b4205756824aaaa6a16df17a292e8296e278cef4b686a840a5dc6",
+          "protocol": {
+            "development_months": [
+              202608,
+              202609,
+              202610
+            ],
+            "final_validation_month": 202611,
+            "test_month": 202612,
+            "seed": 42,
+            "threads": 4,
+            "selection_metric": "equal_month_mean_gini",
+            "iterations_policy": "fixed parameters and iterations; no early stopping",
+            "bootstrap_replicates": 500,
+            "ensemble_min_gain": 0.002,
+            "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+            "feature_blocks": [
+              "temporal_structure",
+              "temporal_lags",
+              "temporal_v2"
+            ],
+            "dynamic_predictors": [
+              "dias_ultima_interaccion"
+            ],
+            "history_window_months": 3,
+            "initial_hgb_variants": [
+              "original",
+              "observed_time",
+              "temporal_structure",
+              "temporal_lags",
+              "temporal_v2"
+            ],
+            "competitive_min_mean_gain": 0.0005,
+            "competitive_min_improved_months": 2,
+            "competitive_max_month_loss": 0.002,
+            "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+            "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget.",
+            "round_config": {
+              "name": "catboost_round_3",
+              "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+              "budget": 6,
+              "max_ensembles": 2,
+              "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+              "blocks": [],
+              "variants": [
+                {
+                  "name": "depth2",
+                  "overrides": {
+                    "depth": 2
+                  }
+                },
+                {
+                  "name": "depth2_l2_60",
+                  "overrides": {
+                    "depth": 2,
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_l2_60",
+                  "overrides": {
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_l2_10",
+                  "overrides": {
+                    "l2_leaf_reg": 10
+                  }
+                },
+                {
+                  "name": "depth4_l2_60",
+                  "overrides": {
+                    "depth": 4,
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_slower",
+                  "overrides": {
+                    "iterations": 900,
+                    "learning_rate": 0.02755963094952122
+                  }
+                }
+              ],
+              "hgb_alternative": {
+                "name": "r3_hgb_shallow",
+                "family": "hgb",
+                "blocks": [
+                  "observed_time"
+                ],
+                "params": {
+                  "max_iter": 150,
+                  "learning_rate": 0.06,
+                  "early_stopping": false,
+                  "max_leaf_nodes": 7,
+                  "min_samples_leaf": 200,
+                  "l2_regularization": 30
+                },
+                "seed": 42
+              },
+              "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+              "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+              "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+              "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+              "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+            }
+          },
+          "data_hashes": {
+            "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+            "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+            "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+            "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+          },
+          "python": "3.12",
+          "versions": {
+            "numpy": "2.5.3",
+            "pandas": "2.3.3",
+            "scikit-learn": "1.7.2",
+            "catboost": "1.2.10",
+            "lightgbm": "4.7.0",
+            "optuna": "4.9.0",
+            "joblib": "1.6.0",
+            "threadpoolctl": "3.7.0"
+          }
+        }
+      },
+      "fingerprint": "ea6349062c3b05c948a311f914f576429c93fd91c3eba5b7bbf4016e8f122e79",
+      "runtime": {
+        "timestamp_lima": "2026-10-04T20:54:32.902990-05:00",
+        "python": "3.12.3",
+        "platform": "Linux-7.2.8-2-cachyos-x86_64-with-glibc2.44"
+      },
+      "prediction_path": "artifacts/boost/rounds/catboost_round_3/runs/r3_catboost_depth4_l2_60/ea6349062c3b05c948a311f914f576429c93fd91c3eba5b7bbf4016e8f122e79/validation.csv",
+      "predictions_sha256": "2e7bcb5a14c003da7f33cc380b9d06cf96d6d3ea71b422bffc62aa54a7e7236a"
+    },
+    {
+      "spec": {
+        "name": "r3_catboost_depth3_slower",
+        "family": "catboost",
+        "blocks": [],
+        "params": {
+          "iterations": 900,
+          "depth": 3,
+          "learning_rate": 0.02755963094952122,
+          "l2_leaf_reg": 31.62562678271973,
+          "random_strength": 2.3283669032459575,
+          "bootstrap_type": "Bayesian",
+          "bagging_temperature": 1.2546406282501201
+        },
+        "seed": 42
+      },
+      "months": [
+        202608,
+        202609,
+        202610
+      ],
+      "folds": [
+        {
+          "rows": 10050,
+          "positives": 1449,
+          "gini": 0.26290112317015146,
+          "auc": 0.6314505615850757,
+          "no_history": {
+            "rows": 1760,
+            "positives": 309,
+            "gini": 0.2609449124473915
+          },
+          "history": {
+            "rows": 8290,
+            "positives": 1140,
+            "gini": 0.2569086001717582
+          },
+          "composition_weighted_gini": 0.263179750551231,
+          "top20_count": 2010,
+          "top20_positives": 491,
+          "top20_recall": 0.3388543823326432,
+          "month": 202608,
+          "train_rows": 70250,
+          "seconds": 43.50853260000076
+        },
+        {
+          "rows": 9900,
+          "positives": 1393,
+          "gini": 0.24526172483603936,
+          "auc": 0.6226308624180197,
+          "no_history": {
+            "rows": 1299,
+            "positives": 218,
+            "gini": 0.2163813662171452
+          },
+          "history": {
+            "rows": 8601,
+            "positives": 1175,
+            "gini": 0.2464076190039597
+          },
+          "composition_weighted_gini": 0.24450197412898644,
+          "top20_count": 1980,
+          "top20_positives": 469,
+          "top20_recall": 0.33668341708542715,
+          "month": 202609,
+          "train_rows": 80300,
+          "seconds": 49.75139628800025
+        },
+        {
+          "rows": 10400,
+          "positives": 1628,
+          "gini": 0.2643967963735405,
+          "auc": 0.6321983981867703,
+          "no_history": {
+            "rows": 1893,
+            "positives": 341,
+            "gini": 0.2869554373129364
+          },
+          "history": {
+            "rows": 8507,
+            "positives": 1287,
+            "gini": 0.25544169588490906
+          },
+          "composition_weighted_gini": 0.26456375843692914,
+          "top20_count": 2080,
+          "top20_positives": 538,
+          "top20_recall": 0.33046683046683045,
+          "month": 202610,
+          "train_rows": 90200,
+          "seconds": 54.443795856997895
+        }
+      ],
+      "mean_gini": 0.25751988145991045,
+      "worst_gini": 0.24526172483603936,
+      "seconds": 148.20069500200043,
+      "provenance": {
+        "schema": "experiment-v2",
+        "code_hash_schema": "normalized-source-v1",
+        "code_sha256": "03f862e5db07e6ee4c4b807299fc342c25568b160009a3b3be39138e7c5e718e",
+        "protocol_sha256": "838e38df482b4205756824aaaa6a16df17a292e8296e278cef4b686a840a5dc6",
+        "protocol": {
+          "development_months": [
+            202608,
+            202609,
+            202610
+          ],
+          "final_validation_month": 202611,
+          "test_month": 202612,
+          "seed": 42,
+          "threads": 4,
+          "selection_metric": "equal_month_mean_gini",
+          "iterations_policy": "fixed parameters and iterations; no early stopping",
+          "bootstrap_replicates": 500,
+          "ensemble_min_gain": 0.002,
+          "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+          "feature_blocks": [
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "dynamic_predictors": [
+            "dias_ultima_interaccion"
+          ],
+          "history_window_months": 3,
+          "initial_hgb_variants": [
+            "original",
+            "observed_time",
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "competitive_min_mean_gain": 0.0005,
+          "competitive_min_improved_months": 2,
+          "competitive_max_month_loss": 0.002,
+          "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+          "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget.",
+          "round_config": {
+            "name": "catboost_round_3",
+            "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+            "budget": 6,
+            "max_ensembles": 2,
+            "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+            "blocks": [],
+            "variants": [
+              {
+                "name": "depth2",
+                "overrides": {
+                  "depth": 2
+                }
+              },
+              {
+                "name": "depth2_l2_60",
+                "overrides": {
+                  "depth": 2,
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_l2_60",
+                "overrides": {
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_l2_10",
+                "overrides": {
+                  "l2_leaf_reg": 10
+                }
+              },
+              {
+                "name": "depth4_l2_60",
+                "overrides": {
+                  "depth": 4,
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_slower",
+                "overrides": {
+                  "iterations": 900,
+                  "learning_rate": 0.02755963094952122
+                }
+              }
+            ],
+            "hgb_alternative": {
+              "name": "r3_hgb_shallow",
+              "family": "hgb",
+              "blocks": [
+                "observed_time"
+              ],
+              "params": {
+                "max_iter": 150,
+                "learning_rate": 0.06,
+                "early_stopping": false,
+                "max_leaf_nodes": 7,
+                "min_samples_leaf": 200,
+                "l2_regularization": 30
+              },
+              "seed": 42
+            },
+            "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+            "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+            "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+            "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+            "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+          }
+        },
+        "data_hashes": {
+          "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+          "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+          "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+          "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+        },
+        "python": "3.12",
+        "versions": {
+          "numpy": "2.5.3",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2",
+          "catboost": "1.2.10",
+          "lightgbm": "4.7.0",
+          "optuna": "4.9.0",
+          "joblib": "1.6.0",
+          "threadpoolctl": "3.7.0"
+        }
+      },
+      "feature_columns": [
+        "edad",
+        "ingresos",
+        "ratio_deuda_ingresos",
+        "antiguedad_cuenta_meses",
+        "numero_productos",
+        "saldo_promedio",
+        "dias_ultima_transaccion",
+        "antiguedad_direccion_meses",
+        "visitas_web_ultimos_90_dias",
+        "distancia_sucursal_km",
+        "dia_preferido_pago",
+        "dias_ultima_interaccion",
+        "ocupacion",
+        "region",
+        "canal_adquisicion",
+        "banda_riesgo",
+        "dispositivo_principal",
+        "tiene_tarjeta_credito",
+        "activo_movil",
+        "es_nuevo_cliente",
+        "tiene_prestamo",
+        "tiene_seguro"
+      ],
+      "identity": {
+        "spec": {
+          "name": "r3_catboost_depth3_slower",
+          "family": "catboost",
+          "blocks": [],
+          "params": {
+            "iterations": 900,
+            "depth": 3,
+            "learning_rate": 0.02755963094952122,
+            "l2_leaf_reg": 31.62562678271973,
+            "random_strength": 2.3283669032459575,
+            "bootstrap_type": "Bayesian",
+            "bagging_temperature": 1.2546406282501201
+          },
+          "seed": 42
+        },
+        "months": [
+          202608,
+          202609,
+          202610
+        ],
+        "context": {
+          "schema": "experiment-v2",
+          "code_hash_schema": "normalized-source-v1",
+          "code_sha256": "03f862e5db07e6ee4c4b807299fc342c25568b160009a3b3be39138e7c5e718e",
+          "protocol_sha256": "838e38df482b4205756824aaaa6a16df17a292e8296e278cef4b686a840a5dc6",
+          "protocol": {
+            "development_months": [
+              202608,
+              202609,
+              202610
+            ],
+            "final_validation_month": 202611,
+            "test_month": 202612,
+            "seed": 42,
+            "threads": 4,
+            "selection_metric": "equal_month_mean_gini",
+            "iterations_policy": "fixed parameters and iterations; no early stopping",
+            "bootstrap_replicates": 500,
+            "ensemble_min_gain": 0.002,
+            "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+            "feature_blocks": [
+              "temporal_structure",
+              "temporal_lags",
+              "temporal_v2"
+            ],
+            "dynamic_predictors": [
+              "dias_ultima_interaccion"
+            ],
+            "history_window_months": 3,
+            "initial_hgb_variants": [
+              "original",
+              "observed_time",
+              "temporal_structure",
+              "temporal_lags",
+              "temporal_v2"
+            ],
+            "competitive_min_mean_gain": 0.0005,
+            "competitive_min_improved_months": 2,
+            "competitive_max_month_loss": 0.002,
+            "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+            "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget.",
+            "round_config": {
+              "name": "catboost_round_3",
+              "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+              "budget": 6,
+              "max_ensembles": 2,
+              "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+              "blocks": [],
+              "variants": [
+                {
+                  "name": "depth2",
+                  "overrides": {
+                    "depth": 2
+                  }
+                },
+                {
+                  "name": "depth2_l2_60",
+                  "overrides": {
+                    "depth": 2,
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_l2_60",
+                  "overrides": {
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_l2_10",
+                  "overrides": {
+                    "l2_leaf_reg": 10
+                  }
+                },
+                {
+                  "name": "depth4_l2_60",
+                  "overrides": {
+                    "depth": 4,
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_slower",
+                  "overrides": {
+                    "iterations": 900,
+                    "learning_rate": 0.02755963094952122
+                  }
+                }
+              ],
+              "hgb_alternative": {
+                "name": "r3_hgb_shallow",
+                "family": "hgb",
+                "blocks": [
+                  "observed_time"
+                ],
+                "params": {
+                  "max_iter": 150,
+                  "learning_rate": 0.06,
+                  "early_stopping": false,
+                  "max_leaf_nodes": 7,
+                  "min_samples_leaf": 200,
+                  "l2_regularization": 30
+                },
+                "seed": 42
+              },
+              "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+              "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+              "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+              "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+              "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+            }
+          },
+          "data_hashes": {
+            "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+            "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+            "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+            "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+          },
+          "python": "3.12",
+          "versions": {
+            "numpy": "2.5.3",
+            "pandas": "2.3.3",
+            "scikit-learn": "1.7.2",
+            "catboost": "1.2.10",
+            "lightgbm": "4.7.0",
+            "optuna": "4.9.0",
+            "joblib": "1.6.0",
+            "threadpoolctl": "3.7.0"
+          }
+        }
+      },
+      "fingerprint": "d210e946c956607d8edf438958c613c2e4d7535dbfe8879b7ee11b7141985d88",
+      "runtime": {
+        "timestamp_lima": "2026-10-04T20:57:02.021814-05:00",
+        "python": "3.12.3",
+        "platform": "Linux-7.2.8-2-cachyos-x86_64-with-glibc2.44"
+      },
+      "prediction_path": "artifacts/boost/rounds/catboost_round_3/runs/r3_catboost_depth3_slower/d210e946c956607d8edf438958c613c2e4d7535dbfe8879b7ee11b7141985d88/validation.csv",
+      "predictions_sha256": "fe361ffb81cff56c593b2289d65cf40f3ab490e1eab73ec8a79ff5bd34695dec"
+    }
+  ],
+  "a_runs": [
+    {
+      "spec": {
+        "name": "r3_a_catboost_trial_006",
+        "family": "catboost",
+        "blocks": [],
+        "params": {
+          "iterations": 600,
+          "depth": 3,
+          "learning_rate": 0.04133944642428183,
+          "l2_leaf_reg": 31.62562678271973,
+          "random_strength": 2.3283669032459575,
+          "bootstrap_type": "Bayesian",
+          "bagging_temperature": 1.2546406282501201
+        },
+        "seed": 42
+      },
+      "months": [
+        202608,
+        202609,
+        202610
+      ],
+      "folds": [
+        {
+          "rows": 10050,
+          "positives": 1449,
+          "gini": 0.2619886512305494,
+          "auc": 0.6309943256152747,
+          "no_history": {
+            "rows": 1760,
+            "positives": 309,
+            "gini": 0.2592007743794593
+          },
+          "history": {
+            "rows": 8290,
+            "positives": 1140,
+            "gini": 0.2559896945160103
+          },
+          "composition_weighted_gini": 0.2622652530015408,
+          "top20_count": 2010,
+          "top20_positives": 498,
+          "top20_recall": 0.34368530020703936,
+          "month": 202608,
+          "train_rows": 70250,
+          "seconds": 21.110857957999542
+        },
+        {
+          "rows": 9900,
+          "positives": 1393,
+          "gini": 0.24755349063914345,
+          "auc": 0.6237767453195717,
+          "no_history": {
+            "rows": 1299,
+            "positives": 218,
+            "gini": 0.22623462814756978
+          },
+          "history": {
+            "rows": 8601,
+            "positives": 1175,
+            "gini": 0.24745557586627775
+          },
+          "composition_weighted_gini": 0.24730118341814644,
+          "top20_count": 1980,
+          "top20_positives": 464,
+          "top20_recall": 0.3330940416367552,
+          "month": 202609,
+          "train_rows": 80300,
+          "seconds": 31.634782171000552
+        },
+        {
+          "rows": 10400,
+          "positives": 1628,
+          "gini": 0.2655062567853266,
+          "auc": 0.6327531283926633,
+          "no_history": {
+            "rows": 1893,
+            "positives": 341,
+            "gini": 0.2919664721709949
+          },
+          "history": {
+            "rows": 8507,
+            "positives": 1287,
+            "gini": 0.2556730742326312
+          },
+          "composition_weighted_gini": 0.2656911936806463,
+          "top20_count": 2080,
+          "top20_positives": 537,
+          "top20_recall": 0.3298525798525799,
+          "month": 202610,
+          "train_rows": 90200,
+          "seconds": 35.222665469002095
+        }
+      ],
+      "mean_gini": 0.2583494662183398,
+      "worst_gini": 0.24755349063914345,
+      "seconds": 88.43057120899903,
+      "provenance": {
+        "schema": "experiment-v2",
+        "code_hash_schema": "normalized-source-v1",
+        "code_sha256": "03f862e5db07e6ee4c4b807299fc342c25568b160009a3b3be39138e7c5e718e",
+        "protocol_sha256": "838e38df482b4205756824aaaa6a16df17a292e8296e278cef4b686a840a5dc6",
+        "protocol": {
+          "development_months": [
+            202608,
+            202609,
+            202610
+          ],
+          "final_validation_month": 202611,
+          "test_month": 202612,
+          "seed": 42,
+          "threads": 4,
+          "selection_metric": "equal_month_mean_gini",
+          "iterations_policy": "fixed parameters and iterations; no early stopping",
+          "bootstrap_replicates": 500,
+          "ensemble_min_gain": 0.002,
+          "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+          "feature_blocks": [
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "dynamic_predictors": [
+            "dias_ultima_interaccion"
+          ],
+          "history_window_months": 3,
+          "initial_hgb_variants": [
+            "original",
+            "observed_time",
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "competitive_min_mean_gain": 0.0005,
+          "competitive_min_improved_months": 2,
+          "competitive_max_month_loss": 0.002,
+          "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+          "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget.",
+          "round_config": {
+            "name": "catboost_round_3",
+            "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+            "budget": 6,
+            "max_ensembles": 2,
+            "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+            "blocks": [],
+            "variants": [
+              {
+                "name": "depth2",
+                "overrides": {
+                  "depth": 2
+                }
+              },
+              {
+                "name": "depth2_l2_60",
+                "overrides": {
+                  "depth": 2,
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_l2_60",
+                "overrides": {
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_l2_10",
+                "overrides": {
+                  "l2_leaf_reg": 10
+                }
+              },
+              {
+                "name": "depth4_l2_60",
+                "overrides": {
+                  "depth": 4,
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_slower",
+                "overrides": {
+                  "iterations": 900,
+                  "learning_rate": 0.02755963094952122
+                }
+              }
+            ],
+            "hgb_alternative": {
+              "name": "r3_hgb_shallow",
+              "family": "hgb",
+              "blocks": [
+                "observed_time"
+              ],
+              "params": {
+                "max_iter": 150,
+                "learning_rate": 0.06,
+                "early_stopping": false,
+                "max_leaf_nodes": 7,
+                "min_samples_leaf": 200,
+                "l2_regularization": 30
+              },
+              "seed": 42
+            },
+            "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+            "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+            "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+            "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+            "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+          }
+        },
+        "data_hashes": {
+          "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+          "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+          "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+          "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+        },
+        "python": "3.12",
+        "versions": {
+          "numpy": "2.5.3",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2",
+          "catboost": "1.2.10",
+          "lightgbm": "4.7.0",
+          "optuna": "4.9.0",
+          "joblib": "1.6.0",
+          "threadpoolctl": "3.7.0"
+        }
+      },
+      "feature_columns": [
+        "edad",
+        "ingresos",
+        "ratio_deuda_ingresos",
+        "antiguedad_cuenta_meses",
+        "numero_productos",
+        "saldo_promedio",
+        "dias_ultima_transaccion",
+        "antiguedad_direccion_meses",
+        "visitas_web_ultimos_90_dias",
+        "distancia_sucursal_km",
+        "dia_preferido_pago",
+        "dias_ultima_interaccion",
+        "ocupacion",
+        "region",
+        "canal_adquisicion",
+        "banda_riesgo",
+        "dispositivo_principal",
+        "tiene_tarjeta_credito",
+        "activo_movil",
+        "es_nuevo_cliente",
+        "tiene_prestamo",
+        "tiene_seguro"
+      ],
+      "identity": {
+        "spec": {
+          "name": "r3_a_catboost_trial_006",
+          "family": "catboost",
+          "blocks": [],
+          "params": {
+            "iterations": 600,
+            "depth": 3,
+            "learning_rate": 0.04133944642428183,
+            "l2_leaf_reg": 31.62562678271973,
+            "random_strength": 2.3283669032459575,
+            "bootstrap_type": "Bayesian",
+            "bagging_temperature": 1.2546406282501201
+          },
+          "seed": 42
+        },
+        "months": [
+          202608,
+          202609,
+          202610
+        ],
+        "context": {
+          "schema": "experiment-v2",
+          "code_hash_schema": "normalized-source-v1",
+          "code_sha256": "03f862e5db07e6ee4c4b807299fc342c25568b160009a3b3be39138e7c5e718e",
+          "protocol_sha256": "838e38df482b4205756824aaaa6a16df17a292e8296e278cef4b686a840a5dc6",
+          "protocol": {
+            "development_months": [
+              202608,
+              202609,
+              202610
+            ],
+            "final_validation_month": 202611,
+            "test_month": 202612,
+            "seed": 42,
+            "threads": 4,
+            "selection_metric": "equal_month_mean_gini",
+            "iterations_policy": "fixed parameters and iterations; no early stopping",
+            "bootstrap_replicates": 500,
+            "ensemble_min_gain": 0.002,
+            "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+            "feature_blocks": [
+              "temporal_structure",
+              "temporal_lags",
+              "temporal_v2"
+            ],
+            "dynamic_predictors": [
+              "dias_ultima_interaccion"
+            ],
+            "history_window_months": 3,
+            "initial_hgb_variants": [
+              "original",
+              "observed_time",
+              "temporal_structure",
+              "temporal_lags",
+              "temporal_v2"
+            ],
+            "competitive_min_mean_gain": 0.0005,
+            "competitive_min_improved_months": 2,
+            "competitive_max_month_loss": 0.002,
+            "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+            "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget.",
+            "round_config": {
+              "name": "catboost_round_3",
+              "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+              "budget": 6,
+              "max_ensembles": 2,
+              "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+              "blocks": [],
+              "variants": [
+                {
+                  "name": "depth2",
+                  "overrides": {
+                    "depth": 2
+                  }
+                },
+                {
+                  "name": "depth2_l2_60",
+                  "overrides": {
+                    "depth": 2,
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_l2_60",
+                  "overrides": {
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_l2_10",
+                  "overrides": {
+                    "l2_leaf_reg": 10
+                  }
+                },
+                {
+                  "name": "depth4_l2_60",
+                  "overrides": {
+                    "depth": 4,
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_slower",
+                  "overrides": {
+                    "iterations": 900,
+                    "learning_rate": 0.02755963094952122
+                  }
+                }
+              ],
+              "hgb_alternative": {
+                "name": "r3_hgb_shallow",
+                "family": "hgb",
+                "blocks": [
+                  "observed_time"
+                ],
+                "params": {
+                  "max_iter": 150,
+                  "learning_rate": 0.06,
+                  "early_stopping": false,
+                  "max_leaf_nodes": 7,
+                  "min_samples_leaf": 200,
+                  "l2_regularization": 30
+                },
+                "seed": 42
+              },
+              "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+              "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+              "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+              "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+              "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+            }
+          },
+          "data_hashes": {
+            "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+            "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+            "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+            "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+          },
+          "python": "3.12",
+          "versions": {
+            "numpy": "2.5.3",
+            "pandas": "2.3.3",
+            "scikit-learn": "1.7.2",
+            "catboost": "1.2.10",
+            "lightgbm": "4.7.0",
+            "optuna": "4.9.0",
+            "joblib": "1.6.0",
+            "threadpoolctl": "3.7.0"
+          }
+        }
+      },
+      "fingerprint": "828f4bc96a525a19f5179ef83887d86bb03e6b3f29bc4fb70c78ebacab3b24d4",
+      "runtime": {
+        "timestamp_lima": "2026-10-04T20:45:34.476242-05:00",
+        "python": "3.12.3",
+        "platform": "Linux-7.2.8-2-cachyos-x86_64-with-glibc2.44"
+      },
+      "prediction_path": "artifacts/boost/rounds/catboost_round_3/runs/r3_a_catboost_trial_006/828f4bc96a525a19f5179ef83887d86bb03e6b3f29bc4fb70c78ebacab3b24d4/validation.csv",
+      "predictions_sha256": "5e9ac53d1ba06165aff25ae0fd9b5ccbfec7cb170f1bd99c4f8191e980f5b6fb"
+    },
+    {
+      "spec": {
+        "name": "r3_a_features_observed_time",
+        "family": "hgb",
+        "blocks": [
+          "observed_time"
+        ],
+        "params": {},
+        "seed": 42
+      },
+      "months": [
+        202608,
+        202609,
+        202610
+      ],
+      "folds": [
+        {
+          "rows": 10050,
+          "positives": 1449,
+          "gini": 0.25800593427714635,
+          "auc": 0.6290029671385732,
+          "no_history": {
+            "rows": 1760,
+            "positives": 309,
+            "gini": 0.24132224400536173
+          },
+          "history": {
+            "rows": 8290,
+            "positives": 1140,
+            "gini": 0.2569709238130291
+          },
+          "composition_weighted_gini": 0.2580082509117041,
+          "top20_count": 2010,
+          "top20_positives": 491,
+          "top20_recall": 0.3388543823326432,
+          "month": 202608,
+          "train_rows": 70250,
+          "seconds": 1.6920001139988017
+        },
+        {
+          "rows": 9900,
+          "positives": 1393,
+          "gini": 0.2458247508850233,
+          "auc": 0.6229123754425117,
+          "no_history": {
+            "rows": 1299,
+            "positives": 218,
+            "gini": 0.24468509450135367
+          },
+          "history": {
+            "rows": 8601,
+            "positives": 1175,
+            "gini": 0.24357249686266202
+          },
+          "composition_weighted_gini": 0.24654581330841618,
+          "top20_count": 1980,
+          "top20_positives": 459,
+          "top20_recall": 0.3295046661880833,
+          "month": 202609,
+          "train_rows": 80300,
+          "seconds": 1.926996969999891
+        },
+        {
+          "rows": 10400,
+          "positives": 1628,
+          "gini": 0.26931878402466625,
+          "auc": 0.6346593920123331,
+          "no_history": {
+            "rows": 1893,
+            "positives": 341,
+            "gini": 0.3008170329836444
+          },
+          "history": {
+            "rows": 8507,
+            "positives": 1287,
+            "gini": 0.2576902629534208
+          },
+          "composition_weighted_gini": 0.2695376830225076,
+          "top20_count": 2080,
+          "top20_positives": 544,
+          "top20_recall": 0.33415233415233414,
+          "month": 202610,
+          "train_rows": 90200,
+          "seconds": 2.282081934001326
+        }
+      ],
+      "mean_gini": 0.2577164897289453,
+      "worst_gini": 0.2458247508850233,
+      "seconds": 43.30704892799986,
+      "provenance": {
+        "schema": "experiment-v2",
+        "code_hash_schema": "normalized-source-v1",
+        "code_sha256": "03f862e5db07e6ee4c4b807299fc342c25568b160009a3b3be39138e7c5e718e",
+        "protocol_sha256": "838e38df482b4205756824aaaa6a16df17a292e8296e278cef4b686a840a5dc6",
+        "protocol": {
+          "development_months": [
+            202608,
+            202609,
+            202610
+          ],
+          "final_validation_month": 202611,
+          "test_month": 202612,
+          "seed": 42,
+          "threads": 4,
+          "selection_metric": "equal_month_mean_gini",
+          "iterations_policy": "fixed parameters and iterations; no early stopping",
+          "bootstrap_replicates": 500,
+          "ensemble_min_gain": 0.002,
+          "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+          "feature_blocks": [
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "dynamic_predictors": [
+            "dias_ultima_interaccion"
+          ],
+          "history_window_months": 3,
+          "initial_hgb_variants": [
+            "original",
+            "observed_time",
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "competitive_min_mean_gain": 0.0005,
+          "competitive_min_improved_months": 2,
+          "competitive_max_month_loss": 0.002,
+          "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+          "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget.",
+          "round_config": {
+            "name": "catboost_round_3",
+            "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+            "budget": 6,
+            "max_ensembles": 2,
+            "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+            "blocks": [],
+            "variants": [
+              {
+                "name": "depth2",
+                "overrides": {
+                  "depth": 2
+                }
+              },
+              {
+                "name": "depth2_l2_60",
+                "overrides": {
+                  "depth": 2,
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_l2_60",
+                "overrides": {
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_l2_10",
+                "overrides": {
+                  "l2_leaf_reg": 10
+                }
+              },
+              {
+                "name": "depth4_l2_60",
+                "overrides": {
+                  "depth": 4,
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_slower",
+                "overrides": {
+                  "iterations": 900,
+                  "learning_rate": 0.02755963094952122
+                }
+              }
+            ],
+            "hgb_alternative": {
+              "name": "r3_hgb_shallow",
+              "family": "hgb",
+              "blocks": [
+                "observed_time"
+              ],
+              "params": {
+                "max_iter": 150,
+                "learning_rate": 0.06,
+                "early_stopping": false,
+                "max_leaf_nodes": 7,
+                "min_samples_leaf": 200,
+                "l2_regularization": 30
+              },
+              "seed": 42
+            },
+            "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+            "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+            "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+            "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+            "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+          }
+        },
+        "data_hashes": {
+          "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+          "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+          "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+          "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+        },
+        "python": "3.12",
+        "versions": {
+          "numpy": "2.5.3",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2",
+          "catboost": "1.2.10",
+          "lightgbm": "4.7.0",
+          "optuna": "4.9.0",
+          "joblib": "1.6.0",
+          "threadpoolctl": "3.7.0"
+        }
+      },
+      "feature_columns": [
+        "edad",
+        "ingresos",
+        "ratio_deuda_ingresos",
+        "antiguedad_cuenta_meses",
+        "numero_productos",
+        "saldo_promedio",
+        "dias_ultima_transaccion",
+        "antiguedad_direccion_meses",
+        "visitas_web_ultimos_90_dias",
+        "distancia_sucursal_km",
+        "dia_preferido_pago",
+        "dias_ultima_interaccion",
+        "ocupacion",
+        "region",
+        "canal_adquisicion",
+        "banda_riesgo",
+        "dispositivo_principal",
+        "tiene_tarjeta_credito",
+        "activo_movil",
+        "es_nuevo_cliente",
+        "tiene_prestamo",
+        "tiene_seguro",
+        "meses_desde_primera_observacion"
+      ],
+      "identity": {
+        "spec": {
+          "name": "r3_a_features_observed_time",
+          "family": "hgb",
+          "blocks": [
+            "observed_time"
+          ],
+          "params": {},
+          "seed": 42
+        },
+        "months": [
+          202608,
+          202609,
+          202610
+        ],
+        "context": {
+          "schema": "experiment-v2",
+          "code_hash_schema": "normalized-source-v1",
+          "code_sha256": "03f862e5db07e6ee4c4b807299fc342c25568b160009a3b3be39138e7c5e718e",
+          "protocol_sha256": "838e38df482b4205756824aaaa6a16df17a292e8296e278cef4b686a840a5dc6",
+          "protocol": {
+            "development_months": [
+              202608,
+              202609,
+              202610
+            ],
+            "final_validation_month": 202611,
+            "test_month": 202612,
+            "seed": 42,
+            "threads": 4,
+            "selection_metric": "equal_month_mean_gini",
+            "iterations_policy": "fixed parameters and iterations; no early stopping",
+            "bootstrap_replicates": 500,
+            "ensemble_min_gain": 0.002,
+            "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+            "feature_blocks": [
+              "temporal_structure",
+              "temporal_lags",
+              "temporal_v2"
+            ],
+            "dynamic_predictors": [
+              "dias_ultima_interaccion"
+            ],
+            "history_window_months": 3,
+            "initial_hgb_variants": [
+              "original",
+              "observed_time",
+              "temporal_structure",
+              "temporal_lags",
+              "temporal_v2"
+            ],
+            "competitive_min_mean_gain": 0.0005,
+            "competitive_min_improved_months": 2,
+            "competitive_max_month_loss": 0.002,
+            "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+            "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget.",
+            "round_config": {
+              "name": "catboost_round_3",
+              "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+              "budget": 6,
+              "max_ensembles": 2,
+              "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+              "blocks": [],
+              "variants": [
+                {
+                  "name": "depth2",
+                  "overrides": {
+                    "depth": 2
+                  }
+                },
+                {
+                  "name": "depth2_l2_60",
+                  "overrides": {
+                    "depth": 2,
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_l2_60",
+                  "overrides": {
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_l2_10",
+                  "overrides": {
+                    "l2_leaf_reg": 10
+                  }
+                },
+                {
+                  "name": "depth4_l2_60",
+                  "overrides": {
+                    "depth": 4,
+                    "l2_leaf_reg": 60
+                  }
+                },
+                {
+                  "name": "depth3_slower",
+                  "overrides": {
+                    "iterations": 900,
+                    "learning_rate": 0.02755963094952122
+                  }
+                }
+              ],
+              "hgb_alternative": {
+                "name": "r3_hgb_shallow",
+                "family": "hgb",
+                "blocks": [
+                  "observed_time"
+                ],
+                "params": {
+                  "max_iter": 150,
+                  "learning_rate": 0.06,
+                  "early_stopping": false,
+                  "max_leaf_nodes": 7,
+                  "min_samples_leaf": 200,
+                  "l2_regularization": 30
+                },
+                "seed": 42
+              },
+              "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+              "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+              "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+              "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+              "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+            }
+          },
+          "data_hashes": {
+            "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+            "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+            "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+            "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+          },
+          "python": "3.12",
+          "versions": {
+            "numpy": "2.5.3",
+            "pandas": "2.3.3",
+            "scikit-learn": "1.7.2",
+            "catboost": "1.2.10",
+            "lightgbm": "4.7.0",
+            "optuna": "4.9.0",
+            "joblib": "1.6.0",
+            "threadpoolctl": "3.7.0"
+          }
+        }
+      },
+      "fingerprint": "d1de416c48b622abe5ed2296042ebb4344fc959d2c9cfb9352bf7a201358b04c",
+      "runtime": {
+        "timestamp_lima": "2026-10-04T20:46:18.778134-05:00",
+        "python": "3.12.3",
+        "platform": "Linux-7.2.8-2-cachyos-x86_64-with-glibc2.44"
+      },
+      "prediction_path": "artifacts/boost/rounds/catboost_round_3/runs/r3_a_features_observed_time/d1de416c48b622abe5ed2296042ebb4344fc959d2c9cfb9352bf7a201358b04c/validation.csv",
+      "predictions_sha256": "08c77d978d3e71f117ab1542036cdac7f62c4767d4b01d88c7e2bcb30587085f"
+    }
+  ],
+  "hgb_alternative": {
+    "spec": {
+      "name": "r3_hgb_shallow",
+      "family": "hgb",
+      "blocks": [
+        "observed_time"
+      ],
+      "params": {
+        "max_iter": 150,
+        "learning_rate": 0.06,
+        "early_stopping": false,
+        "max_leaf_nodes": 7,
+        "min_samples_leaf": 200,
+        "l2_regularization": 30
+      },
+      "seed": 42
+    },
+    "months": [
+      202608,
+      202609,
+      202610
+    ],
+    "folds": [
+      {
+        "rows": 10050,
+        "positives": 1449,
+        "gini": 0.2645825204172818,
+        "auc": 0.6322912602086409,
+        "no_history": {
+          "rows": 1760,
+          "positives": 309,
+          "gini": 0.26562196811037575
+        },
+        "history": {
+          "rows": 8290,
+          "positives": 1140,
+          "gini": 0.2602502760397498
+        },
+        "composition_weighted_gini": 0.2647908278555233,
+        "top20_count": 2010,
+        "top20_positives": 490,
+        "top20_recall": 0.33816425120772947,
+        "month": 202608,
+        "train_rows": 70250,
+        "seconds": 1.6149300590004714
+      },
+      {
+        "rows": 9900,
+        "positives": 1393,
+        "gini": 0.25239710112469327,
+        "auc": 0.6261985505623466,
+        "no_history": {
+          "rows": 1299,
+          "positives": 218,
+          "gini": 0.22704088127710498
+        },
+        "history": {
+          "rows": 8601,
+          "positives": 1175,
+          "gini": 0.25469362962793185
+        },
+        "composition_weighted_gini": 0.25130820744951343,
+        "top20_count": 1980,
+        "top20_positives": 462,
+        "top20_recall": 0.3316582914572864,
+        "month": 202609,
+        "train_rows": 80300,
+        "seconds": 1.8532116249989485
+      },
+      {
+        "rows": 10400,
+        "positives": 1628,
+        "gini": 0.2682478368182881,
+        "auc": 0.6341239184091441,
+        "no_history": {
+          "rows": 1893,
+          "positives": 341,
+          "gini": 0.3093879432838529
+        },
+        "history": {
+          "rows": 8507,
+          "positives": 1287,
+          "gini": 0.25437218982925347
+        },
+        "composition_weighted_gini": 0.2685124104233303,
+        "top20_count": 2080,
+        "top20_positives": 544,
+        "top20_recall": 0.33415233415233414,
+        "month": 202610,
+        "train_rows": 90200,
+        "seconds": 1.7966875060010352
+      }
+    ],
+    "mean_gini": 0.2617424861200877,
+    "worst_gini": 0.25239710112469327,
+    "seconds": 43.87309579199791,
+    "provenance": {
+      "schema": "experiment-v2",
+      "code_hash_schema": "normalized-source-v1",
+      "code_sha256": "03f862e5db07e6ee4c4b807299fc342c25568b160009a3b3be39138e7c5e718e",
+      "protocol_sha256": "838e38df482b4205756824aaaa6a16df17a292e8296e278cef4b686a840a5dc6",
+      "protocol": {
+        "development_months": [
+          202608,
+          202609,
+          202610
+        ],
+        "final_validation_month": 202611,
+        "test_month": 202612,
+        "seed": 42,
+        "threads": 4,
+        "selection_metric": "equal_month_mean_gini",
+        "iterations_policy": "fixed parameters and iterations; no early stopping",
+        "bootstrap_replicates": 500,
+        "ensemble_min_gain": 0.002,
+        "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+        "feature_blocks": [
+          "temporal_structure",
+          "temporal_lags",
+          "temporal_v2"
+        ],
+        "dynamic_predictors": [
+          "dias_ultima_interaccion"
+        ],
+        "history_window_months": 3,
+        "initial_hgb_variants": [
+          "original",
+          "observed_time",
+          "temporal_structure",
+          "temporal_lags",
+          "temporal_v2"
+        ],
+        "competitive_min_mean_gain": 0.0005,
+        "competitive_min_improved_months": 2,
+        "competitive_max_month_loss": 0.002,
+        "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+        "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget.",
+        "round_config": {
+          "name": "catboost_round_3",
+          "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+          "budget": 6,
+          "max_ensembles": 2,
+          "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+          "blocks": [],
+          "variants": [
+            {
+              "name": "depth2",
+              "overrides": {
+                "depth": 2
+              }
+            },
+            {
+              "name": "depth2_l2_60",
+              "overrides": {
+                "depth": 2,
+                "l2_leaf_reg": 60
+              }
+            },
+            {
+              "name": "depth3_l2_60",
+              "overrides": {
+                "l2_leaf_reg": 60
+              }
+            },
+            {
+              "name": "depth3_l2_10",
+              "overrides": {
+                "l2_leaf_reg": 10
+              }
+            },
+            {
+              "name": "depth4_l2_60",
+              "overrides": {
+                "depth": 4,
+                "l2_leaf_reg": 60
+              }
+            },
+            {
+              "name": "depth3_slower",
+              "overrides": {
+                "iterations": 900,
+                "learning_rate": 0.02755963094952122
+              }
+            }
+          ],
+          "hgb_alternative": {
+            "name": "r3_hgb_shallow",
+            "family": "hgb",
+            "blocks": [
+              "observed_time"
+            ],
+            "params": {
+              "max_iter": 150,
+              "learning_rate": 0.06,
+              "early_stopping": false,
+              "max_leaf_nodes": 7,
+              "min_samples_leaf": 200,
+              "l2_regularization": 30
+            },
+            "seed": 42
+          },
+          "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+          "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+          "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+          "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+          "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+        }
+      },
+      "data_hashes": {
+        "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+        "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+        "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+        "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+      },
+      "python": "3.12",
+      "versions": {
+        "numpy": "2.5.3",
+        "pandas": "2.3.3",
+        "scikit-learn": "1.7.2",
+        "catboost": "1.2.10",
+        "lightgbm": "4.7.0",
+        "optuna": "4.9.0",
+        "joblib": "1.6.0",
+        "threadpoolctl": "3.7.0"
+      }
+    },
+    "feature_columns": [
+      "edad",
+      "ingresos",
+      "ratio_deuda_ingresos",
+      "antiguedad_cuenta_meses",
+      "numero_productos",
+      "saldo_promedio",
+      "dias_ultima_transaccion",
+      "antiguedad_direccion_meses",
+      "visitas_web_ultimos_90_dias",
+      "distancia_sucursal_km",
+      "dia_preferido_pago",
+      "dias_ultima_interaccion",
+      "ocupacion",
+      "region",
+      "canal_adquisicion",
+      "banda_riesgo",
+      "dispositivo_principal",
+      "tiene_tarjeta_credito",
+      "activo_movil",
+      "es_nuevo_cliente",
+      "tiene_prestamo",
+      "tiene_seguro",
+      "meses_desde_primera_observacion"
+    ],
+    "identity": {
+      "spec": {
+        "name": "r3_hgb_shallow",
+        "family": "hgb",
+        "blocks": [
+          "observed_time"
+        ],
+        "params": {
+          "max_iter": 150,
+          "learning_rate": 0.06,
+          "early_stopping": false,
+          "max_leaf_nodes": 7,
+          "min_samples_leaf": 200,
+          "l2_regularization": 30
+        },
+        "seed": 42
+      },
+      "months": [
+        202608,
+        202609,
+        202610
+      ],
+      "context": {
+        "schema": "experiment-v2",
+        "code_hash_schema": "normalized-source-v1",
+        "code_sha256": "03f862e5db07e6ee4c4b807299fc342c25568b160009a3b3be39138e7c5e718e",
+        "protocol_sha256": "838e38df482b4205756824aaaa6a16df17a292e8296e278cef4b686a840a5dc6",
+        "protocol": {
+          "development_months": [
+            202608,
+            202609,
+            202610
+          ],
+          "final_validation_month": 202611,
+          "test_month": 202612,
+          "seed": 42,
+          "threads": 4,
+          "selection_metric": "equal_month_mean_gini",
+          "iterations_policy": "fixed parameters and iterations; no early stopping",
+          "bootstrap_replicates": 500,
+          "ensemble_min_gain": 0.002,
+          "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+          "feature_blocks": [
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "dynamic_predictors": [
+            "dias_ultima_interaccion"
+          ],
+          "history_window_months": 3,
+          "initial_hgb_variants": [
+            "original",
+            "observed_time",
+            "temporal_structure",
+            "temporal_lags",
+            "temporal_v2"
+          ],
+          "competitive_min_mean_gain": 0.0005,
+          "competitive_min_improved_months": 2,
+          "competitive_max_month_loss": 0.002,
+          "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+          "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget.",
+          "round_config": {
+            "name": "catboost_round_3",
+            "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+            "budget": 6,
+            "max_ensembles": 2,
+            "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+            "blocks": [],
+            "variants": [
+              {
+                "name": "depth2",
+                "overrides": {
+                  "depth": 2
+                }
+              },
+              {
+                "name": "depth2_l2_60",
+                "overrides": {
+                  "depth": 2,
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_l2_60",
+                "overrides": {
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_l2_10",
+                "overrides": {
+                  "l2_leaf_reg": 10
+                }
+              },
+              {
+                "name": "depth4_l2_60",
+                "overrides": {
+                  "depth": 4,
+                  "l2_leaf_reg": 60
+                }
+              },
+              {
+                "name": "depth3_slower",
+                "overrides": {
+                  "iterations": 900,
+                  "learning_rate": 0.02755963094952122
+                }
+              }
+            ],
+            "hgb_alternative": {
+              "name": "r3_hgb_shallow",
+              "family": "hgb",
+              "blocks": [
+                "observed_time"
+              ],
+              "params": {
+                "max_iter": 150,
+                "learning_rate": 0.06,
+                "early_stopping": false,
+                "max_leaf_nodes": 7,
+                "min_samples_leaf": 200,
+                "l2_regularization": 30
+              },
+              "seed": 42
+            },
+            "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+            "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+            "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+            "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+            "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+          }
+        },
+        "data_hashes": {
+          "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+          "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+          "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+          "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+        },
+        "python": "3.12",
+        "versions": {
+          "numpy": "2.5.3",
+          "pandas": "2.3.3",
+          "scikit-learn": "1.7.2",
+          "catboost": "1.2.10",
+          "lightgbm": "4.7.0",
+          "optuna": "4.9.0",
+          "joblib": "1.6.0",
+          "threadpoolctl": "3.7.0"
+        }
+      }
+    },
+    "fingerprint": "e7501c1d9ff636adba746235a8f453be2938c9eb67fc5561d6cae171da73be46",
+    "runtime": {
+      "timestamp_lima": "2026-10-04T20:47:03.582401-05:00",
+      "python": "3.12.3",
+      "platform": "Linux-7.2.8-2-cachyos-x86_64-with-glibc2.44"
+    },
+    "prediction_path": "artifacts/boost/rounds/catboost_round_3/runs/r3_hgb_shallow/e7501c1d9ff636adba746235a8f453be2938c9eb67fc5561d6cae171da73be46/validation.csv",
+    "predictions_sha256": "11c3233b6ccc49b504de973dcc616db2639048f46c0e719b821d80d9a01f399b"
+  },
+  "a_reproduction": {
+    "mean_gini": 0.2605452442565364,
+    "worst_gini": 0.24906468225862888,
+    "folds": [
+      {
+        "rows": 10050,
+        "positives": 1449,
+        "gini": 0.26421061508488153,
+        "auc": 0.6321053075424408,
+        "no_history": {
+          "rows": 1760,
+          "positives": 309,
+          "gini": 0.25821495721062804
+        },
+        "history": {
+          "rows": 8290,
+          "positives": 1140,
+          "gini": 0.25961109066372234
+        },
+        "composition_weighted_gini": 0.2644118794702599,
+        "top20_count": 2010,
+        "top20_positives": 501,
+        "top20_recall": 0.34575569358178054,
+        "month": 202608
+      },
+      {
+        "rows": 9900,
+        "positives": 1393,
+        "gini": 0.24906468225862888,
+        "auc": 0.6245323411293144,
+        "no_history": {
+          "rows": 1299,
+          "positives": 218,
+          "gini": 0.2318953738044114
+        },
+        "history": {
+          "rows": 8601,
+          "positives": 1175,
+          "gini": 0.24830228466973425
+        },
+        "composition_weighted_gini": 0.24908493415174293,
+        "top20_count": 1980,
+        "top20_positives": 467,
+        "top20_recall": 0.33524766690595836,
+        "month": 202609
+      },
+      {
+        "rows": 10400,
+        "positives": 1628,
+        "gini": 0.2683604354260989,
+        "auc": 0.6341802177130494,
+        "no_history": {
+          "rows": 1893,
+          "positives": 341,
+          "gini": 0.29400338603863707
+        },
+        "history": {
+          "rows": 8507,
+          "positives": 1287,
+          "gini": 0.2587050991483124
+        },
+        "composition_weighted_gini": 0.2685417060438242,
+        "top20_count": 2080,
+        "top20_positives": 543,
+        "top20_recall": 0.33353808353808356,
+        "month": 202610
+      }
+    ]
+  },
+  "a_max_probability_difference": 9.992007221626409e-16,
+  "shortlist": null,
+  "single_candidate": null,
+  "ensembles": [],
+  "promote_b": false,
+  "selection": null,
+  "november_evaluated_for_b": false,
+  "decision": "retain A; stop this CatBoost round"
+}

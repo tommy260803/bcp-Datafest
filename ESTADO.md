@@ -1,5 +1,32 @@
 # Estado del proyecto
 
+## Boost — ronda 3 CatBoost, 4 de octubre de 2026
+
+- Estado inicial limpio en `boost`; la ronda HGB anterior estaba conservada en Git.
+- Presupuesto registrado antes de entrenar en `configs/boost/catboost_round.json`:
+  seis variantes CatBoost originales; complejidad/L2 y una variante lenta con
+  900 iteraciones. Seed 42, features y bootstrap Bayesian de A intactos. Hasta
+  dos ensembles 75/25, únicamente si hay un CatBoost elegible por desarrollo.
+- Entrenamientos, manifest y predicciones versionados en
+  `artifacts/boost/rounds/catboost_round_3/`; reportes independientes en
+  `reports/boost/rounds/catboost_round_3/`. El plan completo participa en la identidad.
+- `uv run python -m pytest -q -p no:cacheprovider --basetemp /tmp/opencode/pytest-catboost-round`:
+  **25 pruebas aprobadas**, incluyendo presupuesto/features acotados, shortlist
+  estable, anchor intacto y rechazo de resultados con procedencias distintas.
+- `uv run python -m bcp_datafest boost-catboost`: seis configuraciones completas
+  en agosto–octubre, dos referencias de A y HGB shallow fijo. Mejor variante:
+  depth3 L2=10, media 0.258420 frente al CatBoost de A 0.258349, delta +0.000070.
+  Todas las variantes empeoran septiembre y octubre frente a esa referencia.
+- Ninguna configuración pasa la puerta de ganancia y estabilidad; no se abren
+  ensembles ni bootstrap para promocionar candidatos descartados. A se reproduce
+  con Gini 0.260545 y diferencia máxima de probabilidades ~1e-15.
+- **Decisión: conservar A y cerrar esta ronda.** No se amplió el presupuesto,
+  no se congeló B, no se evaluó noviembre para B y no se generó otro submission.
+- Cierre verificado: nueve cachés reales reutilizados con entrenamiento bloqueado
+  y fingerprints idénticos; referencia A íntegra. Sin diferencias en los reportes
+  de la ronda HGB anterior ni configuraciones/predicciones de A. `git diff --check`
+  sin errores. Cambios de esta ronda sin commit.
+
 ## Boost — ronda 2 HGB, 4 de octubre de 2026
 
 - Estado inicial limpio en `boost`; los cambios de la primera ronda ya estaban

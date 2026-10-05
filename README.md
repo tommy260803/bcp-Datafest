@@ -14,6 +14,7 @@ uv run python -m bcp_datafest boost-experiment --competitive
 uv run python -m bcp_datafest boost-diagnose
 uv run python -m bcp_datafest boost-hgb
 uv run python -m bcp_datafest boost-hgb-stats
+uv run python -m bcp_datafest boost-catboost
 ```
 
 Decisión de la primera ronda: conservar A. La combinación temporal exploratoria
@@ -24,6 +25,11 @@ Segunda ronda: ocho configuraciones HGB. El mejor individual alcanza 0.261742,
 pero su combinación 75/25 con CatBoost solo mejora 0.000173 sobre A. Los intervalos
 exploratorios del individual incluyen cero; se conserva A. Reportes independientes
 en `reports/boost/rounds/hgb_round_2/`.
+
+Tercera ronda: seis variantes CatBoost con variables originales. La mejor mejora
+solo 0.000070 frente al CatBoost de A y pierde en septiembre/octubre. No se abre
+la etapa de combinaciones; se conserva A. Reportes en
+`reports/boost/rounds/catboost_round_3/`.
 
 Proceso cliente-mes para primera conversión, con validación temporal y Gini = 2 × AUC − 1. Los predictores actuales se suponen disponibles en el instante de predicción de la competencia; el instante exacto y el evento comercial no están documentados.
 

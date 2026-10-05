@@ -2,7 +2,7 @@
 
 ## Decisión actual
 
-**Conservar Candidato A.** Las rondas de features temporales y ajuste HGB no justifican
+**Conservar Candidato A.** Las rondas de features temporales, ajuste HGB y CatBoost no justifican
 sustituir la solución congelada. No se evaluó ningún modelo B en noviembre, ni se
 generó una entrega nueva. La configuración y los reportes históricos de A se
 conservan sin modificaciones.
@@ -26,6 +26,7 @@ uv run python -m bcp_datafest boost-experiment --competitive
 uv run python -m bcp_datafest boost-diagnose
 uv run python -m bcp_datafest boost-hgb
 uv run python -m bcp_datafest boost-hgb-stats
+uv run python -m bcp_datafest boost-catboost
 ```
 
 Todos los comandos aceptan `--data-dir RUTA`. No requieren bash ni PowerShell
@@ -46,6 +47,11 @@ Los nuevos archivos están aislados en:
 - `artifacts/boost/rounds/hgb_round_2/`: manifiesto registrado antes de entrenar,
   runs versionados, ensembles y comparaciones. Ignorado por Git.
 - `reports/boost/rounds/hgb_round_2/`: reportes independientes de la ronda 2.
+- `configs/boost/catboost_round.json`: seis variantes originales de CatBoost,
+  reglas de selección y HGB alternativo fijado antes de evaluar.
+- `artifacts/boost/rounds/catboost_round_3/` y
+  `reports/boost/rounds/catboost_round_3/`: manifiesto, entrenamientos y resultados
+  aislados de la ronda 3.
 
 Cambiar ramas no restaura archivos ignorados. Para operar el flujo histórico de A
 se debe usar su versión de código y sus modelos conservados; no mezclar sus
@@ -183,14 +189,50 @@ Son diagnósticos exploratorios posteriores a selección; no prueban superiorida
 independiente. El HGB shallow se conserva como candidato alternativo, pero A sigue
 siendo la referencia de entrega. No se congeló un B ni se evaluó noviembre.
 
+## Ronda 3 — CatBoost original acotado
+
+Se registraron seis configuraciones alrededor del CatBoost congelado de A:
+profundidad 2, profundidad 2 con L2 60, profundidad 3 con L2 60 o 10,
+profundidad 4 con L2 60 y profundidad 3 con 900 iteraciones y learning rate
+0.02755963. Se conservan seed 42, features originales y parámetros de bootstrap
+Bayesian/random_strength. La variante lenta conserva aproximadamente el producto
+iteraciones por learning rate, sin early stopping.
+
+| CatBoost | Agosto | Septiembre | Octubre | Media | Delta frente al CatBoost de A |
+|---|---:|---:|---:|---:|---:|
+| Referencia de A | 0.261989 | 0.247553 | 0.265506 | **0.258349** | — |
+| depth3, L2 10 | 0.264452 | 0.245531 | 0.265276 | 0.258420 | +0.000070 |
+| depth3, aprendizaje lento | 0.262901 | 0.245262 | 0.264397 | 0.257520 | -0.000830 |
+| depth4, L2 60 | 0.264582 | 0.242887 | 0.264968 | 0.257479 | -0.000871 |
+| depth3, L2 60 | 0.262051 | 0.245756 | 0.263279 | 0.257029 | -0.001321 |
+| depth2 | 0.260860 | 0.245178 | 0.261667 | 0.255902 | -0.002448 |
+| depth2, L2 60 | 0.260632 | 0.243854 | 0.258580 | 0.254355 | -0.003994 |
+
+Todas las variantes empeoran septiembre y octubre frente al CatBoost de A. La
+mejor mejora solo 0.000070 en media, por debajo de 0.0005, y no pasa la condición
+de mejorar al menos dos meses. No hay shortlist elegible. El plan exigía esa
+shortlist para abrir como máximo dos combinaciones 75/25 con HGB original o
+shallow; **no se evaluaron combinaciones nuevas** en esta ronda ni se calcularon
+intervalos para justificar variantes que ya fallaron el filtro de desarrollo.
+
+Se ejecutaron nueve runs: seis configuraciones nuevas, los dos componentes de A
+y el HGB shallow fijo. A reproduce Gini 0.260545 y sus probabilidades con diferencia
+máxima aproximadamente 1e-15. La ronda se cierra conservando A, sin modificar
+parámetros después de ver resultados y sin evaluar B en noviembre.
+
 ## Verificación y siguiente decisión
 
-22 pruebas aprobadas: identidad CRLF/LF, cambios de código/datos/protocolo/spec,
+25 pruebas aprobadas: identidad CRLF/LF, cambios de código/datos/protocolo/spec,
 integridad de predicciones, exclusión del leaderboard, protección de A, causalidad
 temporal, ventanas con huecos, orden, independencia por cliente y métricas con
 clases ausentes, presupuesto de ronda inmutable, shortlist estable y aislamiento
 de cachés/reportes entre rondas. La ejecución real se verificó en Linux; se simulan formatos de
 Windows en las pruebas, sin afirmar una ejecución nativa en Windows.
+
+La ronda CatBoost añade controles de búsqueda original acotada, preservación de
+parámetros del anchor y rechazo de comparaciones entre versiones incompatibles.
+Las rondas anteriores conservan su procedencia histórica; sus predicciones no se
+incorporan automáticamente a un contexto nuevo sin reproducirlas.
 
 Una nueva ronda requiere una hipótesis distinta y un presupuesto registrado en
 desarrollo. No ampliar ventanas o ensayos para forzar una mejora. La entrega sigue

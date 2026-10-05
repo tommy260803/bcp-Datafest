@@ -1,0 +1,28 @@
+{
+  "name": "catboost_round_3",
+  "hypothesis": "Lower tree complexity, controlled L2 and slower learning may improve original-feature CatBoost ranking and complement the preserved HGB models.",
+  "budget": 6,
+  "max_ensembles": 2,
+  "anchor": "Exact frozen CatBoost spec from Candidate A; seed and Bayesian bootstrap parameters remain unchanged.",
+  "blocks": [],
+  "variants": [
+    {"name": "depth2", "overrides": {"depth": 2}},
+    {"name": "depth2_l2_60", "overrides": {"depth": 2, "l2_leaf_reg": 60}},
+    {"name": "depth3_l2_60", "overrides": {"l2_leaf_reg": 60}},
+    {"name": "depth3_l2_10", "overrides": {"l2_leaf_reg": 10}},
+    {"name": "depth4_l2_60", "overrides": {"depth": 4, "l2_leaf_reg": 60}},
+    {"name": "depth3_slower", "overrides": {"iterations": 900, "learning_rate": 0.02755963094952122}}
+  ],
+  "hgb_alternative": {
+    "name": "r3_hgb_shallow",
+    "family": "hgb",
+    "blocks": ["observed_time"],
+    "params": {"max_iter": 150, "learning_rate": 0.06, "early_stopping": false, "max_leaf_nodes": 7, "min_samples_leaf": 200, "l2_regularization": 30},
+    "seed": 42
+  },
+  "shortlist": "Choose the highest-mean CatBoost passing the existing gain/stability gate against A's CatBoost. If none passes, stop without ensembles.",
+  "individual_acceptance": "The shortlisted CatBoost must pass the existing gain/stability gate against the full Candidate A and have a positive paired customer bootstrap lower bound.",
+  "ensemble": "Two replacements at most: shortlisted CatBoost 75% with A HGB 25%, and with the fixed shallow HGB 25%. No weight search. Require gain >= ensemble_min_gain over A and the strongest individual, stability vs A, and positive paired lower bounds vs A and strongest individual.",
+  "bootstrap_policy": "500 paired customer replicates from the protocol; evaluate uncertainty only after the corresponding development gain/stability gates.",
+  "notes": "Six predeclared original-feature configurations, three expanding monthly folds. No early stopping, new seeds, tuning on November, or budget expansion. The slower trial preserves approximately iterations*learning_rate."
+}
