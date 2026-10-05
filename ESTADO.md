@@ -1,5 +1,29 @@
 # Estado del proyecto
 
+## Boost — entrega de diciembre del Candidato A (4 de octubre de 2026)
+
+- La copia Linux tenía datos originales y reportes históricos, pero no modelos
+  finales ni `outputs/submission.csv`. Se implementó
+  `uv run python -m bcp_datafest boost-deliver-a --output outputs/submission.csv`
+  para entrenar A sin modificar su selección ni los reportes históricos.
+- Dos componentes congelados de A entrenados en 110.100 filas enero–noviembre:
+  CatBoost `.cbm` (36.2 s) y HGB joblib (2.3 s), hashes/modelos/metadatos en
+  `artifacts/boost/delivery_a/models/<fingerprint>/`. Historial de diciembre
+  calculado con enero–noviembre y los predictores actuales de diciembre.
+- CSV **generado y validado tras releer el archivo real**:
+  `outputs/submission.csv`, 9.900 filas y columnas `id_cliente,prediccion`, IDs
+  en orden idéntico al test, 9.900 probabilidades distintas y finitas en [0,1].
+  SHA-256 `9d4c19adc383b78459339133ea0b95118276e36eca6b282eae91273774fed07a`.
+- El hash histórico de la entrega Windows (`72bb9801...`) difiere incluso tras
+  simular CRLF; no se conserva el CSV histórico para comparar fila a fila. Coinciden
+  extremos reportados, pero **no se afirma identidad byte a byte** ni Gini de
+  diciembre. Reporte detallado `reports/boost/delivery_a/reproduction.md`.
+- Segunda ejecución: modelos reutilizados, archivo protegido y hash local
+  idéntico. `uv run python -m pytest -q -p no:cacheprovider --basetemp
+  /tmp/opencode/pytest-delivery-a`: 27 pruebas aprobadas; `git diff --check`
+  sin errores. Configuración final, evaluación de noviembre y reportes históricos
+  intactos. El entregable local usa exclusivamente A.
+
 ## Boost — ronda 3 CatBoost, 4 de octubre de 2026
 
 - Estado inicial limpio en `boost`; la ronda HGB anterior estaba conservada en Git.

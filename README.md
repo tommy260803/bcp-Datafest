@@ -1,5 +1,16 @@
 # BCP DataFest
 
+**Archivo de entrega actual:** `outputs/submission.csv` (Candidato A, diciembre,
+9.900 filas, verificado en Linux). Para regenerar desde los modelos aislados:
+
+```text
+uv run python -m bcp_datafest boost-deliver-a --output outputs/submission.csv
+```
+
+Procedencia y comparación con el hash histórico de Windows:
+`reports/boost/delivery_a/reproduction.md`. El Gini oficial de diciembre sigue
+desconocido.
+
 ## Rama experimental boost
 
 La referencia congelada es el **Candidato A**. Los experimentos de **Candidato B**

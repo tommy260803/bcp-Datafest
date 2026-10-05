@@ -1,0 +1,92 @@
+{
+  "candidate": "A",
+  "recipe": {
+    "schema": "delivery-a-v1",
+    "candidate": "A",
+    "config_logical_sha256": "0d646cdea75dec5a702848ebc3eff4f23ceb5f013ff3087155e51c82c9096008",
+    "context": {
+      "schema": "experiment-v2",
+      "code_hash_schema": "normalized-source-v1",
+      "code_sha256": "470be8416ef28e8363fd346e163471c973e5bf11f3d1a3f5e73fd5e77167cd37",
+      "protocol_sha256": "fe396536e3f945f4b36239575096cffc310bfadded9d030e7ec70904a254b459",
+      "protocol": {
+        "development_months": [
+          202608,
+          202609,
+          202610
+        ],
+        "final_validation_month": 202611,
+        "test_month": 202612,
+        "seed": 42,
+        "threads": 4,
+        "selection_metric": "equal_month_mean_gini",
+        "tuning_trials_per_family": 8,
+        "iterations_policy": "fixed iterations per trial; no early stopping",
+        "bootstrap_replicates": 500,
+        "ensemble_min_gain": 0.002,
+        "ensemble_acceptance": "mean gain >= 0.002 and paired customer bootstrap 95% lower bound > 0; otherwise retain best individual",
+        "feature_blocks": [
+          "economic",
+          "linkage",
+          "activity",
+          "history",
+          "observed_time"
+        ],
+        "notes": "Initial bounded CPU budget; all families use the same three development months. November is reserved until selection is frozen."
+      },
+      "data_hashes": {
+        "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+        "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+        "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+        "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+      },
+      "python": "3.12",
+      "versions": {
+        "numpy": "2.5.3",
+        "pandas": "2.3.3",
+        "scikit-learn": "1.7.2",
+        "catboost": "1.2.10",
+        "lightgbm": "4.7.0",
+        "optuna": "4.9.0",
+        "joblib": "1.6.0",
+        "threadpoolctl": "3.7.0"
+      }
+    }
+  },
+  "fingerprint": "23183ffe619796421101a40300eff729f77f37f7bd7ef06328841a647bc72676",
+  "model_metadata_path": "artifacts/boost/delivery_a/models/23183ffe619796421101a40300eff729f77f37f7bd7ef06328841a647bc72676/metadata.json",
+  "model_metadata_sha256": "97e12b7cad1ae310d48587513ab79ad6a908ce49ee99267bc85df925beb39fb2",
+  "validation": {
+    "passed": true,
+    "file": "/home/bilton/Proyectos/Hackaton/bcp-Datafest/outputs/submission.csv",
+    "rows": 9900,
+    "columns": [
+      "id_cliente",
+      "prediccion"
+    ],
+    "identifiers_in_test_order": true,
+    "finite_probabilities": true,
+    "min_probability": 0.0309183115514965,
+    "max_probability": 0.399970886929378,
+    "unique_probabilities": 9900,
+    "sha256": "9d4c19adc383b78459339133ea0b95118276e36eca6b282eae91273774fed07a"
+  },
+  "training_months": [
+    202601,
+    202602,
+    202603,
+    202604,
+    202605,
+    202606,
+    202607,
+    202608,
+    202609,
+    202610,
+    202611
+  ],
+  "prediction_month": 202612,
+  "development_mean_gini": 0.2605452442565364,
+  "november_gini_historical": 0.233079181939587,
+  "december_gini": null,
+  "november_reevaluated": false
+}

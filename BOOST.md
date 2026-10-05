@@ -1,5 +1,26 @@
 # Rama boost — Candidato B
 
+## Entrega de diciembre disponible localmente
+
+**`outputs/submission.csv` está generado y verificado** con la configuración
+congelada del Candidato A, reentrenada en enero–noviembre (110.100 filas). Contiene
+9.900 probabilidades alineadas con el test. SHA-256 Linux actual:
+`9d4c19adc383b78459339133ea0b95118276e36eca6b282eae91273774fed07a`.
+No se conoce el Gini oficial de diciembre.
+
+Para regenerarlo/revalidarlo sin tocar la selección de A:
+
+```text
+uv run python -m bcp_datafest boost-deliver-a --output outputs/submission.csv
+```
+
+Los modelos se guardan bajo `artifacts/boost/delivery_a/`; el comando reutiliza
+los modelos compatibles y verifica el CSV **serializado**. Si ya existe una
+entrega distinta, exige otro `--output` para no sobrescribirla. El hash histórico
+de Windows no coincide byte a byte; véanse detalles y límites de comparación en
+`reports/boost/delivery_a/reproduction.md`. No se evaluó B en noviembre ni se
+utilizaron modelos B en la entrega.
+
 ## Decisión actual
 
 **Conservar Candidato A.** Las rondas de features temporales, ajuste HGB y CatBoost no justifican
