@@ -1,0 +1,20 @@
+{
+  "name": "hgb_round_2",
+  "hypothesis": "Regularization and tree complexity can stabilize HGB and improve its complementarity with the unchanged CatBoost component of A.",
+  "budget": 8,
+  "max_ensembles": 2,
+  "fixed_params": {"max_iter": 150, "learning_rate": 0.06, "early_stopping": false},
+  "shortlist": "Apply the existing development gain/stability gate against the same-feature HGB reference; select by mean Gini, at most one candidate per feature representation, maximum two.",
+  "ensemble": "Replace only A's HGB component; preserve A's weights. No weight search. Require gain >= ensemble_min_gain against both A and the replacement HGB individual, development stability, and positive paired bootstrap lower bound.",
+  "variants": [
+    {"name": "original_shallow", "blocks": [], "params": {"max_leaf_nodes": 7, "min_samples_leaf": 200, "l2_regularization": 30}},
+    {"name": "original_wide", "blocks": [], "params": {"max_leaf_nodes": 31, "min_samples_leaf": 200, "l2_regularization": 30}},
+    {"name": "observed_shallow", "blocks": ["observed_time"], "params": {"max_leaf_nodes": 7, "min_samples_leaf": 200, "l2_regularization": 30}},
+    {"name": "observed_regularized", "blocks": ["observed_time"], "params": {"max_leaf_nodes": 15, "min_samples_leaf": 200, "l2_regularization": 30}},
+    {"name": "observed_wide", "blocks": ["observed_time"], "params": {"max_leaf_nodes": 31, "min_samples_leaf": 100, "l2_regularization": 30}},
+    {"name": "lags_shallow", "blocks": ["temporal_lags"], "params": {"max_leaf_nodes": 7, "min_samples_leaf": 200, "l2_regularization": 30}},
+    {"name": "lags_regularized", "blocks": ["temporal_lags"], "params": {"max_leaf_nodes": 15, "min_samples_leaf": 200, "l2_regularization": 30}},
+    {"name": "lags_strong_regularization", "blocks": ["temporal_lags"], "params": {"max_leaf_nodes": 15, "min_samples_leaf": 400, "l2_regularization": 50}}
+  ],
+  "notes": "Register before evaluation. Only August-October determine selection. November is not evaluated by this round. No expansion of trials or ensemble weights."
+}

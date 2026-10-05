@@ -12,7 +12,7 @@ from .io import ROOT, digest, read_json
 
 CODE_FILES = (
     "data.py", "features.py", "temporal.py", "models.py", "metrics.py",
-    "experiments.py", "identity.py", "io.py", "boost.py", "ensemble.py",
+    "experiments.py", "identity.py", "io.py", "boost.py", "ensemble.py", "hgb_round.py",
 )
 PACKAGES = ("numpy", "pandas", "scikit-learn", "catboost", "lightgbm", "optuna", "joblib", "threadpoolctl")
 

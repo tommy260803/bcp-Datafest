@@ -19,17 +19,25 @@ from .models import build, fit_model
 from .identity import context, experiment_identity, logical_hash, cache_matches, compatible
 
 
-def locations(workspace=None):
+def locations(workspace=None, round_name=None):
     if workspace is not None and (not workspace or any(c in workspace for c in "/\\.")):
         raise ValueError("Workspace must be a simple name")
     suffix = Path(workspace) if workspace else Path()
+    if round_name is not None:
+        if not workspace or not round_name or any(c in round_name for c in "/\\."):
+            raise ValueError("A round requires a workspace and a simple name")
+        runs = ROOT / "artifacts" / suffix / "rounds" / round_name / "runs"
+        reports = ROOT / "reports" / suffix / "rounds" / round_name
+        return ROOT / "configs" / suffix / "protocol.json", runs, reports
     return (ROOT / "configs" / suffix / "protocol.json",
             ROOT / "artifacts" / suffix / "runs", ROOT / "reports" / suffix)
 
 
-def evaluate(spec, data_dir, months=None, *, workspace=None):
-    protocol_path, runs, _ = locations(workspace)
+def evaluate(spec, data_dir, months=None, *, workspace=None, round_config=None):
+    protocol_path, runs, _ = locations(workspace, None if round_config is None else round_config["name"])
     protocol = read_json(protocol_path)
+    if round_config is not None:
+        protocol["round_config"] = round_config
     months = list(protocol["development_months"] if months is None else months)
     if not months or len(set(months)) != len(months):
         raise ValueError("Evaluation requires distinct, nonempty months")
@@ -95,9 +103,11 @@ def evaluate(spec, data_dir, months=None, *, workspace=None):
     return result
 
 
-def leaderboard(data_dir=None, *, workspace=None):
-    protocol_path, runs, reports = locations(workspace)
+def leaderboard(data_dir=None, *, workspace=None, round_config=None):
+    protocol_path, runs, reports = locations(workspace, None if round_config is None else round_config["name"])
     protocol = read_json(protocol_path)
+    if round_config is not None:
+        protocol["round_config"] = round_config
     source = context(ROOT / "data" if data_dir is None else data_dir, protocol)
     results, excluded = [], []
     for path in runs.glob("*/*/result.json" if workspace else "*/result.json"):

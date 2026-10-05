@@ -12,11 +12,18 @@ uv sync --locked
 uv run python -m bcp_datafest boost-audit
 uv run python -m bcp_datafest boost-experiment --competitive
 uv run python -m bcp_datafest boost-diagnose
+uv run python -m bcp_datafest boost-hgb
+uv run python -m bcp_datafest boost-hgb-stats
 ```
 
 Decisión de la primera ronda: conservar A. La combinación temporal exploratoria
 mejora 0.000694 en desarrollo, por debajo del mínimo 0.002; no se evaluó B en
 noviembre. Los comandos históricos documentados abajo corresponden al flujo A.
+
+Segunda ronda: ocho configuraciones HGB. El mejor individual alcanza 0.261742,
+pero su combinación 75/25 con CatBoost solo mejora 0.000173 sobre A. Los intervalos
+exploratorios del individual incluyen cero; se conserva A. Reportes independientes
+en `reports/boost/rounds/hgb_round_2/`.
 
 Proceso cliente-mes para primera conversión, con validación temporal y Gini = 2 × AUC − 1. Los predictores actuales se suponen disponibles en el instante de predicción de la competencia; el instante exacto y el evento comercial no están documentados.
 

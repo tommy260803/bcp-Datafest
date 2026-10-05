@@ -1,5 +1,37 @@
 # Estado del proyecto
 
+## Boost — ronda 2 HGB, 4 de octubre de 2026
+
+- Estado inicial limpio en `boost`; los cambios de la primera ronda ya estaban
+  conservados en Git. Configuraciones y resultados históricos de A intactos.
+- Presupuesto registrado en `configs/boost/hgb_round.json`: ocho configuraciones
+  (original 2, observed_time 3, temporal_lags 3), sin variar learning rate 0.06,
+  150 iteraciones, seed 42 ni early stopping. Máximo dos ensembles con pesos de A.
+- Ronda y manifest aislados en `artifacts/boost/rounds/hgb_round_2/`; reportes en
+  `reports/boost/rounds/hgb_round_2/`. El plan completo participa en la identidad
+  y no puede modificarse después de registrar el manifiesto bajo el mismo nombre.
+- `uv run python -m pytest -q -p no:cacheprovider --basetemp /tmp/opencode/pytest-hgb-round`:
+  22 pruebas aprobadas, incluyendo presupuesto inmutable, selección por estabilidad
+  y representación, e independencia de resultados/reportes entre rondas.
+- `uv run python -m bcp_datafest boost-hgb`: ocho configuraciones completas en
+  agosto–octubre, tres referencias HGB y reproducción de CatBoost A. Mejor HGB:
+  observed_time, hojas 7, mínimo 200 muestras, L2 30; Gini 0.261742 frente a su
+  referencia 0.257716. Original shallow 0.259734; lags shallow 0.258495.
+- La shortlist predefinida seleccionó observed_time shallow y original shallow.
+  Ensembles 75/25: 0.260718 (+0.000173 contra A) y 0.260368 (-0.000177). Ninguno
+  cumple la ganancia mínima 0.002. No se buscaron más pesos o configuraciones.
+- `uv run python -m bcp_datafest boost-hgb-stats`: solo predicciones guardadas;
+  HGB mejor contra A, delta 0.001197 e IC95% [-0.004235, 0.006682]; contra su
+  referencia, delta 0.004026 e IC95% [-0.002159, 0.009726]. 500 réplicas por
+  cliente, todas válidas. Ambos intervalos incluyen cero y no corrigen selección.
+- **Decisión: conservar A.** Se retiene HGB observed_time shallow como alternativa
+  de desarrollo; no se congeló B, no se evaluó noviembre y no se generó otro CSV.
+  La ronda HGB está cerrada; una siguiente ronda requiere una hipótesis diferente.
+- Cierre verificado: 22 pruebas aprobadas tras incorporar el diagnóstico; doce
+  cachés reales reutilizados con entrenamiento bloqueado y fingerprints idénticos.
+  Referencia A íntegra; sin cambios en sus configuraciones/predicciones ni en los
+  reportes de la primera ronda. `git diff --check` sin errores. Cambios sin commit.
+
 ## Rama boost — 4 de octubre de 2026
 
 - Rama comprobada: `boost`; la modificación preexistente de `.gitignore` se conservó.

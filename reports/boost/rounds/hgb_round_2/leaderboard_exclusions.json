@@ -1,0 +1,163 @@
+{
+  "context": {
+    "schema": "experiment-v2",
+    "code_hash_schema": "normalized-source-v1",
+    "code_sha256": "e2b4db0c8c1dc9ac55d48afdf22d2a08b7df680457d7b67626ae7ffb02144d21",
+    "protocol_sha256": "348144e6b81ba1c22c3b30e6503afd5213d1be569db34ad52f4c738fe082ac45",
+    "protocol": {
+      "development_months": [
+        202608,
+        202609,
+        202610
+      ],
+      "final_validation_month": 202611,
+      "test_month": 202612,
+      "seed": 42,
+      "threads": 4,
+      "selection_metric": "equal_month_mean_gini",
+      "iterations_policy": "fixed parameters and iterations; no early stopping",
+      "bootstrap_replicates": 500,
+      "ensemble_min_gain": 0.002,
+      "ensemble_strategy": "one fixed replacement of A HGB by the best dynamic HGB (lags or v2), retaining A weights; no weight search; require gain >= 0.002 and positive paired bootstrap lower bound",
+      "feature_blocks": [
+        "temporal_structure",
+        "temporal_lags",
+        "temporal_v2"
+      ],
+      "dynamic_predictors": [
+        "dias_ultima_interaccion"
+      ],
+      "history_window_months": 3,
+      "initial_hgb_variants": [
+        "original",
+        "observed_time",
+        "temporal_structure",
+        "temporal_lags",
+        "temporal_v2"
+      ],
+      "competitive_min_mean_gain": 0.0005,
+      "competitive_min_improved_months": 2,
+      "competitive_max_month_loss": 0.002,
+      "competitive_budget": "one fixed CatBoost pair if HGB gate passes; at most one exploratory CatBoost pair otherwise; no tuning initially",
+      "notes": "Candidate A is immutable. November was already observed for A, is excluded from feature selection, and is not evaluated by boost-experiment. No XGBoost or tuning in the initial budget.",
+      "round_config": {
+        "name": "hgb_round_2",
+        "hypothesis": "Regularization and tree complexity can stabilize HGB and improve its complementarity with the unchanged CatBoost component of A.",
+        "budget": 8,
+        "max_ensembles": 2,
+        "fixed_params": {
+          "max_iter": 150,
+          "learning_rate": 0.06,
+          "early_stopping": false
+        },
+        "shortlist": "Apply the existing development gain/stability gate against the same-feature HGB reference; select by mean Gini, at most one candidate per feature representation, maximum two.",
+        "ensemble": "Replace only A's HGB component; preserve A's weights. No weight search. Require gain >= ensemble_min_gain against both A and the replacement HGB individual, development stability, and positive paired bootstrap lower bound.",
+        "variants": [
+          {
+            "name": "original_shallow",
+            "blocks": [],
+            "params": {
+              "max_leaf_nodes": 7,
+              "min_samples_leaf": 200,
+              "l2_regularization": 30
+            }
+          },
+          {
+            "name": "original_wide",
+            "blocks": [],
+            "params": {
+              "max_leaf_nodes": 31,
+              "min_samples_leaf": 200,
+              "l2_regularization": 30
+            }
+          },
+          {
+            "name": "observed_shallow",
+            "blocks": [
+              "observed_time"
+            ],
+            "params": {
+              "max_leaf_nodes": 7,
+              "min_samples_leaf": 200,
+              "l2_regularization": 30
+            }
+          },
+          {
+            "name": "observed_regularized",
+            "blocks": [
+              "observed_time"
+            ],
+            "params": {
+              "max_leaf_nodes": 15,
+              "min_samples_leaf": 200,
+              "l2_regularization": 30
+            }
+          },
+          {
+            "name": "observed_wide",
+            "blocks": [
+              "observed_time"
+            ],
+            "params": {
+              "max_leaf_nodes": 31,
+              "min_samples_leaf": 100,
+              "l2_regularization": 30
+            }
+          },
+          {
+            "name": "lags_shallow",
+            "blocks": [
+              "temporal_lags"
+            ],
+            "params": {
+              "max_leaf_nodes": 7,
+              "min_samples_leaf": 200,
+              "l2_regularization": 30
+            }
+          },
+          {
+            "name": "lags_regularized",
+            "blocks": [
+              "temporal_lags"
+            ],
+            "params": {
+              "max_leaf_nodes": 15,
+              "min_samples_leaf": 200,
+              "l2_regularization": 30
+            }
+          },
+          {
+            "name": "lags_strong_regularization",
+            "blocks": [
+              "temporal_lags"
+            ],
+            "params": {
+              "max_leaf_nodes": 15,
+              "min_samples_leaf": 400,
+              "l2_regularization": 50
+            }
+          }
+        ],
+        "notes": "Register before evaluation. Only August-October determine selection. November is not evaluated by this round. No expansion of trials or ensemble weights."
+      }
+    },
+    "data_hashes": {
+      "train.csv": "a714ebcd8587b2cc0f75ae642aa3e4ca5904eea02e249d969a06e8e7380e0567",
+      "test.csv": "81197145e28d1602a0195d93487dc924ae438d8b0eed411cf56cac13d786126f",
+      "sample_submission.csv": "d9e3caf0d5f5cde6fec0a146b4fc69abf98d703148a115ebf2631a61225f0fc5",
+      "metaData.csv": "020ab793205853f11ea4a7d77aae249b38cf24cb74e956b27352bfbf9dc32c0e"
+    },
+    "python": "3.12",
+    "versions": {
+      "numpy": "2.5.3",
+      "pandas": "2.3.3",
+      "scikit-learn": "1.7.2",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "optuna": "4.9.0",
+      "joblib": "1.6.0",
+      "threadpoolctl": "3.7.0"
+    }
+  },
+  "excluded": []
+}

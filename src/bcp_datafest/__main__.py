@@ -6,7 +6,7 @@ from .io import ROOT
 
 def main():
     parser = argparse.ArgumentParser(description="DataFest BCP: validación temporal y CSV verificable")
-    parser.add_argument("command", choices=["audit", "baseline", "experiment", "tune", "blend", "evaluate-final", "fit-final", "predict", "validate-submission", "boost-audit", "boost-experiment", "boost-diagnose"])
+    parser.add_argument("command", choices=["audit", "baseline", "experiment", "tune", "blend", "evaluate-final", "fit-final", "predict", "validate-submission", "boost-audit", "boost-experiment", "boost-diagnose", "boost-hgb", "boost-hgb-stats"])
     parser.add_argument("--data-dir", type=Path, default=ROOT / "data")
     parser.add_argument("--model", choices=["catboost", "lightgbm"])
     parser.add_argument("--trials", type=int)
@@ -14,7 +14,13 @@ def main():
     parser.add_argument("--output", type=Path, default=ROOT / "outputs/submission.csv")
     parser.add_argument("--file", type=Path, default=ROOT / "outputs/submission.csv")
     args = parser.parse_args()
-    if args.command == "boost-audit":
+    if args.command == "boost-hgb-stats":
+        from .hgb_uncertainty import diagnose
+        diagnose(args.data_dir)
+    elif args.command == "boost-hgb":
+        from .hgb_round import run
+        run(args.data_dir)
+    elif args.command == "boost-audit":
         from .variability import audit_variability
         audit_variability(args.data_dir)
     elif args.command == "boost-experiment":
